@@ -87,4 +87,7 @@ if [ -f $SCRIPTS/import_aliases_functions_modules.sh ]; then
     source $SCRIPTS/import_aliases_functions_modules.sh
 fi
 
+talosctl config endpoint $CONTROL_PLANE_IP
+talosctl config node $CONTROL_PLANE_IP
+
 export PATH=$PATH:/opt/homebrew/bin
