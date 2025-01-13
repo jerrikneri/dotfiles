@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define an array of programs you want to keep
-keep_programs=("bitwarden-cli" "felixkratz/formulae/sketchybar" "helm" "k9s" "koekeishiya/formulae/skhd" "koekeishiya/formulae/yabai" "minikube" "mycli" "neovim" "newsboat" "pgcli" "ripgrep" "tailscale" "tmux" "wakeonlan")
+keep_programs=("bitwarden-cli" "helm" "k9s" "mycli" "neovim" "newsboat" "pgcli" "ripgrep" "tailscale" "tmux" "wakeonlan")
 
 # Function to check if a program is in the keep list
 should_keep() {

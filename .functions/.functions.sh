@@ -45,10 +45,6 @@ migrate-tenant() {
   fi
 }
 
-m-sl() {
-  migrate-main && migrate-test && art migrate:tenants && migrate-deliverability
-}
-
 pu() {
   if [ -z "$1" ]
   then

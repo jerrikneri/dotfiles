@@ -13,7 +13,6 @@ alias tpp="cd $REPOS/trialpartners/portal"
 # alias tpup="tpp && sqlstart && tpserve"
 alias tpup="tpp && dockerstart && tpserve"
 alias tpdn="tpp && sail down && dockerstop"
-# alias tpdn="kp trialpartner; sqlstop; valet stop; valet stop dnsmasq"
 # Php Serve
 # alias tpserve="php artisan serve --host=trialpartners.local --port=8080 --env=.env"
 # Valet
@@ -36,12 +35,3 @@ alias dockerstop="killall Docker"
 # Takeout
 alias sqlstart="open --background -a Docker; sleep 1; takeout start --all"
 alias sqlstop="takeout stop --all; killall Docker"
-
-#TODO: Figure out how to handle overrides gracefully.
-# alias psibe-up="psibe && sqlstart && psiserve"
-# alias psiserve="php artisan serve --host=psi.local --port=8000 --env=.env"
-
-# WMS
-alias wms="cd $REPOS/wms/cannonwms"
-alias wmsup="wms && /usr/bin/php7.4 -S localhost:9000 -t public/"
-
