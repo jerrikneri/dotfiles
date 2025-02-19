@@ -29,8 +29,8 @@ alias psibe-up="psibe && sqlstart && php artisan serve --host=psi.local --port=8
 # alias sqlstart="brew services start mysql"
 # alias sqlstop="brew services stop mysql"
 
-alias dockerstart="open --background -a Docker; sleep 1"
-alias dockerstop="killall Docker"
+alias dockerstart="open --background -a orbStack; sleep 1"
+alias dockerstop="killall orbStack"
 
 # Takeout
 alias sqlstart="open --background -a Docker; sleep 1; takeout start --all"
