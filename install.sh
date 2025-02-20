@@ -3,15 +3,21 @@
 # Source base environment variables for establishing directories
 source .config/zsh/.zshenv
 
-# Clean up existing config
-cp $HOME/.zshenv $HOME/.zshenv.old
-cp $ZDOTDIR/.zshrc $ZDOTDIR/.zshrc.old
+if [ -f "$HOME/.zshenv" ]; then
+  cp "$HOME/.zshenv" "$HOME/.zshenv.old"
+else
+  echo "File $HOME/.zshenv does not exist."
+fi
+if [ -f "$HOME/.zshrc" ]; then
+  cp $ZDOTDIR/.zshrc $ZDOTDIR/.zshrc.old
+else
+  echo "File $HOME/.zshrc does not exist."
+fi
+
 rm -f $HOME/.zshenv
 rm -f $ZDOTDIR/.zshrc
 
-# Check if .env does not exist
 if [ ! -f .env ]; then
-  # Copy .env.example to .env
   cp .env.example .env
   echo ".env file created from .env.example"
 else
