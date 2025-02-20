@@ -22,7 +22,7 @@ bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 
-autoload -Uz compinit; compinit
+autoload -Uz compinit; compinit -C
 _comp_options+=(globdots) # With hidden files
 source $DOTFILES_CONFIG/zsh/external/completion.zsh
 
@@ -60,8 +60,12 @@ case "$CURRENT_OS" in
     macOS)
         echo "You are on macOS."
         if command -v brew &> /dev/null; then
-            source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-            source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+            BREW_PREFIX=$(brew --prefix)
+            source $BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+            source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+            #source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+            #source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
         fi
 
         if command -v fzf &> /dev/null; then
