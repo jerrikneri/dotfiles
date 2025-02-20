@@ -15,6 +15,8 @@ bindkey '\e[B' history-search-forward
 #bindkey -M vicmd "k" down-line-or-beginning-search
 
 zmodload zsh/complist
+zmodload zsh/zprof # time profile initiation
+
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
@@ -88,7 +90,7 @@ case "$CURRENT_OS" in
 esac
 
 if [ -f $SCRIPTS/import_aliases_functions_modules.sh ]; then
-    echo 'Sourcing from .zshrc'
+    echo 'Sourcing from aliases functions modules from .zshrc'
     source $SCRIPTS/import_aliases_functions_modules.sh
 fi
 
@@ -100,3 +102,5 @@ else
 fi
 
 export PATH=$PATH:/opt/homebrew/bin
+
+# export PROMPT_COMMAND='time_start=$(date +%s); $PROMPT_COMMAND; echo "Startup took $(($(date +%s) - $time_start)) seconds"'

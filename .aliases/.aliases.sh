@@ -1,12 +1,3 @@
-#Bash
-alias la="ls -al"
-
-# CLI Tools
-alias k="kubectl"
-alias nv="nvim"
-alias t="tmux"
-alias txt="tmuxinator"
-
 #Docker
 alias docker-format="docker ps --format $FORMAT"
 
