@@ -57,9 +57,14 @@ source $SCRIPTS/set_os.sh
 case "$CURRENT_OS" in
     macOS)
         echo "You are on macOS."
-        source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-        source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-        source <(fzf --zsh)
+        if command -v brew &> /dev/null; then
+            source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+            source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+        fi
+
+        if command -v fzf &> /dev/null; then
+            source <(fzf --zsh)
+        fi
         ;;
 
     arch)
@@ -87,7 +92,9 @@ if [ -f $SCRIPTS/import_aliases_functions_modules.sh ]; then
     source $SCRIPTS/import_aliases_functions_modules.sh
 fi
 
-talosctl config endpoint $CONTROL_PLANE_IP
-talosctl config node $CONTROL_PLANE_IP
+if command -v talosctl &> /dev/null; then
+    talosctl config endpoint $CONTROL_PLANE_IP
+    talosctl config node $CONTROL_PLANE_IP
+fi
 
 export PATH=$PATH:/opt/homebrew/bin
