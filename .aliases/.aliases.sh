@@ -4,7 +4,6 @@ alias docker-format="docker ps --format $FORMAT"
 #Sourcing
 alias refrash="cfg && srcdf && zsrc && cd -"
 alias srcdf="source $DOTFILES/.index"
-alias zsrc="source $ZDOTDIR/.zshrc"
 alias vsrc="cp ~/Config/.vimrc ~/.vimrc"
 alias zfg="vim $ZDOTDIR/.zshrc"
 

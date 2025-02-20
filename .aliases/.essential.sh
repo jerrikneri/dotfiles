@@ -1,5 +1,6 @@
 # Bash
-alias la="ls -al"
+alias la="ls -alG"
+alias ls="ls -G"
 
 # CLI Tools
 alias k="kubectl"
@@ -27,3 +28,6 @@ alias c="cd $HOME/code"
 alias cfg="cd $DOTFILES"
 alias d='dirs -v'
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
+
+# Sourcing
+alias zsrc="source $ZDOTDIR/.zshrc"

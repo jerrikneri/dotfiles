@@ -8,11 +8,8 @@ echo "Environment Setup Level is $SETUP_ENVIRONMENT_LEVEL"
 
 if [ $SETUP_ENVIRONMENT_LEVEL = "full" ]; then
   # defined in .config/zsh/.zshenv
-  for dir in $ALIASES $FUNCTIONS $MODULES; do
-    for file in "$dir"/.*.sh; do
-      [ -f "$file" ] && source $file
-    done
-  done
+  source $SCRIPTS/source_all.sh
+  source-all
 else
   source $ALIASES/.essential.sh
   source $FUNCTIONS/.essential.sh
