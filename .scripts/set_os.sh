@@ -1,8 +1,15 @@
 #!/bin/bash
 
 # Determine the OS
-os_name=$(uname -s)
-os_version=$(lsb_release -c | awk '{print $2}' 2>/dev/null) # For Ubuntu/Debian-based systems
+
+if command -v uname &> /dev/null; then
+  os_name=$(uname -s) # MacOS
+fi
+
+if command -v lsb_release &> /dev/null; then
+  os_version=$(lsb_release -c | awk '{print $2}' 2>/dev/null) # Linux
+fi
+
 
 case "$os_name" in
 Darwin)
