@@ -92,9 +92,11 @@ if [ -f $SCRIPTS/import_aliases_functions_modules.sh ]; then
     source $SCRIPTS/import_aliases_functions_modules.sh
 fi
 
-if command -v talosctl &> /dev/null; then
+if command -v talosctl &> /dev/null && [ -n "$CONTROL_PLANE_IP" ]; then
     talosctl config endpoint $CONTROL_PLANE_IP
     talosctl config node $CONTROL_PLANE_IP
+else
+    echo "Either talosctl is not installed or CONTROL_PLANE_IP is not set."
 fi
 
 export PATH=$PATH:/opt/homebrew/bin
