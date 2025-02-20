@@ -1,15 +1,6 @@
 #!/bin/bash
 
-# Determine the OS
-
-if command -v uname &> /dev/null; then
-  os_name=$(uname -s) # MacOS
-fi
-
-if command -v lsb_release &> /dev/null; then
-  os_version=$(lsb_release -c | awk '{print $2}' 2>/dev/null) # Linux
-fi
-
+source $SCRIPTS/get_os_variables.sh
 
 case "$os_name" in
 Darwin)
