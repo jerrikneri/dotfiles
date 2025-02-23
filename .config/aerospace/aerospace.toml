@@ -101,7 +101,7 @@ automatically-unhide-macos-hidden-apps = false
     alt-comma = 'layout accordion horizontal vertical'
 
     alt-f = 'fullscreen'
-    alt-enter = ['exec-and-forget open -a kitty.app', 'mode main']
+    alt-enter = ['exec-and-forget open -a Alacritty.app', 'mode main']
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#focus
     alt-h = 'focus left'
@@ -227,7 +227,7 @@ automatically-unhide-macos-hidden-apps = false
     i = ['exec-and-forget open -a Brave\ Browser.app', 'mode main']
     o = ['exec-and-forget open -a Obsidian.app', 'mode main']
     p = ['exec-and-forget open -a Phpstorm.app', 'mode main']
-    t = ['exec-and-forget open -a kitty.app', 'mode main']
+    t = ['exec-and-forget open -a Alacritty.app', 'mode main']
     s = ['exec-and-forget open -a Slack.app', 'mode main']
     v = ['exec-and-forget open -a Visual\ Studio\ Code.app', 'mode main']
     alt-enter = ['exec-and-forget open -a /System/Applications/Utilities/Terminal.app', 'mode main']
