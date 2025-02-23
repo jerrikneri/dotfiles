@@ -1,8 +1,8 @@
-# Quick Switch
-alt - b: open -a Brave\ Browser 
-alt - c: open -a Google\ Chrome 
-alt - t: open -a Alacritty 
+# # Quick Switch
+# alt - b: open -a Brave\ Browser 
+# alt - c: open -a Google\ Chrome 
+# alt - t: open -a Alacritty 
 
-alt - p: open -a PhpStorm
-alt - s: open -a Slack 
-alt - v: open -a Visual\ Studio\ Code 
+# alt - p: open -a PhpStorm
+# alt - s: open -a Slack 
+# alt - v: open -a Visual\ Studio\ Code 
