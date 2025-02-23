@@ -17,10 +17,12 @@ if [ ! -d "$XDG_CONFIG_HOME" ]; then
   mkdir -p "$XDG_CONFIG_HOME"
 fi
 
+ln -sf $DOTFILES_CONFIG/aerospace $XDG_CONFIG_HOME
 ln -sf $DOTFILES_CONFIG/alacritty $XDG_CONFIG_HOME
 ln -sf $DOTFILES_CONFIG/karabiner $XDG_CONFIG_HOME
 ln -sf $DOTFILES_CONFIG/newsboat $XDG_CONFIG_HOME
 ln -sf $DOTFILES_CONFIG/nvim $XDG_CONFIG_HOME
+ln -sf $DOTFILES_CONFIG/skhd $XDG_CONFIG_HOME
 ln -sf $DOTFILES_CONFIG/tmuxinator $XDG_CONFIG_HOME
 
 source $SCRIPTS/install_shared.sh

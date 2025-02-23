@@ -3,10 +3,16 @@ alias la="ls -alG"
 alias ls="ls -G"
 
 # CLI Tools
+alias b="brew"
+alias d="docker"
 alias k="kubectl"
-alias nv="nvim"
+#alias p="podman"
+alias n="nvim"
 alias t="tmux"
 alias txt="tmuxinator"
+
+# Docker -> Podman
+# alias docker="podman"
 
 # Git
 alias gs="git status"
