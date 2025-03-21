@@ -101,7 +101,6 @@ automatically-unhide-macos-hidden-apps = false
     alt-comma = 'layout accordion horizontal vertical'
 
     alt-f = 'fullscreen'
-    alt-enter = ['exec-and-forget open -a Alacritty.app', 'mode main']
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#focus
     alt-h = 'focus left'
