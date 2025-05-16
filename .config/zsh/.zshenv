@@ -42,9 +42,5 @@ export SCRIPTS="$DOTFILES/.scripts"
 # Docker
 export FORMAT="\nID\t{{.ID}}\nIMAGE\t{{.Image}}\nCOMMAND\t{{.Command}}\nCREATED\t{{.RunningFor}}\nSTATUS\t{{.Status}}\nPORTS\t{{.Ports}}\nNames\t{{.Names}}\n"
 
-# Keyboards
-export PREONIC=preonic/rev3_drop
-export PLANCK=planck/rev6
-
 # Kubernetes
 export KUBECONFIG=~/.kube/config

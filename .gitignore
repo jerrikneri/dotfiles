@@ -6,3 +6,4 @@
 
 ./macOS/Brewfile.lock.json
 .config/karabiner
+.config/nvim/lazy-lock.json
