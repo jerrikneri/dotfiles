@@ -107,4 +107,4 @@ fi
 
 export PATH=$PATH:/opt/homebrew/bin
 
-# export PROMPT_COMMAND='time_start=$(date +%s); $PROMPT_COMMAND; echo "Startup took $(($(date +%s) - $time_start)) seconds"'
+# export PROMPT_COMMAND='time_start=$(date +%s); $PROMPT_COMMAND; echo "Startup took $(($(date +%s) - $time_start)) seconds"'export PATH="/opt/homebrew/bin:$PATH"

@@ -22,10 +22,10 @@ style = "Bold Italic"
 
 [window]
 decorations = "none"
-opacity = 0.5
+opacity = 1
 blur = true
 
 [window.padding]
-x = 7
+x = 0
 y = 0
 
