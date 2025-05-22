@@ -6,6 +6,8 @@ echo 'Starting shared install script...'
 mkdir -p "$XDG_CONFIG_HOME/zsh"
 
 ln -sf "$DOTFILES_CONFIG/zsh/.zshrc" "$ZDOTDIR/.zshrc"
+# TODO: add nvim and nix here?
+# ln -sf "$DOTFILES_CONFIG/nvim" "$XDG_CONFIG_HOME"
 
 rm -rf "$XDG_CONFIG_HOME/zsh/external"
 ln -sf "$DOTFILES_CONFIG/zsh/external" "$ZDOTDIR"
