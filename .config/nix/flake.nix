@@ -14,8 +14,20 @@
       # $ nix-env -qaP | grep wget
       environment.systemPackages =
         [ 
+          pkgs.alacritty
+          pkgs.bat
+          pkgs.btop
+          pkgs.diff-so-fancy
+          pkgs.fzf
+          pkgs.lazydocker
+          pkgs.lazygit
+          pkgs.lazysql
           pkgs.neovim
+          pkgs.posting
+          pkgs.ripgrep
           pkgs.tmux
+          pkgs.zsh-syntax-highlighting
+          pkgs.zsh-vi-mode
         ];
 
       # Necessary for using flakes on this system.
