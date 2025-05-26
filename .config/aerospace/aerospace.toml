@@ -196,6 +196,45 @@ automatically-unhide-macos-hidden-apps = false
     alt-shift-semicolon = 'mode service'
     alt-shift-comma= 'mode navigation'
 
+[workspace-to-monitor-force-assignment]
+
+1 = ['^built-in retina display$', 'built-in', 1, 2, 'main', 'secondary']
+2 = ['^built-in retina display$', 'built-in', 1, 2, 'main', 'secondary']
+3 = ['^built-in retina display$', 'built-in', 1, 2, 'main', 'secondary']
+4 = ['^built-in retina display$', 'built-in', 1, 2, 'main', 'secondary']
+5 = ['^built-in retina display$', 'built-in', 1, 2, 'main', 'secondary']
+6 = ['^built-in retina display$', 'built-in', 1, 2, 'main', 'secondary']
+7 = ['^built-in retina display$', 'built-in', 1, 2, 'main', 'secondary']
+8 = ['^built-in retina display$', 'built-in', 1, 2, 'main', 'secondary']
+9 = ['^built-in retina display$', 'built-in', 1, 2, 'main', 'secondary']
+0 = ['^built-in retina display$', 'built-in', 1, 2, 'main', 'secondary']
+
+A = ['lg*', 1, 2, 3, 'secondary', 'main']
+B = ['lg*', 1, 2, 3, 'secondary', 'main']
+C = ['lg*', 1, 2, 3, 'secondary', 'main']
+D = ['lg*', 1, 2, 3, 'secondary', 'main']
+E = ['lg*', 1, 2, 3, 'secondary', 'main']
+# F = ['lg*', 1, 2, 3, 'secondary', 'main']
+G = ['lg*', 1, 2, 3, 'secondary', 'main']
+# H = ['lg*', 1, 2, 3, 'secondary', 'main']
+I = ['lg*', 1, 2, 3, 'secondary', 'main']
+# J = ['lg*', 1, 2, 3, 'secondary', 'main']
+# K = ['lg*', 1, 2, 3, 'secondary', 'main']
+# L = ['lg*', 1, 2, 3, 'secondary', 'main']
+M = ['lg*', 1, 2, 3, 'secondary', 'main']
+N = ['lg*', 1, 2, 3, 'secondary', 'main']
+O = ['lg*', 1, 2, 3, 'secondary', 'main']
+P = ['lg*', 1, 2, 3, 'secondary', 'main']
+Q = ['lg*', 1, 2, 3, 'secondary', 'main']
+S = ['lg*', 1, 2, 3, 'secondary', 'main']
+T = ['lg*', 1, 2, 3, 'secondary', 'main']
+U = ['lg*', 1, 2, 3, 'secondary', 'main']
+V = ['lg*', 1, 2, 3, 'secondary', 'main']
+W = ['lg*', 1, 2, 3, 'secondary', 'main']
+X = ['lg*', 1, 2, 3, 'secondary', 'main']
+Y = ['lg*', 1, 2, 3, 'secondary', 'main']
+Z = ['lg*', 1, 2, 3, 'secondary', 'main']
+
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
