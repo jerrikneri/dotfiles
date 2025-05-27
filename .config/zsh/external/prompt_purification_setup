@@ -105,6 +105,14 @@ prompt_purity_precmd() {
     print -P ''
 }
 
+last_folder() {
+  if [[ "$1" == "$HOME" ]]; then
+    echo "~"
+  else
+    basename "$1"
+  fi
+}
+
 prompt_purification_setup() {
     # Display git branch
 
@@ -127,7 +135,8 @@ prompt_purification_setup() {
 
     prompt_git_branch
     RPROMPT='$(prompt_git_info) $(git_prompt_status)'
-    PROMPT=$'%B%F{red}%n@%m %F{white}%~ %B%F{blue}>%f%b '
+    # PROMPT=$'%B%F{red}%n@%m %F{white}%~ %B%F{blue}>%f%b '
+    PROMPT=$'%B%F{red}%n@%m %F{white}$(last_folder $PWD) %B%F{blue}>%f%b '
 }
 
 prompt_purification_setup
