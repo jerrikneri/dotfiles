@@ -1,66 +1,64 @@
 {
-  description = "Example nix-darwin system flake";
+  description = "Cross-platform Nix flake for macOS (nix-darwin) and Linux (NixOS)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nix-darwin.url = "github:nix-darwin/nix-darwin/master";
+    nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
+  outputs = inputs @ { self, nixpkgs, nix-darwin, home-manager, ... }:
   let
-    configuration = { pkgs, ... }: {
-      # List packages installed in system profile. To search by name, run:
-      # $ nix-env -qaP | grep wget
-      environment.systemPackages =
-        [ 
-          pkgs.alacritty
-          pkgs.bat
-          pkgs.btop
-          pkgs.diff-so-fancy
-          pkgs.fzf
-          pkgs.lazydocker
-          pkgs.lazygit
-          pkgs.lazysql
-          pkgs.neovim
-          pkgs.posting
-          pkgs.ripgrep
-          pkgs.tmux
-          pkgs.zsh-syntax-highlighting
-          pkgs.zsh-vi-mode
-        ];
+    system = builtins.currentSystem or "x86_64-linux";
 
-      # Necessary for using flakes on this system.
-      nix.settings.experimental-features = "nix-command flakes";
+    commonConfiguration = { pkgs, ... }: {
+      environment.systemPackages = with pkgs; [
+        alacritty bat btop diff-so-fancy fzf lazydocker lazygit
+        lazysql neovim ripgrep tmux zsh-syntax-highlighting zsh-vi-mode
+      ];
 
-      # system.defaults = {
-      #     dock.autohide = true;
-      # };
-      # Enable alternative shell support in nix-darwin.
-      # programs.fish.enable = true;
+      nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-      # Set Git commit hash for darwin-version.
+      # Common to both mac and linux
       system.configurationRevision = self.rev or self.dirtyRev or null;
+    };
 
-      # Used for backwards compatibility, please read the changelog before changing.
-      # $ darwin-rebuild changelog
+    darwinConfig = { pkgs, ... }: {
+      imports = [ commonConfiguration ];
+
+      nixpkgs.hostPlatform = "aarch64-darwin"; # Change as needed
+
       system.stateVersion = 6;
 
-      # The platform the configuration will be used on.
-      nixpkgs.hostPlatform = "aarch64-darwin";
+      # Optional macOS-specific settings
+      # system.defaults.dock.autohide = true;
     };
-  in
-  {
-    # Build darwin flake using:
-    # $ darwin-rebuild build --flake .#simple
+
+    linuxConfig = { pkgs, ... }: {
+      imports = [ commonConfiguration ];
+
+      nixpkgs.hostPlatform = "x86_64-linux"; # Or "aarch64-linux" for ARM
+
+      system.stateVersion = "23.11"; # Or whatever version you're targeting
+    };
+  in {
     darwinConfigurations."mac" = nix-darwin.lib.darwinSystem {
+      system = "aarch64-darwin"; # Or "x86_64-darwin"
       modules = [
-        configuration
+        darwinConfig
         home-manager.darwinModules.home-manager
       ];
     };
 
-
+    nixosConfigurations."linux" = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux"; # Or "aarch64-linux"
+      modules = [
+        linuxConfig
+        home-manager.nixosModules.home-manager
+      ];
+    };
   };
 }
+
