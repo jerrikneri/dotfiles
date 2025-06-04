@@ -1,0 +1,64 @@
+{
+  description = "Cross-platform Nix flake for macOS (nix-darwin) and Linux (NixOS)";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nix-darwin.url = "github:LnL7/nix-darwin";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  outputs = inputs @ { self, nixpkgs, nix-darwin, home-manager, ... }:
+  let
+    system = builtins.currentSystem or "x86_64-linux";
+
+    commonConfiguration = { pkgs, ... }: {
+      environment.systemPackages = with pkgs; [
+        alacritty bat btop diff-so-fancy fzf lazydocker lazygit
+        lazysql neovim phpactor ripgrep tmux zsh-syntax-highlighting zsh-vi-mode
+      ];
+
+      nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+      # Common to both mac and linux
+      system.configurationRevision = self.rev or self.dirtyRev or null;
+    };
+
+    darwinConfig = { pkgs, ... }: {
+      imports = [ commonConfiguration ];
+
+      nixpkgs.hostPlatform = "aarch64-darwin"; # Change as needed
+
+      system.stateVersion = 6;
+
+      # Optional macOS-specific settings
+      # system.defaults.dock.autohide = true;
+    };
+
+    linuxConfig = { pkgs, ... }: {
+      imports = [ commonConfiguration ];
+
+      nixpkgs.hostPlatform = "x86_64-linux"; # Or "aarch64-linux" for ARM
+
+      system.stateVersion = "23.11"; # Or whatever version you're targeting
+    };
+  in {
+    darwinConfigurations."mac" = nix-darwin.lib.darwinSystem {
+      system = "aarch64-darwin"; # Or "x86_64-darwin"
+      modules = [
+        darwinConfig
+        home-manager.darwinModules.home-manager
+      ];
+    };
+
+    nixosConfigurations."linux" = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux"; # Or "aarch64-linux"
+      modules = [
+        linuxConfig
+        home-manager.nixosModules.home-manager
+      ];
+    };
+  };
+}
+
