@@ -16,7 +16,7 @@
     commonConfiguration = { pkgs, ... }: {
       environment.systemPackages = with pkgs; [
         alacritty bat btop diff-so-fancy fzf lazydocker lazygit
-        lazysql neovim ripgrep tmux zsh-syntax-highlighting zsh-vi-mode
+        lazysql neovim phpactor ripgrep tmux zsh-syntax-highlighting zsh-vi-mode
       ];
 
       nix.settings.experimental-features = [ "nix-command" "flakes" ];
