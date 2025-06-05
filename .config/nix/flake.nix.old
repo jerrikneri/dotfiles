@@ -11,6 +11,12 @@
 
   outputs = inputs @ { self, nixpkgs, nix-darwin, home-manager, ... }:
   let
+    imports = [
+      ./modules/commonPackages.nix 
+    ];
+
+    commonPackages.enable = true;
+
     system = builtins.currentSystem or "x86_64-linux";
 
     commonConfiguration = { pkgs, ... }: {
@@ -26,7 +32,10 @@
     };
 
     darwinConfig = { pkgs, ... }: {
-      imports = [ commonConfiguration ];
+      macSpecificConfiguration = { pkgs, ... }: {
+        environment.systemPackages = [ ]
+      }
+      imports = [ commonConfiguration macSpecificConfiguration ];
 
       nixpkgs.hostPlatform = "aarch64-darwin"; # Change as needed
 
@@ -37,7 +46,11 @@
     };
 
     linuxConfig = { pkgs, ... }: {
-      imports = [ commonConfiguration ];
+      linuxSpecificConfiguration = { pkgs, ... }: {
+        environment.systemPackages = [ ]
+      }
+
+      imports = [ commonConfiguration linuxSpecificConfiguration ];
 
       nixpkgs.hostPlatform = "x86_64-linux"; # Or "aarch64-linux" for ARM
 
@@ -54,6 +67,8 @@
 
     nixosConfigurations."linux" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux"; # Or "aarch64-linux"
+
+      specialArgs = { inherit inputs; }; # shorthand for inputs = inputs
       modules = [
         linuxConfig
         home-manager.nixosModules.home-manager
