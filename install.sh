@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/run/current-system/sw/bin/bash
+
 
 # Source base environment variables for establishing directories
 source .config/zsh/.zshenv

@@ -17,6 +17,11 @@ Linux)
       export CURRENT_OS=arch
       ;;
 
+    nixos)
+      echo "Current OS is NixOS"
+      export CURRENT_OS=nixos
+      ;;
+
     ubuntu | debian)
       echo "Current OS is Ubuntu/Debian"
       export CURRENT_OS=debian

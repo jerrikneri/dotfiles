@@ -1,4 +1,6 @@
-#!/bin/bash
+### #!/bin/bash
+#!/run/current-system/sw/bin/bash
+
 
 source $SCRIPTS/get_os_variables.sh
 
@@ -18,13 +20,18 @@ case "$os_name" in
                     # Call Arch Linux install script
                     $SCRIPTS/install_arch.sh
                     ;;
-                
+
+		nixos)
+		    echo "Detected NixOS"
+    		    $SCRIPTS/install_nixos.sh		    
+       	  	    ;; 
+
                 ubuntu|debian)
                     echo "Detected Ubuntu/Debian"
                     # Call Ubuntu install script
                     $SCRIPTS/install_ubuntu.sh
                     ;;
-                
+
                 *)
                     echo "Unsupported Linux distribution: $ID"
                     ;;
