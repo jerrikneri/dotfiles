@@ -32,6 +32,7 @@ alias gf="git fetch"
 alias c="cd $HOME/code"
 alias cfg="cd $DOTFILES"
 alias ncfg="cd ~/code/nix-config"
+alias nix-config="cd $DOTFILES/nix"
 alias d='dirs -v'
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
