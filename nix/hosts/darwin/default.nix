@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 
 {
+  # May be only for a specific error to the host I tested this on.
+  ids.gids.nixbld = 350;
+
   users.users.kgh = {
     name = "kgh";
     home = "/Users/kgh";
