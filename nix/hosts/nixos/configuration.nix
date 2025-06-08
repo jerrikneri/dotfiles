@@ -8,12 +8,13 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ../../modules/common/font.nix
     ];
 
   home-manager.users.kgh = {
     imports = [
       ../../modules/common/home.nix
-      ../../modules/font.nix
+      # ../../modules/common/font.nix
     ];
     home.stateVersion = "25.11";
   };
