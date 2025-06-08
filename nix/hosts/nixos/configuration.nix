@@ -13,6 +13,7 @@
   home-manager.users.kgh = {
     imports = [
       ../../modules/common/home.nix
+      ../../modules/font.nix
     ];
     home.stateVersion = "25.11";
   };
