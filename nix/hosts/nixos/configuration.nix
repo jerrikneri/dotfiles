@@ -88,7 +88,7 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-  programs.alacritty.enabled = true;
+  # programs.alacritty.enabled = true; -- Not supported here
   programs.neovim.enable = true;
   programs.zsh.enable = true;
 
