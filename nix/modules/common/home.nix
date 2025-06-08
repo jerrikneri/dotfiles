@@ -12,6 +12,7 @@
         source = "${dotfilesDir}/.config";
         recursive = true;
       };
+      ".zshenv".source = "${dotfilesDir}/.config/zsh/.zshenv";
     };
   }
 

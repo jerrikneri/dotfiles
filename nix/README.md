@@ -1,3 +1,7 @@
+### Fresh NixOS ----------
+`nix-shell -p git`
+
+`git clone https://github.com/jerrikneri/dotfiles.git`
 
 ## Clear old builds
 sudo nix-collect-garbage -D
