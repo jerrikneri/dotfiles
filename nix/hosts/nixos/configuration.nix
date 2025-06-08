@@ -10,6 +10,13 @@
       ./hardware-configuration.nix
     ];
 
+  home-manager.users.kgh = {
+    imports = [
+      ../../modules/common/home.nix
+    ];
+    home.stateVersion = "25.11";
+  };
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
