@@ -20,7 +20,7 @@
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
     in {
-      nixosConfigurations.nixos= nixpkgs.lib.nixosSystem {
+      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./hosts/nixos/configuration.nix
@@ -50,6 +50,23 @@
           ./modules/common/shell.nix
         ];
       };
+
+      devShells = forAllSystems (system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+          languages = [ "go" "node" "php" "python" "rust" ];
+        in {
+
+          langShells = nixpkgs.lib.genAttrs languages (lang:
+            import (./modules/common/dev + "/${lang}.nix") { inherit pkgs; }
+          );
+          # go = import ./modules/common/dev/go.nix { inherit pkgs; };
+          # node = import ./modules/common/dev/node.nix { inherit pkgs; };
+          # php = import ./modules/common/dev/php.nix { inherit pkgs; };
+          # python = import ./modules/common/dev/python.nix { inherit pkgs; };
+          # rust = import ./modules/common/dev/rust.nix { inherit pkgs; };
+          default = import ./modules/common/dev/shell.nix { inherit pkgs; };
+        });
     };
 }
 
