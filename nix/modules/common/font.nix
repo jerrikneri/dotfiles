@@ -2,7 +2,8 @@
 
 {
   fonts = {
-    enableDefaultFonts = true;
+    # enableDefaultFonts = true;
+    enableDefaultPackages = true;
 
     packages = with pkgs; [
       nerd-fonts.jetbrains-mono

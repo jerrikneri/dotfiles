@@ -55,9 +55,12 @@
         let
           pkgs = import nixpkgs { inherit system; };
           languages = [ "go" "node" "php" "python" "rust" ];
+          projects = [ "tp" ];
         in 
           nixpkgs.lib.genAttrs languages (lang:
             import ./modules/dev/${lang}.nix { inherit pkgs; }
+          ) // nixpkgs.lib.genAttrs projects (project:
+            import ./modules/dev/projects/${project}.nix { inherit pkgs; }
           )
       );
     };
