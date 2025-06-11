@@ -7,4 +7,3 @@
 ./macOS/Brewfile.lock.json
 .config/karabiner
 
-nix/hosts/nixos/hardware-configuration.nix

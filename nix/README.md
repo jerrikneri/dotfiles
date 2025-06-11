@@ -3,10 +3,10 @@
 
 `git clone https://github.com/jerrikneri/dotfiles.git`
 
-`cp /etc/nixos/hardware-configuration.nix ~/code/dotfiles/nis/hosts/nixos`
+`cp /etc/nixos/hardware-configuration.nix ~/code/dotfiles/nix/hosts/nixos`
 
 ## Clear old builds
-`sudo nix-collect-garbage -D`
+`sudo nix-collect-garbage --delete-older-than 3d`
 
 ## Darwin
 ### Rebuild nix config
