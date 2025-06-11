@@ -11,6 +11,7 @@ import ../php.nix {
 
   extraShellHook = ''
     echo "TP Project";
+    zsh
     tpp
     gpl
     sail up -d
