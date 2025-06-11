@@ -54,18 +54,11 @@
       devShells = forAllSystems (system:
         let
           pkgs = import nixpkgs { inherit system; };
-          languages = [ "default" "go" "node" "php" "python" "rust" ];
-        in {
-          devShells = nixpkgs.lib.genAttrs languages (lang:
-            import (./modules/common/dev + "/${lang}.nix") { inherit pkgs; }
-          );
-          # go = import ./modules/common/dev/go.nix { inherit pkgs; };
-          # node = import ./modules/common/dev/node.nix { inherit pkgs; };
-          # php = import ./modules/common/dev/php.nix { inherit pkgs; };
-          # python = import ./modules/common/dev/python.nix { inherit pkgs; };
-          # rust = import ./modules/common/dev/rust.nix { inherit pkgs; };
-          # default = import ./modules/common/dev/shell.nix { inherit pkgs; };
-        }
+          languages = [ "go" "node" "php" "python" "rust" ];
+        in 
+          nixpkgs.lib.genAttrs languages (lang:
+            import ./modules/dev/${lang}.nix { inherit pkgs; }
+          )
       );
     };
 }
