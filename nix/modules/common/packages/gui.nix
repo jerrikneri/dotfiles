@@ -5,10 +5,10 @@
     alacritty # Terminal
     anki
     bruno
-    # discord # allow unsupported 
+    discord # allow unsupported
     firefox
     moonlight-qt
-    obsidian
+    obsidian # allow unfree
     # steam // x86 only?
     # tableplus // allow unsupported ?
     vscode
