@@ -31,3 +31,8 @@ nixb() {
     ;;
   esac
 }
+
+nixd() {
+  nix-config
+  nix develop .\#$1
+}

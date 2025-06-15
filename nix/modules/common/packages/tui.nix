@@ -8,6 +8,7 @@
     lazysql
     newsboat # RSS TUI
     posting # Postman TUI
+    spotify-player
     yazi # File TUI
   ];
 }

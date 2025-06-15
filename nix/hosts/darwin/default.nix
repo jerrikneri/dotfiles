@@ -1,8 +1,19 @@
+# Should this be named configuration.nix ?
 { config, pkgs, ... }:
 
 {
+  homebrewPkgs = import ../../modules/common/packages/brew.nix
+
   # May be only for a specific error to the host I tested this on.
   ids.gids.nixbld = 350;
+
+  homebrew = {
+    enable = true;
+     
+    brews = homebrewPkgs.brews;
+    casks = homebrewPkgs.casks;
+    taps = homebrewPkgs.taps;
+  };
 
   users.users.kgh = {
     name = "kgh";
