@@ -5,7 +5,7 @@
     alacritty # Terminal
     anki
     bruno
-    discord # allow unsupported
+    # discord # allow unsupported
     firefox
     moonlight-qt
     obsidian # allow unfree
