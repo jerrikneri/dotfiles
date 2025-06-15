@@ -1,0 +1,16 @@
+[application]
+DefaultPageSize = 300
+DisableSidebar = false
+SidebarOverlay = false
+
+[[database]]
+Name = 'TrialPartners'
+URL = 'mysql://sail:password@localhost/trialpartners'
+Provider = 'mysql'
+Username = ''
+Password = ''
+Hostname = ''
+Port = ''
+DBName = 'trialpartners'
+URLParams = ''
+Commands = []
