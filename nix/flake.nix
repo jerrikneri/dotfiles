@@ -36,7 +36,6 @@
         modules = [
           ./hosts/darwin/default.nix
           ./modules/common/packages/index.nix
-          ./modules/darwin/shell.nix
           ./modules/darwin/system.nix
           home-manager.darwinModules.default
         ];

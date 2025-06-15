@@ -1,19 +1,19 @@
 # Should this be named configuration.nix ?
 { config, pkgs, ... }:
 
-{
-  homebrewPkgs = import ../../modules/common/packages/brew.nix
-
-  # May be only for a specific error to the host I tested this on.
-  ids.gids.nixbld = 350;
-
+let
+  homebrewPkgs = import ../../modules/common/packages/brew.nix;
+in {
   homebrew = {
     enable = true;
-     
+
     brews = homebrewPkgs.brews;
     casks = homebrewPkgs.casks;
     taps = homebrewPkgs.taps;
   };
+
+  # May be only for a specific error to the host I tested this on.
+  ids.gids.nixbld = 350;
 
   users.users.kgh = {
     name = "kgh";
@@ -22,6 +22,9 @@
 
   environment.shells = [ pkgs.zsh ];
   programs.zsh.enable = true;
+
+  # TODO duplicated here and in configuration.nix, extract?
+  nixpkgs.config.allowUnfree = true;
 
   system.stateVersion = 4;
 
@@ -52,4 +55,3 @@
     };
   };
 }
-

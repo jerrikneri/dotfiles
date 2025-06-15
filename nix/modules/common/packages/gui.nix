@@ -3,7 +3,7 @@
 {
   environment.systemPackages = with pkgs; [
     alacritty # Terminal
-    anki
+    # anki # broken on darwin?
     bruno
     # discord # allow unsupported
     firefox
@@ -15,7 +15,7 @@
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     aerospace
     karabiner-elements
-    lulu
+    # lulu
     stats
     utm
   ];
