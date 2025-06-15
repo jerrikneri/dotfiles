@@ -3,15 +3,15 @@
 {
   environment.systemPackages = with pkgs; [
     alacritty # Terminal
-    # anki
-    # bruno
-    # discord
-    # firefox
-    # moonlight-qt
-    # obsidian
-    # steam
-    # tableplus
-    # vscode
+    anki
+    bruno
+    # discord # allow unsupported 
+    firefox
+    moonlight-qt
+    obsidian
+    # steam // x86 only?
+    # tableplus // allow unsupported ?
+    vscode
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     aerospace
     karabiner-elements
