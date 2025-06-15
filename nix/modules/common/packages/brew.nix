@@ -9,6 +9,7 @@
     "homerow"
     "karabiner-elements"
     "knockknock"
+    "lulu"
     "netiquette"
     "orbstack"
     "orcaslicer"
