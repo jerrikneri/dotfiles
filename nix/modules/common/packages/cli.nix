@@ -9,6 +9,7 @@ in {
     diff-so-fancy
     fzf # Fuzzy Finder
     neovim
+    gcc
     git
     nil # Nix Language Server
     ripgrep # Grep alternative

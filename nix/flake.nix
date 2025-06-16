@@ -35,7 +35,7 @@
       darwinConfigurations.darwin = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
-          ./hosts/darwin/default.nix
+          ./hosts/darwin/configuration.nix
           ./modules/common/packages/index.nix
           ./modules/common/programs.nix
           ./modules/darwin/system.nix
@@ -46,7 +46,7 @@
       homeConfigurations.arch = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs { system = "x86_64-linux"; };
         modules = [
-          ./hosts/arch/default.nix
+          ./hosts/arch/configuration.nix
           ./modules/common/packages/index.nix
           ./modules/common/programs.nix
           ./modules/common/shell.nix
