@@ -94,21 +94,8 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+  # /modules/common/programs.nix
   # programs.alacritty.enabled = true; -- Not supported here
-
-  programs = {
-    neovim = {
-      enable = true;
-    };
-
-    steam = {
-      # enable = true; # x86 only?
-    };
-
-    zsh = {
-        enable = true;
-    };
-  };
 
   # List services that you want to enable:
 

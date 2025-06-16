@@ -25,6 +25,7 @@
         modules = [
           ./hosts/nixos/configuration.nix
           ./modules/common/packages/index.nix
+          ./modules/common/programs.nix
           ./modules/common/shell.nix
           ./modules/linux/system.nix
           home-manager.nixosModules.default
@@ -36,6 +37,7 @@
         modules = [
           ./hosts/darwin/default.nix
           ./modules/common/packages/index.nix
+          ./modules/common/programs.nix
           ./modules/darwin/system.nix
           home-manager.darwinModules.default
         ];
@@ -46,6 +48,7 @@
         modules = [
           ./hosts/arch/default.nix
           ./modules/common/packages/index.nix
+          ./modules/common/programs.nix
           ./modules/common/shell.nix
         ];
       };
