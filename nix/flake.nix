@@ -19,6 +19,7 @@
       forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems f;
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
+      username = builtins.getEnv "USER";
     in {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -37,9 +38,17 @@
         modules = [
           ./hosts/darwin/configuration.nix
           ./modules/common/packages/index.nix
-          ./modules/common/programs.nix
+          # ./modules/common/programs.nix
           ./modules/darwin/system.nix
           home-manager.darwinModules.default
+          # {
+          #   home-manager.useUserPackages = true;
+          #   home-manager.users.${username} = {
+          #     imports = [
+          #       ./modules/common/programs.nix
+          #     ];
+          #   };
+          # }
         ];
       };
 
