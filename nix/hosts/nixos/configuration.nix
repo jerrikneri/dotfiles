@@ -83,9 +83,7 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-   gcc
-  ];
+  # /modules/common/packages/index.nix
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -94,9 +92,8 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+  # /modules/common/programs.nix
   # programs.alacritty.enabled = true; -- Not supported here
-  programs.neovim.enable = true;
-  programs.zsh.enable = true;
 
   # List services that you want to enable:
 

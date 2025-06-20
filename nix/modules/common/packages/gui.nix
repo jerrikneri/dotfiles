@@ -9,15 +9,15 @@
     firefox
     moonlight-qt
     obsidian # allow unfree
-    # steam // x86 only?
-    # tableplus // allow unsupported ?
+    # tableplus # allow unsupported ?
     vscode
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     aerospace
     karabiner-elements
-    # lulu
     stats
     utm
+  ] ++ lib.optionals (!pkgs.stdenv.isAarch64) [
+    steam # x86 only?
   ];
 }
 

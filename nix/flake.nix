@@ -19,12 +19,14 @@
       forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems f;
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
+      username = builtins.getEnv "USER";
     in {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./hosts/nixos/configuration.nix
           ./modules/common/packages/index.nix
+          ./modules/common/programs.nix
           ./modules/common/shell.nix
           ./modules/linux/system.nix
           home-manager.nixosModules.default
@@ -45,18 +47,28 @@
       darwinConfigurations.darwin = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
-          ./hosts/darwin/default.nix
+          ./hosts/darwin/configuration.nix
           ./modules/common/packages/index.nix
+          # ./modules/common/programs.nix
           ./modules/darwin/system.nix
           home-manager.darwinModules.default
+          # {
+          #   home-manager.useUserPackages = true;
+          #   home-manager.users.${username} = {
+          #     imports = [
+          #       ./modules/common/programs.nix
+          #     ];
+          #   };
+          # }
         ];
       };
 
       homeConfigurations.arch = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs { system = "x86_64-linux"; };
         modules = [
-          ./hosts/arch/default.nix
+          ./hosts/arch/configuration.nix
           ./modules/common/packages/index.nix
+          ./modules/common/programs.nix
           ./modules/common/shell.nix
         ];
       };
