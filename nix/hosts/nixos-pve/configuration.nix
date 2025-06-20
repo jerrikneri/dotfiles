@@ -32,7 +32,7 @@
   boot.loader.grub = {
     enable = true;
     version = 2;
-    device = "dev/sda";
+    device = "/dev/sda";
   };
 
   networking.hostName = "nixos"; # Define your hostname.
