@@ -40,3 +40,8 @@ nixd() {
   nix-config
   nix develop .\#$1
 }
+
+nixu() {
+  nix-config
+  sudo nix flake update
+}
