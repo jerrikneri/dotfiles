@@ -14,7 +14,11 @@ nixb() {
       case "$ID" in
       nixos)
         echo "Detected NixOS"
-        sudo nixos-rebuild switch --flake .\#nixos
+        if [ $1 ]; then
+          sudo nixos-rebuild switch --flake .\#nixos-$1
+        else
+          sudo nixos-rebuild switch --flake .\#nixos
+        fi
         ;;
       *)
         echo "Linux distribution: $ID"
