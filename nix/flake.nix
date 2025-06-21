@@ -44,6 +44,18 @@
         ];
       };
 
+      nixosConfigurations.nixos-utm = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./hosts/nixos-utm/configuration.nix
+          ./modules/common/packages/index.nix
+          ./modules/common/shell.nix
+          ./modules/linux/system.nix
+          home-manager.nixosModules.default
+        ];
+      };
+
+
       darwinConfigurations.darwin = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
