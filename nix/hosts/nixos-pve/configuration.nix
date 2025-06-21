@@ -11,6 +11,8 @@
       ../../modules/common/font.nix
     ];
 
+  virtualisation.docker.enable = true;
+
   home-manager.users.kgh = {
     imports = [
       ../../modules/common/home.nix
@@ -83,7 +85,7 @@
   users.users.kgh = {
     isNormalUser = true;
     description = "kgh";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker"];
     packages = with pkgs; [];
     shell = pkgs.zsh;
   };

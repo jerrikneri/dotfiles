@@ -1,14 +1,44 @@
 { pkgs, extraBuildInputs ? [ ], extraShellHook ? "" }:
 
+# pkgs.mkShell {
+#   buildInputs = with pkgs; [
+#     php84Packages.composer
+#     php84Extensions.imagick
+#     php84Extensions.redis
+#     php
+#     phpactor
+#     redis
+#   ] ++ extraBuildInputs;
+#
+# shellHook = ''
+#   echo "Php dev shell"
+#   export PATH=${phpWithExtensions}/bin:$PATH
+# '' + extraShellHook;
+# }
+
+let
+  phpWithExtensions = pkgs.php.withExtensions (
+    { enabled, all }:
+    with all;
+    enabled ++
+    [
+      imagick
+      redis
+    ]
+  );
+in
 pkgs.mkShell {
-  buildInputs = with pkgs; [
-    php84Packages.composer
-    php
-    phpactor
+  buildInputs = [
+    phpWithExtensions
+    pkgs.phpactor
+    pkgs.php84Packages.composer
   ] ++ extraBuildInputs;
 
 shellHook = ''
   echo "Php dev shell"
+  echo "Using PHP from: $(which php)"
+  php -m | grep -E 'redis|imagick|mbstring'
+
+  # export PATH=${phpWithExtensions}/bin:$PATH
 '' + extraShellHook;
 }
-
