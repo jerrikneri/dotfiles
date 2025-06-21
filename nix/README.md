@@ -21,6 +21,12 @@
 ### Rebuild nixos config
 `sudo nixos-rebuild switch --flake .\#nixos`
 
+### List Build Generations
+`sudo nix-env --list-generations --profile /nix/var/nix/profiles/system`
+
+### Revert to Previous Build Generation
+`sudo nixos-rebuild switch --rollback --flake .\#nixos`
+
 ## Tmux
 `git clone https://github.com/tmux-plugins/tpm $DOTFILES_CONFIG/.config/tmux/plugins/tpm`
 ### Might install at ~/.tmux 
