@@ -11,6 +11,41 @@
       ../../modules/common/font.nix
     ];
 
+  # 🧩 GPU passthrough-specific additions begin here -------------------------
+
+  # Enable IOMMU (important for Intel passthrough hosts)
+  boot.kernelParams = [ "intel_iommu=on" "iommu=pt" ];
+
+  # Enable necessary kernel modules
+  boot.initrd.kernelModules = [
+    "vfio"
+    "vfio_pci"
+    "vfio_virqfd"
+    "vfio_iommu_type1"
+  ];
+
+  # Optional: Prevent amdgpu from loading if you don't want drivers bound at boot
+  boot.blacklistedKernelModules = [
+    "amdgpu"
+    "radeon"
+    "drm_kms_helper"
+    "drm"
+  ];
+
+  # Tell the system to bind the GPU to vfio-pci (RX 480 and HDMI audio)
+  # You can confirm these IDs with `lspci -nn` on the Proxmox host
+  boot.extraModprobeConfig = ''
+    options vfio-pci ids=1002:67df,1002:aaf0
+  '';
+
+  # Optional: if you'll use the GPU in the VM for graphics
+  hardware.opengl.enable = true;
+  hardware.opengl.driSupport = true;
+  hardware.opengl.driSupport32Bit = true;
+  services.xserver.videoDrivers = [ "amdgpu" ];
+
+  # 🧩 End of passthrough additions -----------------------------------------
+
   virtualisation.docker.enable = true;
 
   home-manager.users.kgh = {
