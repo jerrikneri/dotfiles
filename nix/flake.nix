@@ -1,5 +1,5 @@
 {
-  description = "Cross-platform flake config (NixOS + macOS + Arch)";
+  description = "Cross-platform flake config (Darwin + Linux + NixOS)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -75,10 +75,10 @@
         ];
       };
 
-      homeConfigurations.arch = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations.linux = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs { system = "x86_64-linux"; };
         modules = [
-          ./hosts/arch/configuration.nix
+          ./hosts/linux/configuration.nix
           ./modules/common/packages/index.nix
           ./modules/common/programs.nix
           ./modules/common/shell.nix
