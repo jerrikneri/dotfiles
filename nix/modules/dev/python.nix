@@ -2,11 +2,12 @@
 
 pkgs.mkShell {
   buildInputs = with pkgs; [
-    python
+    python3Full
   ];
 
 shellHook = ''
   echo "Python dev shell"
+  zsh
 '';
 }
 
