@@ -2,11 +2,12 @@
 
 pkgs.mkShell {
   buildInputs = with pkgs; [
-    rust
+    rustup
   ];
 
 shellHook = ''
   echo "Rust dev shell"
+  zsh
 '';
 }
 

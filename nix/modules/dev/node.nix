@@ -8,6 +8,7 @@ pkgs.mkShell {
 
 shellHook = ''
   echo "Node dev shell"
+  zsh
 '';
 }
 

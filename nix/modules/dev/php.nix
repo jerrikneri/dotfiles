@@ -36,9 +36,6 @@ pkgs.mkShell {
 
 shellHook = ''
   echo "Php dev shell"
-  echo "Using PHP from: $(which php)"
-  php -m | grep -E 'redis|imagick|mbstring'
-
-  # export PATH=${phpWithExtensions}/bin:$PATH
+  zsh
 '' + extraShellHook;
 }
