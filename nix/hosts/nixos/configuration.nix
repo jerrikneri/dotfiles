@@ -5,11 +5,36 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../../modules/common/font.nix
-    ];
+  # Bootloader.
+  boot = {
+    loader = {
+      efi.canTouchEfiVariables = true;
+      # grub = {
+      #   enable = true;
+      #   device = "/dev/sda";
+      # };
+      systemd-boot.enable = true;
+    };
+  };
+
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  # Common packages - /modules/common/packages/index.nix
+  # NixOS only packages here
+  environment.systemPackages = with pkgs; [
+    gcc
+    rocmPackages.rocm-smi # System Management Interface for AMD GPU
+    sunshine # NixOs Desktop Only
+    vulkan-tools
+  ];
+
+  hardware = {
+    enableAllFirmware = true;
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+  };
 
   home-manager.users.kgh = {
     imports = [
@@ -19,117 +44,61 @@
     home.stateVersion = "25.11";
   };
 
-  nixpkgs.config.allowUnfree = true;
-  # nixpkgs.config.allowUnsupportedSystem = true;
+  # Select internationalisation properties.
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = {
+        LC_ADDRESS = "en_US.UTF-8";
+        LC_IDENTIFICATION = "en_US.UTF-8";
+        LC_MEASUREMENT = "en_US.UTF-8";
+        LC_MONETARY = "en_US.UTF-8";
+        LC_NAME = "en_US.UTF-8";
+        LC_NUMERIC = "en_US.UTF-8";
+        LC_PAPER = "en_US.UTF-8";
+        LC_TELEPHONE = "en_US.UTF-8";
+        LC_TIME = "en_US.UTF-8";
+      };
+  };
 
-  # Experimental flags
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  imports =
+    [
+      # Include the results of the hardware scan.
+      #
+      ./hardware-configuration.nix
+      ../../modules/common/font.nix
+    ];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
+  # networking.firewall.enable = false;
+  networking = {
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 47984 47989 47990 48010 ];
+      allowedUDPPortRanges = [
+        { from = 47998; to = 48000; }
+        #{ from = 8000; to = 8010; }
+      ];
+    };
+    hostName = "nixos"; # Define your hostname.
 
-  networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+    # Enable networking
+    networkmanager.enable = true;
+  };
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Set your time zone.
-  time.timeZone = "America/Los_Angeles";
+  # Experimental flags
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
-  };
-
-
-  services.avahi.publish.enable = true;
-  services.avahi.publish.userServices = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
-
-  # Enable the X server (for graphical display)
-  services.xserver.enable = true;
-
-  # Set your display manager (login screen)
-  services.xserver.displayManager.gdm.enable = true;
-
-  # Enable GNOME desktop environment
-  services.xserver.desktopManager.gnome.enable = true;
-
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "kgh";
-
-  # SSH
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "no";       # Change to "yes" if you really want root SSH login (not recommended).
-      PasswordAuthentication = false; # Use keys instead of passwords.
-    };
-  };
-
-   systemd.services.sunshine = {
-    description = "Sunshine game streaming server";
-    wantedBy = [ "default.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.sunshine}/bin/sunshine";
-      Restart = "on-failure";
-      Environment = "DISPLAY=:0";
-      # add WAYLAND_DISPLAY if using Wayland
-    };
-  };
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.kgh = {
-    isNormalUser = true;
-    description = "kgh";
-    extraGroups = [
-      "docker"
-      "input"
-      "kvm"
-      "networkmanager"
-      "video"
-      "wheel"
-    ];
-    packages = with pkgs; [];
-    shell = pkgs.zsh;
-    # ssh pub keys
-  };
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  # /modules/common/packages/index.nix
-  environment.systemPackages = with pkgs; [
-    gcc
-    sunshine # NixOs Desktop Only
-  ];
-
-  security.wrappers.sunshine = {
-    owner = "root";
-    group = "root";
-    capabilities = "cap_sys_admin+p";
-    source = "${pkgs.sunshine}/bin/sunshine";
-  };
+  nixpkgs.config.allowUnfree = true;
+  # nixpkgs.config.allowUnsupportedSystem = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -140,25 +109,76 @@
   # };
   # /modules/common/programs.nix
   # programs.alacritty.enabled = true; -- Not supported here
+  programs.neovim.enable = true;
+  programs.zsh.enable = true;
 
   # List services that you want to enable:
+  services = {
+    avahi = {
+      publish = {
+        enable = true;
+        userServices = true;
+      };
+    };
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+    desktopManager = {
+      # Gnome
+      # gnome.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [ 47984 47989 47990 48010 ];
-    allowedUDPPortRanges = [
-      { from = 47998; to = 48000; }
-      #{ from = 8000; to = 8010; }
-    ];
+      # KDE
+      plasma6.enable = true;
+    };
+
+    displayManager = {
+      autoLogin.enable = true;
+      autoLogin.user = "kgh";
+      # Set your display manager (login screen)
+      # gdm.enable = true;
+    };
+
+    openssh = {
+      enable = true;
+      settings = {
+        KbdInteractiveAuthentication = false;
+        PermitRootLogin = "no";       # Change to "yes" if you really want root SSH login (not recommended).
+        PasswordAuthentication = false; # Use keys instead of passwords.
+      };
+    };
+
+    xserver = {
+      # Enable the X server (for graphical display)
+      enable = true;
+
+      videoDrivers = [ "amdgpu" ];
+      # Configure keymap in X11
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
+    };
   };
+
+  systemd.services.sunshine = {
+    description = "Sunshine game streaming server";
+    wantedBy = [ "default.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.sunshine}/bin/sunshine";
+      Restart = "on-failure";
+      Environment = "DISPLAY=:0";
+      # add WAYLAND_DISPLAY if using Wayland
+    };
+  };
+
+  # Set your time zone.
+  time.timeZone = "America/Los_Angeles";
+
+  security.wrappers.sunshine = {
+    owner = "root";
+    group = "root";
+    capabilities = "cap_sys_admin+p";
+    source = "${pkgs.sunshine}/bin/sunshine";
+  };
+
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -168,4 +188,26 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
 
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.kgh = {
+    description = "kgh";
+    extraGroups = [
+      "docker"
+      "input"
+      "kvm"
+      "networkmanager"
+      "video"
+      "wheel"
+    ];
+    home = "/home/kgh";
+    isNormalUser = true;
+    packages = with pkgs; [];
+    shell = pkgs.zsh;
+
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP5OPJM1PPOSi9TXVTBQ0EgZtwXlXpiKr7yUYmvyjY29"
+    ];
+  };
+
+  virtualisation.docker.enable = true;
 }
