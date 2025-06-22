@@ -11,7 +11,9 @@ in {
     neovim
     gcc
     git
+    mesa-demos # glxinfo
     nil # Nix Language Server
+    pciutils # lspci
     ripgrep # Grep alternative
     tmux
     # tmuxPlugins.copycat
