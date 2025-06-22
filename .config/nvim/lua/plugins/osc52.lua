@@ -1,3 +1,5 @@
+-- Not sure if this is really needed. Can use "+y to yank to + register
+return true;
 return {
   "ojroques/nvim-osc52",
   config = function()
