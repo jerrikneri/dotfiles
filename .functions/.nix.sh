@@ -35,9 +35,10 @@ nixb() {
     ;;
   esac
 
-  echo "Running pathces..."
+  echo "Running patches..."
   nix-patches
   echo "Done"
+  cd -
 }
 
 nixd() {
@@ -57,4 +58,9 @@ nix-patches() {
 nixu() {
   nix-config
   sudo nix flake update
+}
+
+nixsun() {
+  sudo kill $(sudo ss -ltnp | awk '/:48010/ && /sunshine/ { match($NF, /pid=([0-9]+)/, a); print a[1] }')
+  sunshine &
 }
