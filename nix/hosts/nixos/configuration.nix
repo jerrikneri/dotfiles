@@ -57,11 +57,27 @@
     LC_TIME = "en_US.UTF-8";
   };
 
+
+  services.avahi.publish.enable = true;
+  services.avahi.publish.userServices = true;
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
     variant = "";
   };
+
+  # Enable the X server (for graphical display)
+  services.xserver.enable = true;
+
+  # Set your display manager (login screen)
+  services.xserver.displayManager.gdm.enable = true;
+
+  # Enable GNOME desktop environment
+  services.xserver.desktopManager.gnome.enable = true;
+
+  services.xserver.displayManager.autoLogin.enable = true;
+  services.xserver.displayManager.autoLogin.user = "kgh";
 
   # SSH
   services.openssh = {
@@ -72,18 +88,48 @@
     };
   };
 
+   systemd.services.sunshine = {
+    description = "Sunshine game streaming server";
+    wantedBy = [ "default.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.sunshine}/bin/sunshine";
+      Restart = "on-failure";
+      Environment = "DISPLAY=:0";
+      # add WAYLAND_DISPLAY if using Wayland
+    };
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.kgh = {
     isNormalUser = true;
     description = "kgh";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "docker"
+      "input"
+      "kvm"
+      "networkmanager"
+      "video"
+      "wheel"
+    ];
     packages = with pkgs; [];
     shell = pkgs.zsh;
+    # ssh pub keys
   };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   # /modules/common/packages/index.nix
+  environment.systemPackages = with pkgs; [
+    gcc
+    sunshine # NixOs Desktop Only
+  ];
+
+  security.wrappers.sunshine = {
+    owner = "root";
+    group = "root";
+    capabilities = "cap_sys_admin+p";
+    source = "${pkgs.sunshine}/bin/sunshine";
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -105,6 +151,14 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 47984 47989 47990 48010 ];
+    allowedUDPPortRanges = [
+      { from = 47998; to = 48000; }
+      #{ from = 8000; to = 8010; }
+    ];
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
