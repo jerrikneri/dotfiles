@@ -34,6 +34,10 @@ nixb() {
     echo "Unsupported OS: $os_name"
     ;;
   esac
+
+  echo "Running pathces..."
+  nix-patches
+  echo "Done"
 }
 
 nixd() {
@@ -43,6 +47,11 @@ nixd() {
 
 nix-del() {
   sudo nix-collect-garbage -d
+}
+
+# Symlinks and other patches until I figure out nix better
+nix-patches() {
+  ln -sf "$DOTFILES_CONFIG/tmux/plugins" "$XDG_CONFIG_HOME/tmux/plugins"
 }
 
 nixu() {
