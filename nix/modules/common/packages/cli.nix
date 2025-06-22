@@ -14,12 +14,12 @@ in {
     nil # Nix Language Server
     ripgrep # Grep alternative
     tmux
-    tmuxPlugins.copycat
-    tmuxPlugins.sensible
+    # tmuxPlugins.copycat
+    # tmuxPlugins.sensible
     # vimPlugins.vim-tmux
     # vimPlugins.vim-tmux-focus-events
-    tmuxPlugins.vim-tmux-focus-events
-    tmuxPlugins.vim-tmux-navigator
+    # tmuxPlugins.vim-tmux-focus-events
+    # tmuxPlugins.vim-tmux-navigator
     tmuxinator
     #vimPlugins.LazyVim
     wget

@@ -41,6 +41,10 @@ nixd() {
   nix develop .\#$1
 }
 
+nix-del() {
+  sudo nix-collect-garbage -d
+}
+
 nixu() {
   nix-config
   sudo nix flake update

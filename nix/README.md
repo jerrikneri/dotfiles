@@ -28,9 +28,6 @@
 `sudo nixos-rebuild switch --rollback --flake .\#nixos`
 
 ## Tmux
-`git clone https://github.com/tmux-plugins/tpm $DOTFILES_CONFIG/.config/tmux/plugins/tpm`
-### Might install at ~/.tmux 
-`rm $DOTFILES_CONFIG/.config/tmux`
-`mv ~/.tmux/plugins $DOTFILES_CONFIG/.config/tmux`
+`git clone https://github.com/tmux-plugins/tpm $DOTFILES_CONFIG/tmux/plugins/tpm`
 
 `$DOTFILES_CONFIG/tmux/plugins/tpm/bin/install_plugins`

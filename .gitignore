@@ -1,8 +1,6 @@
 .env
 
 .config/tmux/plugins/
-./macOs/.config/tmux/plugins/
-/macOs/.config/tmux/plugins/
 
 ./macOS/Brewfile.lock.json
 .config/karabiner
