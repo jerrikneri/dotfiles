@@ -36,6 +36,8 @@
     };
   };
 
+  # Allow home manager to symlink and backup when there are conflicts / existing files.
+  home-manager.backupFileExtension = "backup";
   home-manager.users.kgh = {
     imports = [
       ../../modules/common/home.nix

@@ -25,6 +25,8 @@ in {
     tmuxinator
     #vimPlugins.LazyVim
     wget
+    # wl-clipboard # Wayland
+    xclip
     zsh-syntax-highlighting
     zsh-vi-mode
     zsh # Shell
