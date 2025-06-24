@@ -1,6 +1,9 @@
 s() {
 
   case "$1" in
+  agh)
+    ssh $ADMIN_USER@$AGH_HOST
+    ;;
   pve)
     ssh $ADMIN_USER@$PVE_HOST
     ;;
