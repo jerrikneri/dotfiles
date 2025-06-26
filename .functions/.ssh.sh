@@ -13,6 +13,9 @@ s() {
   pbs)
     ssh $ADMIN_USER@$PBS_HOST
     ;;
+  hl)
+    ssh $ADMIN_USER@$HOMELAB_HOST
+    ;;
   hp)
     ssh $ADMIN_USER@$HOMEPAGE_HOST
     ;;
