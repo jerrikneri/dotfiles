@@ -78,7 +78,7 @@
   networking = {
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 47984 47989 47990 48010 ];
+      allowedTCPPorts = [ 47984 47989 47990 48010 ]; # sunshine
       allowedUDPPortRanges = [
         { from = 47998; to = 48000; }
         #{ from = 8000; to = 8010; }
@@ -144,6 +144,7 @@
         KbdInteractiveAuthentication = false;
         PermitRootLogin = "no";       # Change to "yes" if you really want root SSH login (not recommended).
         PasswordAuthentication = false; # Use keys instead of passwords.
+        PermitEmptyPasswords = false;
       };
     };
 
