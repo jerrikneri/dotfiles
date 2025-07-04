@@ -3,6 +3,7 @@
 {
   environment.systemPackages = with pkgs; [
     btop # htop / top alternative
+    caligula # DD TUI (writing to disks)
     lazydocker
     lazygit
     lazysql
