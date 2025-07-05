@@ -4,6 +4,7 @@
 `nix-shell -p git`
 
 `git clone https://github.com/jerrikneri/dotfiles.git`
+`git clone git@github.com:jerrikneri/dotfiles.git`
 
 `cp /etc/nixos/hardware-configuration.nix ~/code/dotfiles/nix/hosts/nixos`
 
