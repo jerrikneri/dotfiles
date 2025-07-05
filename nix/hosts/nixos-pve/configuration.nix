@@ -1,3 +1,38 @@
+ # 🧩 GPU passthrough-specific additions begin here -------------------------
+
+  # Enable IOMMU (important for Intel passthrough hosts)
+ # boot.kernelParams = [ "intel_iommu=on" "iommu=pt" ];
+
+  # Enable necessary kernel modules
+ # boot.initrd.kernelModules = [
+ #   "vfio"
+ #   "vfio_pci"
+ #   "vfio_virqfd"
+ #   "vfio_iommu_type1"
+ # ];
+
+  # Optional: Prevent amdgpu from loading if you don't want drivers bound at boot
+ # boot.blacklistedKernelModules = [
+ #   "amdgpu"
+ #   "radeon"
+ #   "drm_kms_helper"
+ #   "drm"
+ # ];
+
+  # Tell the system to bind the GPU to vfio-pci (RX 480 and HDMI audio)
+  # You can confirm these IDs with `lspci -nn` on the Proxmox host
+ # boot.extraModprobeConfig = ''
+ #   options vfio-pci ids=1002:67df,1002:aaf0
+ # '';
+
+  # Optional: if you'll use the GPU in the VM for graphics
+#  hardware.opengl.enable = true;
+#  hardware.opengl.driSupport = true;
+#  hardware.opengl.driSupport32Bit = true;
+#  services.xserver.videoDrivers = [ "amdgpu" ];
+
+  # 🧩 End of passthrough additions -----------------------------------------
+
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
@@ -5,49 +40,44 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../../modules/common/font.nix
-    ];
+  # Bootloader.
+  boot = {
+    loader = {
+      efi.canTouchEfiVariables = true;
 
-  # 🧩 GPU passthrough-specific additions begin here -------------------------
+      # PVE begin
+      grub = {
+        enable = true;
+        device = "/dev/sda";
+      };
+      # PVE end
 
-  # Enable IOMMU (important for Intel passthrough hosts)
-  boot.kernelParams = [ "intel_iommu=on" "iommu=pt" ];
+      # Bare Metal Install
+      # systemd-boot.enable = true;
+    };
+  };
 
-  # Enable necessary kernel modules
-  boot.initrd.kernelModules = [
-    "vfio"
-    "vfio_pci"
-    "vfio_virqfd"
-    "vfio_iommu_type1"
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  # Common packages - /modules/common/packages/index.nix
+  # NixOS only packages here
+  environment.systemPackages = with pkgs; [
+    gcc
+    rocmPackages.rocm-smi # System Management Interface for AMD GPU
+    sunshine # NixOs Desktop Only
+    vulkan-tools
   ];
 
-  # Optional: Prevent amdgpu from loading if you don't want drivers bound at boot
-  boot.blacklistedKernelModules = [
-    "amdgpu"
-    "radeon"
-    "drm_kms_helper"
-    "drm"
-  ];
+  hardware = {
+    enableAllFirmware = true;
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+  };
 
-  # Tell the system to bind the GPU to vfio-pci (RX 480 and HDMI audio)
-  # You can confirm these IDs with `lspci -nn` on the Proxmox host
-  boot.extraModprobeConfig = ''
-    options vfio-pci ids=1002:67df,1002:aaf0
-  '';
-
-  # Optional: if you'll use the GPU in the VM for graphics
-  hardware.opengl.enable = true;
-  hardware.opengl.driSupport = true;
-  hardware.opengl.driSupport32Bit = true;
-  services.xserver.videoDrivers = [ "amdgpu" ];
-
-  # 🧩 End of passthrough additions -----------------------------------------
-
-  virtualisation.docker.enable = true;
-
+  # Allow home manager to symlink and backup when there are conflicts / existing files.
+  home-manager.backupFileExtension = "backup";
   home-manager.users.kgh = {
     imports = [
       ../../modules/common/home.nix
@@ -56,80 +86,61 @@
     home.stateVersion = "25.11";
   };
 
-  nixpkgs.config.allowUnfree = true;
-  # nixpkgs.config.allowUnsupportedSystem = true;
-
-  # Experimental flags
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  # Bootloader.
-  boot.loader.systemd-boot.enable = false;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/sda";
+  # Select internationalisation properties.
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = {
+        LC_ADDRESS = "en_US.UTF-8";
+        LC_IDENTIFICATION = "en_US.UTF-8";
+        LC_MEASUREMENT = "en_US.UTF-8";
+        LC_MONETARY = "en_US.UTF-8";
+        LC_NAME = "en_US.UTF-8";
+        LC_NUMERIC = "en_US.UTF-8";
+        LC_PAPER = "en_US.UTF-8";
+        LC_TELEPHONE = "en_US.UTF-8";
+        LC_TIME = "en_US.UTF-8";
+      };
   };
 
-  networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  imports =
+    [
+      # Include the results of the hardware scan.
+      #
+      ./hardware-configuration.nix
+      ../../modules/common/font.nix
+    ];
+
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
+  # networking.firewall.enable = false;
+  networking = {
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 47984 47989 47990 48010 ]; # sunshine
+      allowedUDPPortRanges = [
+        { from = 47998; to = 48000; }
+        #{ from = 8000; to = 8010; }
+      ];
+    };
+    hostName = "nixos"; # Define your hostname.
+
+    # Enable networking
+    networkmanager.enable = true;
+  };
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Set your time zone.
-  time.timeZone = "America/Los_Angeles";
+  # Experimental flags
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
-  };
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
-
-  # SSH
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "no";       # Change to "yes" if you really want root SSH login (not recommended).
-      PasswordAuthentication = false; # Use keys instead of passwords.
-    };
-  };
-
-  services.qemuGuest.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.kgh = {
-    isNormalUser = true;
-    description = "kgh";
-    extraGroups = [ "networkmanager" "wheel" "docker"];
-    packages = with pkgs; [];
-    shell = pkgs.zsh;
-  };
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-   gcc
-  ];
+  nixpkgs.config.allowUnfree = true;
+  # nixpkgs.config.allowUnsupportedSystem = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -138,20 +149,80 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+  # /modules/common/programs.nix
   # programs.alacritty.enabled = true; -- Not supported here
   programs.neovim.enable = true;
   programs.zsh.enable = true;
 
   # List services that you want to enable:
+  services.qemuGuest.enable = true;
+  services = {
+    avahi = {
+      publish = {
+        enable = true;
+        userServices = true;
+      };
+    };
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+    desktopManager = {
+      # Gnome
+      # gnome.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+      # KDE
+      plasma6.enable = true;
+    };
+
+    displayManager = {
+      autoLogin.enable = true;
+      autoLogin.user = "kgh";
+      # Set your display manager (login screen)
+      # gdm.enable = true;
+    };
+
+    openssh = {
+      enable = true;
+      settings = {
+        KbdInteractiveAuthentication = false;
+        PermitRootLogin = "no";       # Change to "yes" if you really want root SSH login (not recommended).
+        PasswordAuthentication = false; # Use keys instead of passwords.
+        PermitEmptyPasswords = false;
+      };
+    };
+
+    xserver = {
+      # Enable the X server (for graphical display)
+      enable = true;
+
+      videoDrivers = [ "amdgpu" ];
+      # Configure keymap in X11
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
+    };
+  };
+
+  systemd.services.sunshine = {
+    description = "Sunshine game streaming server";
+    wantedBy = [ "default.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.sunshine}/bin/sunshine";
+      Restart = "on-failure";
+      Environment = "DISPLAY=:0";
+      # add WAYLAND_DISPLAY if using Wayland
+    };
+  };
+
+  # Set your time zone.
+  time.timeZone = "America/Los_Angeles";
+
+  security.wrappers.sunshine = {
+    owner = "root";
+    group = "root";
+    capabilities = "cap_sys_admin+p";
+    source = "${pkgs.sunshine}/bin/sunshine";
+  };
+
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -161,4 +232,26 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
 
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.kgh = {
+    description = "kgh";
+    extraGroups = [
+      "docker"
+      "input"
+      "kvm"
+      "networkmanager"
+      "video"
+      "wheel"
+    ];
+    home = "/home/kgh";
+    isNormalUser = true;
+    packages = with pkgs; [];
+    shell = pkgs.zsh;
+
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP5OPJM1PPOSi9TXVTBQ0EgZtwXlXpiKr7yUYmvyjY29"
+    ];
+  };
+
+  virtualisation.docker.enable = true;
 }
