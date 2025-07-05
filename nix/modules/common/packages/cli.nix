@@ -6,6 +6,7 @@ in {
   environment.systemPackages = with pkgs; [
     alejandra # Uncompromising Nix Code Formatter
     bat # cat alternative
+    cmatrix
     diff-so-fancy
     fzf # Fuzzy Finder
     neovim
