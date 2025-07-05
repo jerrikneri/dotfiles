@@ -21,7 +21,7 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
 # You can set 0 to disable the padding feature
-accordion-padding = 0
+accordion-padding = 15
 
 # Possible values: tiles|accordion
 default-root-container-layout = 'tiles'
@@ -57,18 +57,19 @@ automatically-unhide-macos-hidden-apps = false
 #                 See:
 #                 https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 [gaps]
-    inner.horizontal = 0
-    inner.vertical =   0
-    outer.left =       0
-    outer.bottom =     0
-    outer.top =        0
-    outer.right =      0
+    inner.horizontal = 5
+    inner.vertical =   5
+    outer.left =       5
+    outer.bottom =     5
+    outer.top =        5
+    outer.right =      5
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 # 'main' binding mode must be always presented
 # Fallback value (if you omit the key): mode.main.binding = {}
 [mode.main.binding]
+    alt-enter = ['exec-and-forget open -n -a Alacritty.app', 'mode main']
 
     # All possible keys:
     # - Letters.        a, b, c, ..., z
@@ -129,7 +130,7 @@ automatically-unhide-macos-hidden-apps = false
     alt-8 = 'workspace 8'
     alt-9 = 'workspace 9'
     alt-0 = 'workspace 0'
-    alt-a = 'workspace A' # In your config, you can drop workspace bindings that you don't need
+    alt-a = 'workspace A'
     alt-b = 'workspace B'
     alt-c = 'workspace C'
     alt-d = 'workspace D'
@@ -152,6 +153,32 @@ automatically-unhide-macos-hidden-apps = false
     alt-y = 'workspace Y'
     alt-z = 'workspace Z'
 
+    alt-ctrl-a = 'workspace a'
+    alt-ctrl-b = 'workspace b'
+    alt-ctrl-c = 'workspace c'
+    alt-ctrl-d = 'workspace d'
+    alt-ctrl-e = 'workspace e'
+    alt-ctrl-f = 'workspace f'
+    alt-ctrl-g = 'workspace g'
+    alt-ctrl-h = 'workspace h'
+    alt-ctrl-i = 'workspace i'
+    alt-ctrl-j = 'workspace j'
+    alt-ctrl-k = 'workspace k'
+    alt-ctrl-l = 'workspace l'
+    alt-ctrl-m = 'workspace m'
+    alt-ctrl-n = 'workspace n'
+    alt-ctrl-o = 'workspace o'
+    alt-ctrl-p = 'workspace p'
+    alt-ctrl-q = 'workspace q'
+    alt-ctrl-s = 'workspace s'
+    alt-ctrl-t = 'workspace t'
+    alt-ctrl-u = 'workspace u'
+    alt-ctrl-v = 'workspace v'
+    alt-ctrl-w = 'workspace w'
+    alt-ctrl-x = 'workspace x'
+    alt-ctrl-y = 'workspace y'
+    alt-ctrl-z = 'workspace z'
+
     # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
     alt-shift-1 = 'move-node-to-workspace 1'
     alt-shift-2 = 'move-node-to-workspace 2'
@@ -168,7 +195,9 @@ automatically-unhide-macos-hidden-apps = false
     alt-shift-c = 'move-node-to-workspace C'
     alt-shift-d = 'move-node-to-workspace D'
     alt-shift-e = 'move-node-to-workspace E'
-    # alt-shift-f = 'move-node-to-workspace F'
+
+    alt-shift-f = 'move-node-to-workspace f'
+
     alt-shift-g = 'move-node-to-workspace G'
     alt-shift-i = 'move-node-to-workspace I'
     alt-shift-m = 'move-node-to-workspace M'
@@ -194,7 +223,71 @@ automatically-unhide-macos-hidden-apps = false
     # See: https://nikitabobko.github.io/AeroSpace/commands#mode
     # Different Mode Bindings
     alt-shift-semicolon = 'mode service'
-    alt-shift-comma= 'mode navigation'
+    alt-shift-slash = 'mode navigation'
+    alt-shift-backspace = 'mode bookmark'
+    alt-ctrl-r = 'mode resize'
+
+
+# 'service' binding mode declaration.
+# See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
+[mode.service.binding]
+    esc = ['reload-config', 'mode main']
+    r = ['flatten-workspace-tree', 'mode main'] # reset layout
+    f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
+    # backspace = ['close-all-windows-but-current', 'mode main']
+
+    # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
+    #s = ['layout sticky tiling', 'mode main']
+
+    alt-shift-h = ['join-with left', 'mode main']
+    alt-shift-j = ['join-with down', 'mode main']
+    alt-shift-k = ['join-with up', 'mode main']
+    alt-shift-l = ['join-with right', 'mode main']
+
+    down = 'volume down'
+    up = 'volume up'
+    shift-down = ['volume set 0', 'mode main']
+
+[mode.navigation.binding]
+    esc = ['reload-config', 'mode main']
+
+    # Navigation
+    shift-b = ['workspace B', 'exec-and-forget open -a Bruno.app', 'mode main']
+    b = ['exec-and-forget open -a Bruno.app', 'mode main']
+    shift-d = ['workspace D', 'exec-and-forget open -a TablePlus.app', 'mode main']
+    d = ['exec-and-forget open -a TablePlus.app', 'mode main']
+    shift-f = ['workspace B', 'exec-and-forget open -a Firefox.app', 'mode main']
+    f = ['exec-and-forget open -a Firefox.app', 'mode main']
+    shift-g = ['workspace G', 'exec-and-forget open -a Google\ Chrome.app', 'mode main']
+    g = ['exec-and-forget open -a Google\ Chrome.app', 'mode main']
+    shift-o = ['workspace O', 'exec-and-forget open -a Obsidian.app', 'mode main']
+    o = ['exec-and-forget open -a Obsidian.app', 'mode main']
+    shift-p = ['workspace P', 'exec-and-forget open -a Phpstorm.app', 'mode main']
+    p = ['exec-and-forget open -a Phpstorm.app', 'mode main']
+    # shift-t = ['workspace T', 'exec-and-forget open -a Alacritty.app', 'mode main']
+    # t = ['exec-and-forget open -a Alacritty.app', 'mode main']
+    shift-s = ['workspace S', 'exec-and-forget open -a Slack.app', 'mode main']
+    s = ['exec-and-forget open -a Slack.app', 'mode main']
+    # shift-v = ['workspace V', 'exec-and-forget open -a Visual\ Studio\ Code.app', 'mode main']
+    # v = ['exec-and-forget open -a Visual\ Studio\ Code.app', 'mode main']
+    shift-v = ['workspace V', 'exec-and-forget open -a Windsurf.app', 'mode main']
+    v = ['exec-and-forget open -a Windsurf.app', 'mode main']
+
+[mode.bookmark.binding]
+    a = ["exec-and-forget open https://chatgpt.com", 'mode main']
+    g = ["exec-and-forget open -n -a Firefox.app https://google.com", 'mode main']
+
+[mode.resize.binding]
+    h = 'resize width -50'
+    j = 'resize height +50'
+    k = 'resize height -50'
+    l = 'resize width +50'
+    enter = 'mode main'
+    esc = 'mode main'
+
+# [on-window-detected]
+    # if.app
+#
 
 [workspace-to-monitor-force-assignment]
 
@@ -235,38 +328,29 @@ X = ['lg*', 1, 2, 3, 'secondary', 'main']
 Y = ['lg*', 1, 2, 3, 'secondary', 'main']
 Z = ['lg*', 1, 2, 3, 'secondary', 'main']
 
-# 'service' binding mode declaration.
-# See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
-[mode.service.binding]
-    esc = ['reload-config', 'mode main']
-    r = ['flatten-workspace-tree', 'mode main'] # reset layout
-    f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
-    # backspace = ['close-all-windows-but-current', 'mode main']
-
-    # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
-    #s = ['layout sticky tiling', 'mode main']
-
-    alt-shift-h = ['join-with left', 'mode main']
-    alt-shift-j = ['join-with down', 'mode main']
-    alt-shift-k = ['join-with up', 'mode main']
-    alt-shift-l = ['join-with right', 'mode main']
-
-    down = 'volume down'
-    up = 'volume up'
-    shift-down = ['volume set 0', 'mode main']
-
-[mode.navigation.binding]
-    esc = ['reload-config', 'mode main']
-
-    # Navigation
-    b = ['exec-and-forget open -a Bruno.app', 'mode main']
-    c = ['exec-and-forget open -a Google\ Chrome.app', 'mode main']
-    d = ['exec-and-forget open -a TablePlus.app', 'mode main']
-    i = ['exec-and-forget open -a Brave\ Browser.app', 'mode main']
-    o = ['exec-and-forget open -a Obsidian.app', 'mode main']
-    p = ['exec-and-forget open -a Phpstorm.app', 'mode main']
-    t = ['exec-and-forget open -a Alacritty.app', 'mode main']
-    s = ['exec-and-forget open -a Slack.app', 'mode main']
-    v = ['exec-and-forget open -a Visual\ Studio\ Code.app', 'mode main']
-    alt-enter = ['exec-and-forget open -a /System/Applications/Utilities/Terminal.app', 'mode main']
+a = ['lg*', 1, 2, 3, 'secondary', 'main']
+b = ['lg*', 1, 2, 3, 'secondary', 'main']
+c = ['lg*', 1, 2, 3, 'secondary', 'main']
+d = ['lg*', 1, 2, 3, 'secondary', 'main']
+e = ['lg*', 1, 2, 3, 'secondary', 'main']
+f = ['lg*', 1, 2, 3, 'secondary', 'main']
+g = ['lg*', 1, 2, 3, 'secondary', 'main']
+h = ['lg*', 1, 2, 3, 'secondary', 'main']
+i = ['lg*', 1, 2, 3, 'secondary', 'main']
+j = ['lg*', 1, 2, 3, 'secondary', 'main']
+k = ['lg*', 1, 2, 3, 'secondary', 'main']
+l = ['lg*', 1, 2, 3, 'secondary', 'main']
+m = ['lg*', 1, 2, 3, 'secondary', 'main']
+n = ['lg*', 1, 2, 3, 'secondary', 'main']
+o = ['lg*', 1, 2, 3, 'secondary', 'main']
+p = ['lg*', 1, 2, 3, 'secondary', 'main']
+q = ['lg*', 1, 2, 3, 'secondary', 'main']
+s = ['lg*', 1, 2, 3, 'secondary', 'main']
+t = ['lg*', 1, 2, 3, 'secondary', 'main']
+u = ['lg*', 1, 2, 3, 'secondary', 'main']
+v = ['lg*', 1, 2, 3, 'secondary', 'main']
+w = ['lg*', 1, 2, 3, 'secondary', 'main']
+x = ['lg*', 1, 2, 3, 'secondary', 'main']
+y = ['lg*', 1, 2, 3, 'secondary', 'main']
+z = ['lg*', 1, 2, 3, 'secondary', 'main']
 
