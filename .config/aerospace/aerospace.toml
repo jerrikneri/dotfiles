@@ -276,13 +276,13 @@ automatically-unhide-macos-hidden-apps = false
 [mode.bookmark.binding]
     a = ["exec-and-forget open https://chatgpt.com", 'mode main']
     g = ["exec-and-forget open -n -a Firefox.app https://google.com", 'mode main']
+    esc = 'mode main'
 
 [mode.resize.binding]
     h = 'resize width -50'
     j = 'resize height +50'
     k = 'resize height -50'
     l = 'resize width +50'
-    enter = 'mode main'
     esc = 'mode main'
 
 # [on-window-detected]
