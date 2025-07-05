@@ -1,4 +1,6 @@
 ### Fresh NixOS ----------
+`mkdir -p ~/.config/nix && cd ~/.config/nix && touch nix.conf && echo "experimental-features = nix-command flakes" > nix.conf`
+
 `nix-shell -p git`
 
 `git clone https://github.com/jerrikneri/dotfiles.git`
