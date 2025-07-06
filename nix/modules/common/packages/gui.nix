@@ -9,12 +9,12 @@ in {
     bruno
     firefox
     obsidian # allow unfree
-    tableplus # allow unsupported ?
     vscode
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     aerospace
     karabiner-elements
     stats
+    tableplus # allow unsupported ?
     utm
   ] ++ lib.optionals (!pkgs.stdenv.isAarch64) [
 
