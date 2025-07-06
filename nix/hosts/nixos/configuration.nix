@@ -123,6 +123,7 @@
   # };
   # /modules/common/programs.nix
   # programs.alacritty.enabled = true; -- Not supported here
+  programs.gamemode.enable = true;
   programs.neovim.enable = true;
   programs.zsh.enable = true;
 
@@ -149,8 +150,6 @@
       # Set your display manager (login screen)
       # gdm.enable = true;
     };
-
-    gamemode.enable = true;
 
     openssh = {
       enable = true;
