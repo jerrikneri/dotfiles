@@ -35,7 +35,6 @@
         compression = "lz4";
         atime = "off";
       };
-      mountpoint = "/";
       datasets = {
         root = {
           type = "zfs_fs";
