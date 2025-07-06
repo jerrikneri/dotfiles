@@ -16,8 +16,9 @@
       # };
       systemd-boot.enable = true;
     };
-    supportedFilesystems = [ "zfs" ];
+    initrd.supportedFilesystems = [ "zfs" ];
     zfs.forceImportRoot = false;
+    zfs.enable = true;
   };
 
   boot.kernelModules = [ "amdgpu" "zfs" ];
