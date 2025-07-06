@@ -11,6 +11,7 @@
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # disko.url = "github:nix-community/disko";
   };
 
   outputs = { self, nixpkgs, home-manager, darwin, ... }:
@@ -29,6 +30,7 @@
           ./modules/common/programs.nix
           ./modules/common/shell.nix
           ./modules/linux/system.nix
+          # disko.nixosModules.disko
           home-manager.nixosModules.default
         ];
       };
