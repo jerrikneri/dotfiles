@@ -11,9 +11,10 @@
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko.url = "github:nix-community/disko";
   };
 
-  outputs = { self, nixpkgs, home-manager, darwin, ... }:
+  outputs = { self, nixpkgs, home-manager, darwin, disko, ... }:
     let
       supportedSystems = ["x86_64-linux" "aarch64-linux"];
       forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems f;
@@ -29,6 +30,8 @@
           ./modules/common/programs.nix
           ./modules/common/shell.nix
           ./modules/linux/system.nix
+          ./disko/zfs.nix
+          disko.nixosModules.disko
           home-manager.nixosModules.default
         ];
       };

@@ -7,6 +7,7 @@
 {
   # Bootloader.
   boot = {
+    # initrd.kernelModules = [ "zfs" ];
     loader = {
       efi.canTouchEfiVariables = true;
       # grub = {
@@ -15,9 +16,12 @@
       # };
       systemd-boot.enable = true;
     };
+    initrd.supportedFilesystems = [ "zfs" ];
+    zfs.forceImportRoot = false;
+    zfs.enable = true;
   };
 
-  boot.kernelModules = [ "amdgpu" ];
+  boot.kernelModules = [ "amdgpu" "zfs" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [
     "amdgpu.ppfeaturemask=0xffffffff"
@@ -32,10 +36,8 @@
     VKBASALT_CONFIG_FILE = "/etc/vkBasalt.conf";
   };
   environment.systemPackages = with pkgs; [
-    gcc
-    rocmPackages.rocm-smi # System Management Interface for AMD GPU
-    sunshine # NixOs Desktop Only
-    vulkan-tools
+    disko
+    zfs
   ];
 
   hardware = {
@@ -77,7 +79,8 @@
     [
       # Include the results of the hardware scan.
       #
-      ./hardware-configuration.nix
+      # ../../disko/zfs.nix
+      # ./hardware-configuration.nix
       ../../modules/common/font.nix
     ];
 
@@ -96,6 +99,7 @@
       ];
     };
     hostName = "nixos"; # Define your hostname.
+    hostId = "899d5514";
 
     # Enable networking
     networkmanager.enable = true;
@@ -172,6 +176,12 @@
         layout = "us";
         variant = "";
       };
+    };
+
+    zfs = {
+      autoScrub.enable = true;
+      autoSnapshot.enable = true;
+      trim.enable = true;
     };
   };
 
