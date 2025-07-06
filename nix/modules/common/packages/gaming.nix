@@ -5,6 +5,7 @@ let
 in {
   environment.systemPackages = with pkgs; [
     discord # allow unsupported
+    # dxvk # included with wine?
   ] ++ lib.optionals (!pkgs.stdenv.isAarch64 && isLinux) [
     amdgpu_top # Tool to display AMDGPU usage
     bottles
@@ -18,13 +19,16 @@ in {
     lm_sensors
     lutris
     mangohud
-    mesa-demos # glxinfo
+    mesa # glxinfo
     moonlight-qt
+    # obs-studio
     protontricks
+    protonup-ng
     protonup-qt
     radeontop
     steam # x86 only?
     vkbasalt
+    wineWowPackages.stableFull
   ];
 }
 
