@@ -1,4 +1,4 @@
-{ ... }: {
+{ config, lib, ... }: {
   disko.devices = {
     disk.main = {
       device = "/dev/nvme0n1";
@@ -39,7 +39,7 @@
       datasets = {
         root = {
           type = "zfs_fs";
-          mountpoint = "/";
+          mountpoint = lib.mkForce "/";
         };
         nix = {
           type = "zfs_fs";
