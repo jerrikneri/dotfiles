@@ -79,7 +79,7 @@
       # Include the results of the hardware scan.
       #
       # ../../disko/zfs.nix
-      ./hardware-configuration.nix
+      # ./hardware-configuration.nix
       ../../modules/common/font.nix
     ];
 
