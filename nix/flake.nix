@@ -30,6 +30,7 @@
           ./modules/common/programs.nix
           ./modules/common/shell.nix
           ./modules/linux/system.nix
+          ./disko/zfs.nix
           disko.nixosModules.disko
           home-manager.nixosModules.default
         ];
