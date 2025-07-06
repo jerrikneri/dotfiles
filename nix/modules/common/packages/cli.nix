@@ -12,7 +12,6 @@ in {
     neovim
     gcc
     git
-    mesa-demos # glxinfo
     nil # Nix Language Server
     pciutils # lspci
     ripgrep # Grep alternative
@@ -32,14 +31,7 @@ in {
     zsh-vi-mode
     zsh # Shell
   ] ++ lib.optionals isLinux [
-    bottles
     distrobox
-    gamemode
-    lm_sensors
-    lutris
-    mangohud
-    protontricks
-    vkbasalt
   ];
 }
 
