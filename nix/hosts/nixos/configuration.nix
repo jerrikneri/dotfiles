@@ -17,10 +17,20 @@
     };
   };
 
+  boot.kernelModules = [ "amdgpu" ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [
+    "amdgpu.ppfeaturemask=0xffffffff"
+  ];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   # Common packages - /modules/common/packages/index.nix
   # NixOS only packages here
+  environment.sessionVariables = {
+    MANGOHUD = "1";
+    VKBASALT_CONFIG_FILE = "/etc/vkBasalt.conf";
+  };
   environment.systemPackages = with pkgs; [
     gcc
     rocmPackages.rocm-smi # System Management Interface for AMD GPU
@@ -30,6 +40,7 @@
 
   hardware = {
     enableAllFirmware = true;
+    enableRedistributableFirmware = true;
     graphics = {
       enable = true;
       enable32Bit = true;
@@ -139,6 +150,8 @@
       # gdm.enable = true;
     };
 
+    gamemode.enable = true;
+
     openssh = {
       enable = true;
       settings = {
@@ -198,8 +211,10 @@
     extraGroups = [
       "docker"
       "input"
+      "kgh"
       "kvm"
       "networkmanager"
+      "render"
       "video"
       "wheel"
     ];
