@@ -35,7 +35,7 @@
     VKBASALT_CONFIG_FILE = "/etc/vkBasalt.conf";
   };
   environment.systemPackages = with pkgs; [
-    # disko
+    disko
     zfs
   ];
 
@@ -78,7 +78,7 @@
     [
       # Include the results of the hardware scan.
       #
-      # ../../disko/zfs.nix
+      ../../disko/zfs.nix
       ./hardware-configuration.nix
       ../../modules/common/font.nix
     ];
