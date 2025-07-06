@@ -38,12 +38,15 @@
       mountpoint = "/";
       datasets = {
         root = {
+          type = "zfs_fs";
           mountpoint = "/";
         };
         nix = {
+          type = "zfs_fs";
           mountpoint = "/nix";
         };
         home = {
+          type = "zfs_fs";
           mountpoint = "/home";
         };
       };
