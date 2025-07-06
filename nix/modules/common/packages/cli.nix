@@ -32,7 +32,14 @@ in {
     zsh-vi-mode
     zsh # Shell
   ] ++ lib.optionals isLinux [
+    bottles
     distrobox
+    gamemode
+    lm_sensors
+    lutris
+    mangohud
+    protontricks
+    vkbasalt
   ];
 }
 

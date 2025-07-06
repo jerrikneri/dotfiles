@@ -1,6 +1,8 @@
 { pkgs, ... }:
 
-{
+let
+  isLinux = pkgs.stdenv.isLinux;
+in {
   environment.systemPackages = with pkgs; [
     alacritty # Terminal
     # anki # broken on darwin?
@@ -18,6 +20,8 @@
     utm
   ] ++ lib.optionals (!pkgs.stdenv.isAarch64) [
     steam # x86 only?
+  ] ++ lib.optionals isLinux [
+    protonup-qt
   ];
 }
 
