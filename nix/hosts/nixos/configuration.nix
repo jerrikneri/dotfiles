@@ -111,6 +111,7 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnsupported = true;
   # nixpkgs.config.allowUnsupportedSystem = true;
   nixpkgs.config.rocmSupport = true;
 
