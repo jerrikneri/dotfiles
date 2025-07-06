@@ -26,8 +26,11 @@ in {
     protonup-ng
     protonup-qt
     radeontop
+    rocmPackages.rocm-smi # System Management Interface for AMD GPU
     steam # x86 only?
+    sunshine # NixOs Desktop Only
     vkbasalt
+    vulkan-tools
     wineWowPackages.stableFull
   ];
 }

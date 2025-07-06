@@ -14,3 +14,15 @@ Port = ''
 DBName = 'trialpartners'
 URLParams = ''
 Commands = []
+
+[[database]]
+Name = 'TrialPartners Root'
+URL = 'mysql://root:@localhost/trialpartners'
+Provider = 'mysql'
+Username = ''
+Password = ''
+Hostname = ''
+Port = ''
+DBName = 'trialpartners'
+URLParams = ''
+Commands = []
