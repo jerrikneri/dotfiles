@@ -38,6 +38,17 @@
     vulkan-tools
   ];
 
+  fileSystems."/mnt/cold" = {
+    device = "/dev/disk/by-uuid/55e203f0-133c-44cf-a316-cb26f8bb1a81";
+    fsType = "btrfs";
+    options = [ "defaults" ];
+  };
+  fileSystems."/mnt/games" = {
+    device = "/dev/disk/by-uuid/f055674b-4fdc-455b-a9e0-c198b67f22bd";
+    fsType = "ext4";
+    options = [ "defaults" ];
+  };
+
   hardware = {
     enableAllFirmware = true;
     enableRedistributableFirmware = true;
