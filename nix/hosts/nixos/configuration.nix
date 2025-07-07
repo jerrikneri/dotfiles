@@ -45,7 +45,6 @@
       enable = true;
       enable32Bit = true;
     };
-    pulseaudio.enable = false;
   };
 
   # Allow home manager to symlink and backup when there are conflicts / existing files.
@@ -97,6 +96,8 @@
       ];
     };
     hostName = "nixos"; # Define your hostname.
+
+    interfaces.enp5s0.wakeOnLan.enable = true;
 
     # Enable networking
     networkmanager.enable = true;
@@ -170,6 +171,8 @@
       pulse.enable = true;
       jack.enable = false;
     };
+
+    pulseaudio.enable = false;
 
     xserver = {
       # Enable the X server (for graphical display)
