@@ -19,7 +19,7 @@ in {
   ] ++ lib.optionals (!pkgs.stdenv.isAarch64) [
 
   ] ++ lib.optionals isLinux [
-
+    gparted
   ];
 }
 
