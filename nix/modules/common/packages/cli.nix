@@ -14,6 +14,7 @@ in {
     git
     nil # Nix Language Server
     pciutils # lspci
+    pulseaudioFull
     ripgrep # Grep alternative
     tmux
     # tmuxPlugins.copycat

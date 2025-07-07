@@ -45,6 +45,7 @@
       enable = true;
       enable32Bit = true;
     };
+    pulseaudio.enable = false;
   };
 
   # Allow home manager to symlink and backup when there are conflicts / existing files.
@@ -160,6 +161,14 @@
         PasswordAuthentication = false; # Use keys instead of passwords.
         PermitEmptyPasswords = false;
       };
+    };
+
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      jack.enable = false;
     };
 
     xserver = {

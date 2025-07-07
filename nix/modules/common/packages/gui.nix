@@ -20,6 +20,7 @@ in {
 
   ] ++ lib.optionals isLinux [
     gparted
+    pavucontrol # GUI to manage audio in PulseAudio / Pipewire
   ];
 }
 
