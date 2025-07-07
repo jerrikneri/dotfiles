@@ -4,8 +4,20 @@ DisableSidebar = false
 SidebarOverlay = false
 
 [[database]]
-Name = 'TrialPartners'
+Name = 'TrialPartners Sail'
 URL = 'mysql://sail:password@localhost/trialpartners'
+Provider = 'mysql'
+Username = ''
+Password = ''
+Hostname = ''
+Port = ''
+DBName = 'trialpartners'
+URLParams = ''
+Commands = []
+
+[[database]]
+Name = 'TrialPartners Root'
+URL = 'mysql://root:@localhost/trialpartners'
 Provider = 'mysql'
 Username = ''
 Password = ''
