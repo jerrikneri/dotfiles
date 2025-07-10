@@ -4,6 +4,7 @@ let
   isLinux = pkgs.stdenv.isLinux;
 in {
   environment.systemPackages = with pkgs; [
+    alsa-utils # Advanced Linux Sound Architecture
     alejandra # Uncompromising Nix Code Formatter
     bat # cat alternative
     cmatrix

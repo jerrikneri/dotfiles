@@ -232,6 +232,7 @@
   users.users.kgh = {
     description = "kgh";
     extraGroups = [
+      "audio"
       "docker"
       "input"
       "kgh"
