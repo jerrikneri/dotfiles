@@ -89,7 +89,7 @@
         let
           pkgs = import nixpkgs { inherit system; };
           languages = [ "go" "node" "php" "python" "rust" ];
-          projects = [ "tp" ];
+          projects = [ "tp" "doom"];
         in 
           nixpkgs.lib.genAttrs languages (lang:
             import ./modules/dev/${lang}.nix { inherit pkgs; }

@@ -33,6 +33,7 @@
   };
   environment.systemPackages = with pkgs; [
     gcc
+    gnumake # compile DOOM
     rocmPackages.rocm-smi # System Management Interface for AMD GPU
     sunshine # NixOs Desktop Only
     vulkan-tools
