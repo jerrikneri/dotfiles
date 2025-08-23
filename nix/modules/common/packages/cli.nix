@@ -4,7 +4,6 @@ let
   isLinux = pkgs.stdenv.isLinux;
 in {
   environment.systemPackages = with pkgs; [
-    alsa-utils # Advanced Linux Sound Architecture
     alejandra # Uncompromising Nix Code Formatter
     bat # cat alternative
     cmatrix
@@ -15,7 +14,6 @@ in {
     git
     nil # Nix Language Server
     pciutils # lspci
-    pulseaudioFull
     ripgrep # Grep alternative
     tmux
     # tmuxPlugins.copycat
@@ -33,7 +31,9 @@ in {
     zsh-vi-mode
     zsh # Shell
   ] ++ lib.optionals isLinux [
+    alsa-utils # Advanced Linux Sound Architecture
     distrobox
+    pulseaudioFull
   ];
 }
 

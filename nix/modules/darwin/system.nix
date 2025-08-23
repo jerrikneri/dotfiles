@@ -5,6 +5,6 @@
 
   environment.shells = [ pkgs.zsh ];
 
-  system.primaryUser = "kgh";
+  system.primaryUser = "jan";
   # ...
 }
