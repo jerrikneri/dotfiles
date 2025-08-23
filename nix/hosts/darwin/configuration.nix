@@ -21,7 +21,7 @@ in {
   };
 
   environment.shells = [ pkgs.zsh ];
-  # programs.zsh.enable = true;
+  programs.zsh.enable = true;
 
   # TODO duplicated here and in configuration.nix, extract?
   nixpkgs.config.allowUnfree = true;

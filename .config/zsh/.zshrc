@@ -7,8 +7,15 @@ setopt HIST_EXPIRE_DUPS_FIRST
 setopt EXTENDED_HISTORY
 
 # autocompletion using arrow keys (based on history)
-bindkey '\e[A' history-search-backward
-bindkey '\e[B' history-search-forward
+# bindkey '\e[A' history-search-backward
+# bindkey '\e[B' history-search-forward
+
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey '\e[A' up-line-or-beginning-search
+bindkey '\e[B' down-line-or-beginning-search
 
 # try j k for arrows history autocomplete
 #bindkey -M vicmd "j" up-line-or-beginning-search
@@ -61,8 +68,8 @@ case "$CURRENT_OS" in
         echo "You are on macOS."
         if command -v brew &> /dev/null; then
             BREW_PREFIX=$(brew --prefix)
-            source $BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-            source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+            # source $BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+            # source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
             #source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
             #source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
