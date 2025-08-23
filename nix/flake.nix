@@ -15,7 +15,7 @@
 
   outputs = { self, nixpkgs, home-manager, darwin, ... }:
     let
-      supportedSystems = ["x86_64-linux" "aarch64-linux"];
+      supportedSystems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
       forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems f;
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
