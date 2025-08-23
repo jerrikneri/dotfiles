@@ -12,12 +12,19 @@ in {
     taps = homebrewPkgs.taps;
   };
 
+  home-manager.users.jan = {
+    imports = [
+      ../../modules/common/home.nix
+    ];
+    home.stateVersion = "25.11";
+  };
+
   # May be only for a specific error to the host I tested this on.
   ids.gids.nixbld = 350;
 
-  users.users.kgh = {
-    name = "kgh";
-    home = "/Users/kgh";
+  users.users.jan = {
+    name = "jan";
+    home = "/Users/jan";
   };
 
   environment.shells = [ pkgs.zsh ];

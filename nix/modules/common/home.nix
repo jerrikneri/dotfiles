@@ -12,7 +12,7 @@
         source = "${dotfilesDir}/.config";
         recursive = true;
       };
-      ".zshenv".source = "${dotfilesDir}/.config/zsh/.zshenv";
+      # ".zshenv".source = "${dotfilesDir}/.config/zsh/.zshenv";
     };
 
     home.file.".config/powermanagementprofilesrc".text = ''
