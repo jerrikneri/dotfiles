@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -11,6 +11,8 @@
     # posting # Postman TUI # broken package python3.13-textual-4.0.0
     spotify-player
     yazi # File TUI
+  ] ++ lib.optionals pkgs.stdenv.isDarwin [
+    btop # htop / top alternative
   ];
 }
 

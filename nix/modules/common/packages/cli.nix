@@ -15,6 +15,7 @@ in {
     nil # Nix Language Server
     pciutils # lspci
     ripgrep # Grep alternative
+    tailscale
     tmux
     # tmuxPlugins.copycat
     # tmuxPlugins.sensible
@@ -27,6 +28,7 @@ in {
     wget
     # wl-clipboard # Wayland
     xclip
+    zoxide
     zsh-syntax-highlighting
     zsh-vi-mode
     zsh # Shell
@@ -34,11 +36,7 @@ in {
     alsa-utils # Advanced Linux Sound Architecture
     distrobox
     pulseaudioFull
+  ] ++ lib.optionals pkgs.stdenv.isDarwin [
+    atuin
   ];
 }
-
-# Example for Darwin only packages
-# ++ lib.optionals pkgs.stdenv.isDarwin [
-#   m-cli
-#   mas
-# ]
