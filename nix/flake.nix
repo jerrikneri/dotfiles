@@ -33,6 +33,18 @@
         ];
       };
 
+      nixosConfigurations.nixos-game = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./hosts/nixos-game/configuration.nix
+          ./modules/common/packages/index.nix
+          ./modules/common/programs.nix
+          ./modules/common/shell.nix
+          ./modules/linux/system.nix
+          home-manager.nixosModules.default
+        ];
+      };
+
       nixosConfigurations.nixos-pve = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
