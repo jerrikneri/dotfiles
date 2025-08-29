@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Steam
+Comment=Start Steam on login
+Exec=steam -bigpicture
+Terminal=false
+Type=Application
+X-GNOME-Autostart-enabled=true
+
