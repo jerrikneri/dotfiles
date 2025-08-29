@@ -9,6 +9,7 @@ alias k="kubectl"
 #alias p="podman"
 alias n="nvim"
 alias t="tmux"
+alias tnn="tmux new -s $1"
 alias txt="tmuxinator"
 
 # Docker -> Podman
