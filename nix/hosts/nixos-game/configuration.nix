@@ -35,11 +35,13 @@
     gcc
     gnumake # compile DOOM
     rocmPackages.rocm-smi # System Management Interface for AMD GPU
+    # rtw89-unstable
     sunshine # NixOs Desktop Only
     vulkan-tools
   ];
 
   hardware = {
+    bluetooth.enable = true;
     enableAllFirmware = true;
     enableRedistributableFirmware = true;
     graphics = {
@@ -139,6 +141,8 @@
         userServices = true;
       };
     };
+
+    blueman.enable = true;
 
     desktopManager = {
       # Gnome
