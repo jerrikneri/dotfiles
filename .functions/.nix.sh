@@ -53,6 +53,7 @@ nix-del() {
 # Symlinks and other patches until I figure out nix better
 nix-patches() {
   ln -sf "$DOTFILES_CONFIG/tmux/plugins" "$XDG_CONFIG_HOME/tmux/plugins"
+  ln -sf "$DOTFILES_CONFIG/autostart" "$XDG_CONFIG_HOME/autostart"
 }
 
 nixu() {
