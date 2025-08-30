@@ -12,6 +12,16 @@ in {
     taps = homebrewPkgs.taps;
   };
 
+  # home-manager = {
+  #   backupFileExtension = "home-manager-backup";
+  #   users.jan = {
+  #     imports = [
+  #       ./home.nix
+  #     ];
+  #     home.stateVersion = "25.11";
+  #   };
+  # };
+
   # May be only for a specific error to the host I tested this on.
   ids.gids.nixbld = 350;
 
