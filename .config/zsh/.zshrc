@@ -60,9 +60,16 @@ case "$CURRENT_OS" in
     macOS)
         echo "You are on macOS."
         if command -v brew &> /dev/null; then
-            BREW_PREFIX=$(brew --prefix)
-            source $BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-            source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+            if [[ -n "$BREW_PREFIX" ]]; then
+              [[ -f "$BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ]] \
+                && source "$BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
+
+              [[ -f "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] \
+                && source "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+            fi
+            # BREW_PREFIX=$(brew --prefix)
+            # source $BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+            # source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
             #source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
             #source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

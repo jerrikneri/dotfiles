@@ -15,13 +15,20 @@ in {
   # May be only for a specific error to the host I tested this on.
   ids.gids.nixbld = 350;
 
-  users.users.kgh = {
-    name = "kgh";
-    home = "/Users/kgh";
+  users.users.jan = {
+    name = "jan";
+    home = "/Users/jan";
+    shell = pkgs.zsh;
   };
 
   environment.shells = [ pkgs.zsh ];
-  # programs.zsh.enable = true;
+  programs.zsh.enable = true;
+  programs.zsh.shellInit = ''
+    echo "Shell Init NIXOS"
+    source ~/.zshenv
+    # This sources .zshrc twice, but seems necessary for zsh history while not migrating .zshrc to nix way
+    source ~/.config/zsh/.zshrc
+  '';
 
   # TODO duplicated here and in configuration.nix, extract?
   nixpkgs.config.allowUnfree = true;
