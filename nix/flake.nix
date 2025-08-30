@@ -23,10 +23,10 @@
     in {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = { game = true; };
         modules = [
           ./hosts/nixos/configuration.nix
           ./modules/common/packages/index.nix
-          { game = true; }
           ./modules/common/programs.nix
           ./modules/common/shell.nix
           ./modules/linux/system.nix
@@ -36,10 +36,10 @@
 
       nixosConfigurations.nixos-game = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = { game = true; };
         modules = [
           ./hosts/nixos-game/configuration.nix
           ./modules/common/packages/index.nix
-          { game = true; }
           ./modules/common/programs.nix
           ./modules/common/shell.nix
           ./modules/linux/system.nix

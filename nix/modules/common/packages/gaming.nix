@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, game ? false, ... }:
 
 let
   isLinux = pkgs.stdenv.isLinux;
@@ -27,14 +27,14 @@ in {
     radeontop
     vkbasalt
     wineWowPackages.stableFull
-  ] ++ lib.optionals (config.game or false) [
+  ] ++ lib.optionals (game) [
     discord # allow unsupported
     steam # x86 only?
   ];
 
   programs = {
     steam = {
-      enable = if (!pkgs.stdenv.isAarch64 && config.game or false) then true else false;
+      enable = if (!pkgs.stdenv.isAarch64 && game) then true else false;
     };
   };
 }
