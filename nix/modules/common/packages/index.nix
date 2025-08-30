@@ -3,7 +3,7 @@
 {
   imports = [
     ./cli.nix
-    ./gaming.nix
+    # ./gaming.nix
     ./gui.nix
     ./tui.nix
   ];
