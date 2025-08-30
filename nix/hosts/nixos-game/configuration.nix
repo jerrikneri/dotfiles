@@ -35,11 +35,13 @@
     gcc
     gnumake # compile DOOM
     rocmPackages.rocm-smi # System Management Interface for AMD GPU
+    # rtw89-unstable
     sunshine # NixOs Desktop Only
     vulkan-tools
   ];
 
   hardware = {
+    bluetooth.enable = true;
     enableAllFirmware = true;
     enableRedistributableFirmware = true;
     graphics = {
@@ -128,6 +130,7 @@
   # /modules/common/programs.nix
   # programs.alacritty.enabled = true; -- Not supported here
   programs.gamemode.enable = true;
+  programs.kdeconnect.enable = true;
   programs.neovim.enable = true;
   programs.zsh.enable = true;
 
@@ -139,6 +142,8 @@
         userServices = true;
       };
     };
+
+    blueman.enable = true;
 
     desktopManager = {
       # Gnome
@@ -154,6 +159,8 @@
       # Set your display manager (login screen)
       # gdm.enable = true;
     };
+
+    gnome.gnome-keyring.enable = true;
 
     openssh = {
       enable = true;

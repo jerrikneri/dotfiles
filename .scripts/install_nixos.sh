@@ -24,6 +24,7 @@ mkdir -p $XDG_CONFIG_HOME
 
 # Entire directory for LazyVim
 ln -sf $DOTFILES_CONFIG/nvim $XDG_CONFIG_HOME
+# ln -sf $DOTFILES_CONFIG/kdedefaults $XDG_CONFIG_HOME
 
 # Link entire directory -f not needed as we wipe existing, and can't be used on directories
 
