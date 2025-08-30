@@ -26,6 +26,7 @@
         modules = [
           ./hosts/nixos/configuration.nix
           ./modules/common/packages/index.nix
+          { game = true; }
           ./modules/common/programs.nix
           ./modules/common/shell.nix
           ./modules/linux/system.nix
@@ -38,7 +39,7 @@
         modules = [
           ./hosts/nixos-game/configuration.nix
           ./modules/common/packages/index.nix
-          ./modules/common/packages/gaming.nix
+          { game = true; }
           ./modules/common/programs.nix
           ./modules/common/shell.nix
           ./modules/linux/system.nix

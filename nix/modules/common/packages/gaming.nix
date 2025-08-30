@@ -1,10 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 let
   isLinux = pkgs.stdenv.isLinux;
 in {
   environment.systemPackages = with pkgs; [
-    discord # allow unsupported
     # dxvk # included with wine?
   ] ++ lib.optionals (!pkgs.stdenv.isAarch64 && isLinux) [
     amdgpu_top # Tool to display AMDGPU usage
@@ -26,9 +25,17 @@ in {
     protonup-ng
     protonup-qt
     radeontop
-    steam # x86 only?
     vkbasalt
     wineWowPackages.stableFull
+  ] ++ lib.optionals (config.game or false) [
+    discord # allow unsupported
+    steam # x86 only?
   ];
+
+  programs = {
+    steam = {
+      enable = if (!pkgs.stdenv.isAarch64 && config.game or false) then true else false;
+    };
+  };
 }
 
