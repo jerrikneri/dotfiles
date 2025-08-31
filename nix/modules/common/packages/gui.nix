@@ -19,6 +19,7 @@ in {
   ] ++ lib.optionals (!pkgs.stdenv.isAarch64) [
 
   ] ++ lib.optionals isLinux [
+    godot
     gparted
     pavucontrol # GUI to manage audio in PulseAudio / Pipewire
   ];

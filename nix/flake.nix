@@ -72,6 +72,7 @@
 
       darwinConfigurations.darwin = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
+        specialArgs = { game = false; };
         modules = [
           ./hosts/darwin/configuration.nix
           ./modules/common/packages/index.nix

@@ -1,4 +1,4 @@
-{ pkgs, config, game ? false, ... }:
+{ pkgs, config, lib, game ? false, ... }:
 
 let
   isLinux = pkgs.stdenv.isLinux;
@@ -32,10 +32,8 @@ in {
     steam # x86 only?
   ];
 
-  programs = {
-    steam = {
-      enable = if (!pkgs.stdenv.isAarch64 && game) then true else false;
-    };
-  };
+  programs = if isLinux then {
+    steam.enable = if (!pkgs.stdenv.isAarch64 && game) then true else false;
+  } else {};
 }
 

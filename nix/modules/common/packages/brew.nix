@@ -22,6 +22,7 @@
     "anki"
     "blockblock"
     "homerow"
+    "godot"
     "knockknock"
     "lulu"
     "netiquette"
