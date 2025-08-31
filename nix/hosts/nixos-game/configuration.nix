@@ -42,6 +42,7 @@
 
   hardware = {
     bluetooth.enable = true;
+    bluetooth.powerOnBoot = true;
     enableAllFirmware = true;
     enableRedistributableFirmware = true;
     graphics = {
