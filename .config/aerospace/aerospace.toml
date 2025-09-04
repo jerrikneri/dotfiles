@@ -69,7 +69,8 @@ automatically-unhide-macos-hidden-apps = false
 # 'main' binding mode must be always presented
 # Fallback value (if you omit the key): mode.main.binding = {}
 [mode.main.binding]
-    alt-enter = ['exec-and-forget open -n -a Alacritty.app', 'mode main']
+    # Conflicts with "Go To Definition" VIM keybinding in Obsidian
+    # alt-enter = ['exec-and-forget open -n -a Alacritty.app', 'mode main']
 
     # All possible keys:
     # - Letters.        a, b, c, ..., z
