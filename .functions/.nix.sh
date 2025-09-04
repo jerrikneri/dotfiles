@@ -65,6 +65,10 @@ nixs() {
   nix search nixpkgs $1
 }
 
+nhs() {
+  nh search -P $1
+}
+
 nixsun() {
   sudo kill $(sudo ss -ltnp | awk '/:48010/ && /sunshine/ { match($NF, /pid=([0-9]+)/, a); print a[1] }')
   sunshine &
