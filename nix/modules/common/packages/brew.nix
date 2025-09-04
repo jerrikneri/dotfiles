@@ -20,19 +20,27 @@
 
   casks = [
     "anki"
+    "audio-hijack"
+    "balenaetcher"
+    "bambu-studio"
     "blockblock"
     "homerow"
     "godot"
+    "karabiner-elements"
     "knockknock"
     "lulu"
+    "medis"
     "netiquette"
     "orbstack"
     "orcaslicer"
     "oversight"
     "ransomwhere"
     "reikey"
+    "spotify"
+    "steam"
     "superduper"
     "taskexplorer"
+    "yubico-yubikey-manager"
   ];
 
   taps = [

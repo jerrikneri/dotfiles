@@ -10,6 +10,9 @@ in {
     diff-so-fancy
     fzf # Fuzzy Finder
     neovim
+    nh # yet another nix helper
+    nix-output-monitor
+    nvd # nix diff
     gcc
     git
     nil # Nix Language Server
@@ -38,5 +41,6 @@ in {
     pulseaudioFull
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     atuin
+    phpactor
   ];
 }
