@@ -8,7 +8,7 @@ in {
     # anki # broken on darwin?
     bruno
     firefox
-    librewolf
+    # librewolf
     obsidian # allow unfree
     postman
     vscode
