@@ -101,7 +101,7 @@
     };
     hostName = "nixos"; # Define your hostname.
 
-    # interfaces.enp5s0.wakeOnLan.enable = true;
+    interfaces.enp10s0.wakeOnLan.enable = true;
 
     # Enable networking
     networkmanager.enable = true;
