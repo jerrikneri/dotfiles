@@ -4,7 +4,6 @@ let
   isLinux = pkgs.stdenv.isLinux;
 in {
   environment.systemPackages = with pkgs; [
-    discord # allow unsupported
     # dxvk # included with wine?
   ] ++ lib.optionals (!pkgs.stdenv.isAarch64 && isLinux) [
     amdgpu_top # Tool to display AMDGPU usage
@@ -29,6 +28,7 @@ in {
     vkbasalt
     wineWowPackages.stableFull
   ] ++ lib.optionals (game) [
+    discord # allow unsupported
     steam # x86 only?
   ];
 
