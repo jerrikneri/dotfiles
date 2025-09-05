@@ -11,7 +11,7 @@
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    stylix.url = "github:nix-community/stylix"
+    stylix.url = "github:nix-community/stylix";
   };
 
   outputs = { self, nixpkgs, home-manager, darwin, ... }:
