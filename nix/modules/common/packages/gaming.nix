@@ -32,8 +32,13 @@ in {
     steam # x86 only?
   ];
 
-  programs = if isLinux then {
-    steam.enable = if (!pkgs.stdenv.isAarch64 && game) then true else false;
-  } else {};
+  # Causes infinite recursion
+  # programs = if isLinux then {
+  #   steam.enable = if (!pkgs.stdenv.isAarch64 && game) then true else false;
+  # } else {};
+
+  programs.steam.enable = lib.mkIf (isLinux && !pkgs.stdenv.isAarch64 && game) true;
+
+
 }
 
