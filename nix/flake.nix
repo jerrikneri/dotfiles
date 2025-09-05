@@ -11,7 +11,10 @@
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    stylix.url = "github:nix-community/stylix";
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, darwin, ... }:
@@ -32,6 +35,7 @@
           ./modules/common/shell.nix
           ./modules/linux/system.nix
           home-manager.nixosModules.default
+          stylix.nixosModules.stylix
         ];
       };
 
@@ -45,7 +49,7 @@
           ./modules/common/shell.nix
           ./modules/linux/system.nix
           home-manager.nixosModules.default
-          inputs.stylix.nixosModules.stylix
+          stylix.nixosModules.stylix
         ];
       };
 
@@ -58,6 +62,7 @@
           ./modules/common/shell.nix
           ./modules/linux/system.nix
           home-manager.nixosModules.default
+          stylix.nixosModules.stylix
         ];
       };
 
@@ -70,6 +75,7 @@
           ./modules/common/shell.nix
           ./modules/linux/system.nix
           home-manager.nixosModules.default
+          stylix.nixosModules.stylix
         ];
       };
 
