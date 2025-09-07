@@ -39,6 +39,8 @@ in {
     alsa-utils # Advanced Linux Sound Architecture
     distrobox
     pulseaudioFull
+    vkd3d
+    xclip
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     atuin
     phpactor

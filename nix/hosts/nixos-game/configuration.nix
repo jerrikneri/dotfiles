@@ -40,6 +40,13 @@
     vulkan-tools
   ];
 
+  fileSystems."/mnt/games" = {
+    device = "/dev/disk/by-uuid/90bea1e5-871a-4e58-b092-1be923a95b96";
+    fsType = "ext4";
+    options = [ "defaults" ];
+  };
+
+
   hardware = {
     bluetooth.enable = true;
     bluetooth.powerOnBoot = true;
