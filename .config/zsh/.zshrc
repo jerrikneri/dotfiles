@@ -1,5 +1,8 @@
 fpath=($ZDOTDIR/external $fpath)
 
+# autocorrect
+setopt CORRECT
+
 # history setup
 setopt APPEND_HISTORY
 setopt SHARE_HISTORY

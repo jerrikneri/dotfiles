@@ -4,6 +4,8 @@ alias ls="ls -G"
 
 # CLI Tools
 alias b="brew"
+alias cat="bat $1"
+alias csv="column -t -s, $1"
 alias d="docker"
 alias k="kubectl"
 #alias p="podman"
