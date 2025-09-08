@@ -30,7 +30,7 @@ in {
     wineWowPackages.stableFull
   ] ++ lib.optionals (game) [
     discord # allow unsupported
-    steam # x86 only?
+    # steam # x86 only? programs.steam.enable covers this
   ];
 
   # Causes infinite recursion
@@ -38,8 +38,35 @@ in {
   #   steam.enable = if (!pkgs.stdenv.isAarch64 && game) then true else false;
   # } else {};
 
-  programs.steam.enable = lib.mkIf (isLinux && !pkgs.stdenv.isAarch64 && game) true;
+  # programs.steam.enable = lib.mkIf (isLinux && !pkgs.stdenv.isAarch64 && game) true;
 
+  programs.steam = lib.mkIf (isLinux && !pkgs.stdenv.isAarch64 && game) {
+    enable = true;
 
+    # These handle the Steam Remote Play and LAN library sharing ports
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+  };
+
+  networking.firewall = lib.mkIf (isLinux && !pkgs.stdenv.isAarch64 && game) {
+    # Allow Steam LAN game transfers (local content cache)
+    allowedTCPPortRanges = [
+      { from = 27031; to = 27036; }
+    ];
+    allowedUDPPortRanges = [
+      { from = 27031; to = 27036; }
+    ];
+  };
+
+  # Nice to have for LAN discovery (mDNS / Avahi)
+  services.avahi = lib.mkIf (isLinux && game) {
+    enable = true;
+    nssmdns = true;
+  };
+
+  hardware.opengl = lib.mkIf (isLinux && game) {
+    enable = true;
+    driSupport32Bit = true;
+  };
 }
 
