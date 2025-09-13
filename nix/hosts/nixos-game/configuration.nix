@@ -29,6 +29,9 @@
   # NixOS only packages here
   environment.sessionVariables = {
     MANGOHUD = "1";
+    MOZ_ENABLE_WAYLAND = "1";   # Firefox
+    QT_QPA_PLATFORM = "wayland"; # Qt apps
+    SDL_VIDEODRIVER = "wayland"; # SDL games
     VKBASALT_CONFIG_FILE = "/etc/vkBasalt.conf";
   };
   environment.systemPackages = with pkgs; [
@@ -140,6 +143,7 @@
   programs.gamemode.enable = true;
   programs.kdeconnect.enable = true;
   programs.neovim.enable = true;
+  programs.nix-ld.enable = true;
   programs.zsh.enable = true;
 
   # List services that you want to enable:
@@ -183,7 +187,7 @@
     pipewire = {
       enable = true;
       alsa.enable = true;
-      # alsa.support32Bit = true;
+      alsa.support32Bit = true;
       pulse.enable = true;
       jack.enable = true;
       audio.enable = true;
@@ -259,4 +263,7 @@
   };
 
   virtualisation.docker.enable = true;
+
+  xdg.portal.enable =true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 }
