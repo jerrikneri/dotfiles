@@ -61,12 +61,12 @@ in {
   # Nice to have for LAN discovery (mDNS / Avahi)
   services.avahi = lib.mkIf (isLinux && game) {
     enable = true;
-    nssmdns = true;
+    nssmdns4 = true;
   };
 
-  hardware.opengl = lib.mkIf (isLinux && game) {
+  hardware.graphics = lib.mkIf (isLinux && game) {
     enable = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
   };
 }
 
