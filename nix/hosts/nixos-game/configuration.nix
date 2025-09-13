@@ -214,8 +214,24 @@
     serviceConfig = {
       ExecStart = "${pkgs.sunshine}/bin/sunshine";
       Restart = "on-failure";
-      Environment = "DISPLAY=:0";
-      # add WAYLAND_DISPLAY if using Wayland
+      Environment = "DISPLAY=:0 WAYLAND_DISPLAY=wayland-0 PIPEWIRE_SOURCE=SunshineSink.monitor XDG_SESSION_TYPE=wayland";
+    };
+  };
+
+  systemd.user.services.sunshine = {
+    description = "Sunshine self-hosted game stream host for Moonlight";
+    wants = [ "pipewire.service" ];
+    after = [ "pipewire.service" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.sunshine}/bin/sunshine";
+      Restart = "on-failure";
+      RestartSec = "5s";
+      Environment = ''
+        WAYLAND_DISPLAY=wayland-0
+        PIPEWIRE_SOURCE=SunshineSink.monitor
+        XDG_SESSION_TYPE=wayland
+        DISPLAY=:0
+      '';
     };
   };
 
