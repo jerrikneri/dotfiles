@@ -1,6 +1,7 @@
-{ pkgs, config, lib, game ? false, ... }:
+{ pkgs, config, lib, ... }@args:
 
 let
+  game = args.game ? false;
   isLinux = pkgs.stdenv.isLinux;
 in {
   environment.systemPackages = with pkgs; [

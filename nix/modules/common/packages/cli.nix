@@ -16,6 +16,7 @@ in {
     gcc
     git
     nil # Nix Language Server
+    nixd # Nix LSP
     pciutils # lspci
     ripgrep # Grep alternative
     tailscale
