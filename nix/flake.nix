@@ -55,7 +55,6 @@
 
       nixosConfigurations.nixos-pve = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { game = false; };
         modules = [
           ./hosts/nixos-pve/configuration.nix
           ./modules/common/packages/index.nix
@@ -68,7 +67,6 @@
 
       nixosConfigurations.nixos-utm = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { game = false; };
         modules = [
           ./hosts/nixos-utm/configuration.nix
           ./modules/common/packages/index.nix
@@ -82,7 +80,6 @@
 
       darwinConfigurations.darwin = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
-        specialArgs = { game = false; };
         modules = [
           ./hosts/darwin/configuration.nix
           ./modules/common/packages/index.nix

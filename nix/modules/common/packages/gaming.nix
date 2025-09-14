@@ -6,7 +6,7 @@ let
 in {
   environment.systemPackages = with pkgs; [
     # dxvk # included with wine?
-  ] ++ lib.optionals (!pkgs.stdenv.isAarch64 && isLinux) [
+  ] ++ lib.optionals (isLinux) [
     amdgpu_top # Tool to display AMDGPU usage
     bottles
     (pkgs.btop.overrideAttrs (old: {
@@ -41,7 +41,7 @@ in {
 
   # programs.steam.enable = lib.mkIf (isLinux && !pkgs.stdenv.isAarch64 && game) true;
 
-  programs.steam = lib.mkIf (isLinux && !pkgs.stdenv.isAarch64 && game) {
+  programs.steam = lib.mkIf (isLinux && game) {
     enable = true;
 
     # These handle the Steam Remote Play and LAN library sharing ports
@@ -49,7 +49,7 @@ in {
     dedicatedServer.openFirewall = true;
   };
 
-  networking.firewall = lib.mkIf (isLinux && !pkgs.stdenv.isAarch64 && game) {
+  networking.firewall = lib.mkIf (isLinux && game) {
     # Allow Steam LAN game transfers (local content cache)
     allowedTCPPortRanges = [
       { from = 27031; to = 27036; }

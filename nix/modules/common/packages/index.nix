@@ -1,16 +1,14 @@
-
-{ pkgs, config, lib, ... }@args:
+{ pkgs, lib, specialArgs ? {}, ... }:
 
 let
-  game = args.game ? false;
-  isLinux = pkgs.stdenv.isLinux;
+  game = builtins.hasAttr "game" specialArgs && specialArgs.game;
 in
 {
   imports = [
     ./cli.nix
     ./gui.nix
     ./tui.nix
-  ] ++ lib.optionals (game && isLinux) [
+  ] ++ lib.optionals game [
     ./gaming.nix
   ];
 }
