@@ -14,7 +14,7 @@
 # discord                         netiquette                      taskexplorer
 # firefox                         obsidian                        utm
 # font-hack-nerd-font             orbstack                        visual-studio-code
-# font-jetbrains-mono-nerd-font   orcaslicer                      yubico-yubikey-manager
+# font-jetbrains-mono-nerd-font   orcaslicer
 # google-chrome                   oversight                       zen
 # homerow                         phpstorm                        zoom
 
@@ -43,7 +43,7 @@
     "steam"
     "superduper"
     "taskexplorer"
-    "yubico-yubikey-manager"
+    "yubico-authenticator"
   ];
 
   taps = [
