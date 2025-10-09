@@ -29,6 +29,9 @@ ln -sf $DOTFILES_CONFIG/nvim $XDG_CONFIG_HOME
 # ln -sf $DOTFILES_CONFIG/skhd $XDG_CONFIG_HOME
 ln -sf $DOTFILES_CONFIG/tmuxinator $XDG_CONFIG_HOME
 
+# Not typical config
+ln -sf $DOTFILES_CONFIG/mouseless/config.yaml ~/Library/Containers/net.sonuscape.mouseless/Data/.mouseless/configs/config.yaml
+
 source $SCRIPTS/install_shared.sh
 
 echo 'MacOS set up complete!'
