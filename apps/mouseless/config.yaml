@@ -291,9 +291,9 @@ keymaps:
     hold for back button: null
     hold for drag: CommandLeft
     hold for forward button: null
-    hold for middle button: null
+    hold for middle button: ShiftLeft
     hold for move: OptionLeft
-    hold for right button: CommandRight
+    hold for right button: ShiftRight
     hold for speed decrease: S
     hold for speed increase: F
     increase overlay opacity: ArrowUp
@@ -363,10 +363,10 @@ style_configs:
   - 1
   - 0.2
   background_rgba:
+  - 0.49
+  - 0.4
   - 0
-  - 0
-  - 0
-  - 0.45
+  - 0.35
   char_spacing_cell_width_ratio: 0.5
   char_spacing_font_size_ratio: 0.5
   char_spacing_strategy: cell_width_relative
@@ -440,4 +440,3 @@ style_configs:
   - 1
   text_y_offset: 0
   window_opacity: 1.0
-
