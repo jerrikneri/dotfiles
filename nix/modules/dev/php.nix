@@ -31,6 +31,7 @@ pkgs.mkShell {
   buildInputs = [
     phpWithExtensions
     pkgs.phpactor
+    pkgs.vimPlugins.phpactor
     pkgs.php84Packages.composer
   ] ++ extraBuildInputs;
 
