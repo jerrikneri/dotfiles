@@ -110,7 +110,7 @@
       devShells = forAllSystems (system:
         let
           pkgs = import nixpkgs { inherit system; };
-          languages = [ "go" "node" "php" "python" "rust" ];
+          languages = [ "c" "csharp" "go" "node" "php" "python" "rust" ];
           projects = [ "tp" "doom"];
         in 
           nixpkgs.lib.genAttrs languages (lang:
