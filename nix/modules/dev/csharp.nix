@@ -2,7 +2,8 @@
 { pkgs }:
 pkgs.mkShell {
   buildInputs = with pkgs; [
-    dotnet-sdk
+    # dotnet-sdk
+    dotnet-sdk_9
   ];
 
 shellHook = ''

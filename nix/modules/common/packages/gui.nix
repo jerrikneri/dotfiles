@@ -24,6 +24,7 @@ in {
     gparted
     orca-slicer
     pavucontrol # GUI to manage audio in PulseAudio / Pipewire
+    zeal # offline documentation
   ];
 }
 

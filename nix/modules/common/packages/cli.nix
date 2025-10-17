@@ -19,6 +19,7 @@ in {
     nixd # Nix LSP
     pciutils # lspci
     ripgrep # Grep alternative
+    shellcheck # Linter for shell commands
     tailscale
     tmux
     # tmuxPlugins.copycat
