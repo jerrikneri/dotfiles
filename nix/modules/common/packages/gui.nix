@@ -11,7 +11,8 @@ in {
     # librewolf
     obsidian # allow unfree
     postman
-    vscode
+    # vscode
+    vscodium
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     aerospace
     stats
