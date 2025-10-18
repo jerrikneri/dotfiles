@@ -113,7 +113,7 @@
         let
           pkgs = import nixpkgs { inherit system; };
           languages = [ "c" "csharp" "go" "node" "php" "python" "rust" ];
-          projects = [ "tp" "doom"];
+          projects = [ "doom" "scripting" "tp" ];
         in 
           nixpkgs.lib.genAttrs languages (lang:
             import ./modules/dev/${lang}.nix { inherit pkgs; }
