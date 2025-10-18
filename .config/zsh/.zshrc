@@ -121,4 +121,8 @@ fi
 
 # export PROMPT_COMMAND='time_start=$(date +%s); $PROMPT_COMMAND; echo "Startup took $(($(date +%s) - $time_start)) seconds"'
 
+# Add brew to PATH
 export PATH="/opt/homebrew/bin:$PATH"
+
+# Add dotfile scripts to PATH
+export PATH="$DOTFILES/bin:$PATH"
