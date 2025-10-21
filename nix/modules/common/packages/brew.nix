@@ -19,11 +19,15 @@
 # homerow                         phpstorm                        zoom
 
   casks = [
+    "aerospace"
+    "alacritty"
     "anki"
     "audio-hijack"
     "balenaetcher"
     "bambu-studio"
     "blockblock"
+    "bruno"
+    "firefox"
     "font-hack-nerd-font"
     "godot"
     "google-chrome"
@@ -33,16 +37,22 @@
     "lulu"
     "medis"
     "netiquette"
+    "obsidian"
     "orbstack"
     "orcaslicer"
     "oversight"
     "phpstorm"
+    "postman"
     "ransomwhere"
     "reikey"
     "spotify"
+    "stats"
     "steam"
     "superduper"
+    "tableplus"
     "taskexplorer"
+    "utm"
+    "vscodium"
     "yubico-authenticator"
   ];
 
