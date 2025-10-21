@@ -2,15 +2,15 @@
   description = "Cross-platform flake config (Darwin + Linux + NixOS)";
 
   inputs = {
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    # nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05"; # darwin branch
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     darwin = {
-      # url = "github:lnl7/nix-darwin";
-      url = "github:lnl7/nix-darwin/nix-darwin-25.05";
+      url = "github:lnl7/nix-darwin";
+      # url = "github:lnl7/nix-darwin/nix-darwin-25.05"; # darwin branch
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
