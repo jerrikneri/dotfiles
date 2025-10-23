@@ -31,6 +31,11 @@ alias gpl="git pull"
 alias gd="git diff"
 alias gf="git fetch"
 
+# Lazy Tools
+alias lad="lazydocker"
+alias lag="lazygit"
+alias las="lazysql"
+
 # Navigation
 alias c="cd $HOME/code"
 alias cfg="cd $DOTFILES"
