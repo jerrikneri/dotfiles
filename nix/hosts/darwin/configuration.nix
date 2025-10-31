@@ -52,7 +52,7 @@ in {
       autohide = true;
       showhidden = true;
       orientation = "left"; # or "bottom", "right"
-      tilesize = 36;
+      tilesize = 75;
     };
 
     finder = {
