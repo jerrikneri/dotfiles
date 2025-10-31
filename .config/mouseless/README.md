@@ -1,0 +1,8 @@
+```
+ln ~/.config/mouseless/config.yaml "$HOME/Library/Containers/net.sonuscape.mouseless/Data/.mouseless/configs/config.yaml"
+```
+```
+
+
+
+```
