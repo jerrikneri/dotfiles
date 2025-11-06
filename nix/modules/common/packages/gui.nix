@@ -20,7 +20,7 @@ in {
     orca-slicer
     pavucontrol # GUI to manage audio in PulseAudio / Pipewire
     postman
-    rofi-wayland
+    rofi
     vscodium
     zeal # offline documentation
   ];

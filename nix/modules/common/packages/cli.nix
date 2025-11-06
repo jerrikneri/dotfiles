@@ -7,6 +7,7 @@ in {
     alejandra # Uncompromising Nix Code Formatter
     bat # cat alternative
     bitwarden-cli
+    claude-code
     cmatrix
     diff-so-fancy
     fastfetch
