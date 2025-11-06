@@ -8,6 +8,7 @@ in {
     bat # cat alternative
     cmatrix
     diff-so-fancy
+    fastfetch
     fzf # Fuzzy Finder
     neovim
     nh # yet another nix helper
@@ -33,6 +34,7 @@ in {
     wget
     # wl-clipboard # Wayland
     xclip
+    yt-dlp
     zoxide
     zsh-syntax-highlighting
     zsh-vi-mode

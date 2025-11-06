@@ -21,7 +21,7 @@ find "$ROOT_DIR" -type f -iname "*.mkv" | while read -r file; do
   echo "Converting: $file → $output"
 
   # Convert using ffmpeg (copy video and audio streams if H.264 + AAC)
-  # ffmpeg -i "$file" -c copy "$output"
+  ffmpeg -i "$file" -c copy "$output"
 
   # Optional: Uncomment to remove original MKV after successful conversion
   # if [ $? -eq 0 ]; then

@@ -12,6 +12,7 @@ in {
     alacritty # Terminal
     bruno
     firefox
+    freetube
     godot
     gparted
     librewolf
@@ -19,6 +20,7 @@ in {
     orca-slicer
     pavucontrol # GUI to manage audio in PulseAudio / Pipewire
     postman
+    rofi-wayland
     vscodium
     zeal # offline documentation
   ];
