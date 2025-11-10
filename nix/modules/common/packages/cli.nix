@@ -11,7 +11,9 @@ in {
     cmatrix
     diff-so-fancy
     fastfetch
+    ffmpeg
     fzf # Fuzzy Finder
+    # intelli-shell
     neovim
     nh # yet another nix helper
     nix-output-monitor
@@ -36,6 +38,7 @@ in {
     #vimPlugins.LazyVim
     wget
     # wl-clipboard # Wayland
+    xan # CSV Magician
     xclip
     yt-dlp
     zoxide

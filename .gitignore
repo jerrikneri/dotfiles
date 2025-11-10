@@ -5,3 +5,5 @@
 ./macOS/Brewfile.lock.json
 .config/karabiner
 
+
+bin/basalt
