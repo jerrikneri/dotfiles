@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # Output and organization
 # -----------------------------------------------------------------------------
--o ~/Movies/Youtube/%(uploader)s/%(title)s%(ext)s
+-o ~/Movies/Youtube/Watch/%(uploader)s/%(title)s%(ext)s
 # Example: ~/Downloads/Linus Tech Tips/Why Apple Did This [abcd1234].mp4
 
 # -----------------------------------------------------------------------------

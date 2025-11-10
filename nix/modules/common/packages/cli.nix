@@ -32,6 +32,7 @@ in {
     # tmuxPlugins.vim-tmux-focus-events
     # tmuxPlugins.vim-tmux-navigator
     tmuxinator
+    tree
     #vimPlugins.LazyVim
     wget
     # wl-clipboard # Wayland
