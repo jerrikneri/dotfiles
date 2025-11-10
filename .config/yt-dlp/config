@@ -1,0 +1,58 @@
+# -----------------------------------------------------------------------------
+# Output and organization
+# -----------------------------------------------------------------------------
+-o ~/Movies/Youtube/%(uploader)s/%(title)s%(ext)s
+# Example: ~/Downloads/Linus Tech Tips/Why Apple Did This [abcd1234].mp4
+
+# -----------------------------------------------------------------------------
+# Video and audio quality
+# -----------------------------------------------------------------------------
+-f "bv*[height<=1080]+ba/best[height<=1080]"
+# ^ Download best video up to 1080p (adjust if you want 1440 or 2160)
+
+--merge-output-format mp4
+--no-mtime                # Don’t change file modification times to upload date
+
+# -----------------------------------------------------------------------------
+# SponsorBlock integration
+# -----------------------------------------------------------------------------
+--sponsorblock-remove sponsor,intro,outro,selfpromo,interaction
+# Remove these segments automatically
+# --sponsorblock-mark music_offtopic
+# Mark other segments instead of cutting them
+
+# -----------------------------------------------------------------------------
+# Metadata and thumbnails
+# -----------------------------------------------------------------------------
+# --embed-thumbnail
+--embed-metadata
+--embed-chapters
+# --write-info-json
+# --write-thumbnail
+
+# -----------------------------------------------------------------------------
+# Download behavior
+# -----------------------------------------------------------------------------
+--progress
+--continue
+--no-overwrites
+--ignore-errors
+--concurrent-fragments 5
+--retries 10
+--fragment-retries 5
+
+# -----------------------------------------------------------------------------
+# File naming and cleanup
+# -----------------------------------------------------------------------------
+# --clean-info-json
+--restrict-filenames
+--windows-filenames
+
+# -----------------------------------------------------------------------------
+# Logging and debugging
+# -----------------------------------------------------------------------------
+--no-warnings
+--console-title
+# Uncomment next line for debugging:
+# --verbose
+
