@@ -19,6 +19,7 @@ alias tpdn="tpp && sail down && dockerstop"
 # alias tpserve="valet start"
 
 alias tpserve="sail up"
+alias tp-test-reset="tpp && sail artisan migrate:fresh --env=testing && sail artisan db:seed --class=TestingSeeder --env=testing"
 
 # Win/Linux
 alias psife-up="psife && nvm use 16.13 && is"
