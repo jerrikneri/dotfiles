@@ -18,9 +18,9 @@ for f in "$INPUT_DIR"/*.mkv; do
 
   echo "Converting: $filename"
 
-  ffmpeg -n -i "$f" \
+  ffmpeg -hide_banner -i "$f" \
     -c:v hevc_videotoolbox \
-    -b:v 2500k \
+    -b:v 20M \
     -c:a aac \
     -b:a 128k \
     -movflags +faststart \
