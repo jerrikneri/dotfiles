@@ -21,6 +21,7 @@ for f in "$INPUT_DIR"/*.mkv; do
   ffmpeg -n -i "$f" \
     -c:v hevc_videotoolbox \
     -b:v 2500k \
+    -color_range pc \
     -c:a aac \
     -b:a 128k \
     -movflags +faststart \
