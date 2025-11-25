@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -euo pipefail
 
 # Source base environment variables for establishing directories
 source .config/zsh/.zshenv

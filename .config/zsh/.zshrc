@@ -81,29 +81,20 @@ case "$CURRENT_OS" in
               && source "$NIX_SHARE_PATH/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
             [[ -f "$NIX_SHARE_PATH/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] \
               && source "$NIX_SHARE_PATH/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-        fi
+        # Fallback to Homebrew if Nix not enabled
+        elif command -v brew &> /dev/null; then
+            export BREW_PREFIX=$(brew --prefix)
+            [[ -f "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] \
+              && source "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
-        # Fallback to Homebrew if Nix not enabled or plugins not found
-        if command -v brew &> /dev/null; then
-            if [[ -n "$BREW_PREFIX" ]]; then
-              [[ -f "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] \
-                && source "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+            [[ -f "$BREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]] \
+              && source "$BREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
 
-              [[ -f "$BREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]] \
-                && source "$BREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+            [[ -f "$BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ]] \
+              && source "$BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
 
-              [[ -f "$BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ]] \
-                && source "$BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
-
-              [[ -f "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] \
-                && source "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-            fi
-            # BREW_PREFIX=$(brew --prefix)
-            # source $BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-            # source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-            #source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-            #source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+            [[ -f "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] \
+              && source "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
         fi
 
         if command -v fzf &> /dev/null; then
@@ -135,9 +126,8 @@ esac
 bindkey '\e[A' history-substring-search-up
 bindkey '\e[B' history-substring-search-down
 
-if [ -f $SCRIPTS/import_aliases_functions_modules.sh ]; then
-    echo 'Sourcing from aliases functions modules from .zshrc'
-    source $SCRIPTS/import_aliases_functions_modules.sh
+if [ -f "$SCRIPTS/import_aliases_functions_modules.sh" ]; then
+    source "$SCRIPTS/import_aliases_functions_modules.sh"
 fi
 
 if command -v talosctl &> /dev/null && [ -n "$CONTROL_PLANE_IP" ]; then

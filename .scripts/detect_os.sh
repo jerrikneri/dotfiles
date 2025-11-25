@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-
-source $SCRIPTS/get_os_variables.sh
+source "$SCRIPTS/get_os_variables.sh"
 
 case "$os_name" in
     Darwin)
