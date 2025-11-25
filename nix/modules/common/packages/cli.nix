@@ -42,6 +42,7 @@ in {
     xclip
     yt-dlp
     zoxide
+    zsh-autosuggestions
     zsh-syntax-highlighting
     zsh-vi-mode
     zsh # Shell

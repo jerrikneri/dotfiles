@@ -66,6 +66,19 @@ source $SCRIPTS/set_os.sh
 case "$CURRENT_OS" in
     macOS)
         echo "You are on macOS."
+
+        # Try Nix-installed plugins first if NIX_ENABLED
+        if [[ "$NIX_ENABLED" == "true" ]]; then
+            echo "NixOS Enabled."
+            [[ -f "$NIX_SHARE_PATH/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] \
+              && source "$NIX_SHARE_PATH/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+            [[ -f "$NIX_SHARE_PATH/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ]] \
+              && source "$NIX_SHARE_PATH/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
+            [[ -f "$NIX_SHARE_PATH/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] \
+              && source "$NIX_SHARE_PATH/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+        fi
+
+        # Fallback to Homebrew if Nix not enabled or plugins not found
         if command -v brew &> /dev/null; then
             if [[ -n "$BREW_PREFIX" ]]; then
               [[ -f "$BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ]] \

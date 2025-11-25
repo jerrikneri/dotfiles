@@ -1,6 +1,6 @@
 # appearance
 #theme = tokyonight-storm 
-background-opacity = 0.75
+background-opacity = 0.90
 background-blur-radius = 40
 font-family = VictorMono NFM
 font-size = 18

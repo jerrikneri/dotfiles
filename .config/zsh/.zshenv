@@ -44,3 +44,6 @@ export FORMAT="\nID\t{{.ID}}\nIMAGE\t{{.Image}}\nCOMMAND\t{{.Command}}\nCREATED\
 
 # Kubernetes
 export KUBECONFIG=~/.kube/config
+
+# Nix
+export NIX_SHARE_PATH="/run/current-system/sw/share"
