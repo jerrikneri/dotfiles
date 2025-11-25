@@ -16,8 +16,9 @@ setopt DOT_GLOB
 setopt EXTENDED_GLOB
 
 # autocompletion using arrow keys (based on history)
-bindkey '\e[A' history-search-backward
-bindkey '\e[B' history-search-forward
+# Note: replaced by history-substring-search below (see macOS section)
+# bindkey '\e[A' history-search-backward
+# bindkey '\e[B' history-search-forward
 
 # try j k for arrows history autocomplete
 #bindkey -M vicmd "j" up-line-or-beginning-search
@@ -74,6 +75,8 @@ case "$CURRENT_OS" in
             echo "NixOS Enabled."
             [[ -f "$NIX_SHARE_PATH/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] \
               && source "$NIX_SHARE_PATH/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+            [[ -f "$NIX_SHARE_PATH/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh" ]] \
+              && source "$NIX_SHARE_PATH/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh"
             [[ -f "$NIX_SHARE_PATH/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ]] \
               && source "$NIX_SHARE_PATH/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
             [[ -f "$NIX_SHARE_PATH/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] \
@@ -85,6 +88,9 @@ case "$CURRENT_OS" in
             if [[ -n "$BREW_PREFIX" ]]; then
               [[ -f "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] \
                 && source "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+
+              [[ -f "$BREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]] \
+                && source "$BREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
 
               [[ -f "$BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ]] \
                 && source "$BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
@@ -124,6 +130,10 @@ case "$CURRENT_OS" in
         echo "Unknown or unsupported OS: $CURRENT_OS"
         ;;
 esac
+
+# Bind arrow keys to history substring search (after plugins are loaded, works on all OS)
+bindkey '\e[A' history-substring-search-up
+bindkey '\e[B' history-substring-search-down
 
 if [ -f $SCRIPTS/import_aliases_functions_modules.sh ]; then
     echo 'Sourcing from aliases functions modules from .zshrc'
