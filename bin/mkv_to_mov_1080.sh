@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Usage: ./convert_upscale.sh [directory]
 # Default to current directory if none is given

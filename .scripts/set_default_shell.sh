@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Get the current default shell for the user
 current_shell=$(echo "$SHELL")

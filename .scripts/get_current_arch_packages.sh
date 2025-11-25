@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # List user-installed packages from pacman
 pacman -Qq > $DOTFILES/arch/pacmans

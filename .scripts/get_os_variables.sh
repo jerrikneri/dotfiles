@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Get OS name
 if command -v uname &> /dev/null; then

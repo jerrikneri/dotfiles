@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Set the root directory to start searching from
 ROOT_DIR="${1:-.}" # Default to current directory if no argument

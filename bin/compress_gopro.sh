@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 INPUT_DIR="${1:-.}"
 OUTPUT_DIR="${INPUT_DIR}/converted"

@@ -1,5 +1,4 @@
-### #!/bin/bash
-#!/run/current-system/sw/bin/bash
+#!/usr/bin/env bash
 
 
 source $SCRIPTS/get_os_variables.sh
