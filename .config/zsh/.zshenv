@@ -15,9 +15,9 @@ export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 # History filepath
 export HISTFILE="$ZDOTDIR/.zhistory"
 # Maximum events for internal history
-export HISTSIZE=10000
+export HISTSIZE=50000
 # Maximum events in history file
-export SAVEHIST=10000
+export SAVEHIST=50000
 
 # fzf and ripgrep
 export FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git'"

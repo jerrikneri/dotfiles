@@ -33,6 +33,8 @@ in {
 
   environment.shells = [ pkgs.zsh ];
   programs.zsh.enable = true;
+  programs.zsh.histFile = "$HOME/.config/zsh/.zhistory";
+  programs.zsh.histSize = 50000;
   programs.zsh.shellInit = ''
     echo "Shell Init NIXOS"
     source ~/.zshenv

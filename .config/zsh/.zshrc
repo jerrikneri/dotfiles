@@ -4,10 +4,12 @@ fpath=($ZDOTDIR/external $fpath)
 setopt CORRECT
 
 # history setup
-setopt APPEND_HISTORY
-setopt SHARE_HISTORY
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt EXTENDED_HISTORY
+setopt SHARE_HISTORY               # Share history across all sessions immediately
+setopt INC_APPEND_HISTORY         # Write to history file immediately, not on shell exit
+setopt HIST_EXPIRE_DUPS_FIRST     # Expire duplicates first when trimming history
+setopt EXTENDED_HISTORY           # Record timestamp of command in HISTFILE
+setopt HIST_IGNORE_DUPS           # Don't record duplicate consecutive commands
+setopt HIST_FIND_NO_DUPS          # Don't display duplicates when searching history
 
 # glob
 setopt DOT_GLOB
@@ -81,6 +83,9 @@ case "$CURRENT_OS" in
         # Fallback to Homebrew if Nix not enabled or plugins not found
         if command -v brew &> /dev/null; then
             if [[ -n "$BREW_PREFIX" ]]; then
+              [[ -f "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] \
+                && source "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+
               [[ -f "$BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ]] \
                 && source "$BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
 
