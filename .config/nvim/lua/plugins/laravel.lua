@@ -11,7 +11,13 @@ return {
         -- you should also add here UI plugins like "folke/noice.nvim" or "stevearc/dressing.nvim"
       },
       opts = {
-        -- you're options goes here
+        install = {
+          bin = "/run/current-system/sw/bin/phpactor",
+        },
+        lspconfig = {
+          enabled = true,
+          options = {},
+        },
       },
     },
   },
