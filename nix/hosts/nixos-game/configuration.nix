@@ -191,6 +191,26 @@
       pulse.enable = true;
       jack.enable = true;
       audio.enable = true;
+
+      # Create virtual audio sink for Sunshine to capture
+      extraConfig.pipewire."92-sunshine-virtual-sink" = {
+        "context.modules" = [
+          {
+            name = "libpipewire-module-combine-stream";
+            args = {
+              "combine.mode" = "sink";
+              "node.name" = "SunshineSink";
+              "node.description" = "Sunshine Virtual Sink";
+              "stream.rules" = [
+                {
+                  matches = [ { "media.class" = "Audio/Sink"; } ];
+                  actions = { create-stream = { }; };
+                }
+              ];
+            };
+          }
+        ];
+      };
     };
 
     pulseaudio.enable = false;
@@ -208,30 +228,21 @@
     };
   };
 
-  systemd.services.sunshine = {
-    description = "Sunshine game streaming server";
-    wantedBy = [ "default.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.sunshine}/bin/sunshine";
-      Restart = "on-failure";
-      Environment = "DISPLAY=:0 WAYLAND_DISPLAY=wayland-0 PIPEWIRE_SOURCE=SunshineSink.monitor XDG_SESSION_TYPE=wayland";
-    };
-  };
-
   systemd.user.services.sunshine = {
     description = "Sunshine self-hosted game stream host for Moonlight";
-    wants = [ "pipewire.service" ];
-    after = [ "pipewire.service" ];
+    wantedBy = [ "graphical-session.target" ];
+    wants = [ "pipewire.service" "graphical-session.target" ];
+    after = [ "pipewire.service" "graphical-session.target" ];
     serviceConfig = {
       ExecStart = "${pkgs.sunshine}/bin/sunshine";
-      Restart = "on-failure";
+      Restart = "always";
       RestartSec = "5s";
-      Environment = ''
-        WAYLAND_DISPLAY=wayland-0
-        PIPEWIRE_SOURCE=SunshineSink.monitor
-        XDG_SESSION_TYPE=wayland
-        DISPLAY=:0
-      '';
+    };
+    environment = {
+      WAYLAND_DISPLAY = "wayland-1";
+      DISPLAY = ":1";
+      XDG_SESSION_TYPE = "wayland";
+      PULSE_SERVER = "unix:/run/user/1000/pulse/native";
     };
   };
 
