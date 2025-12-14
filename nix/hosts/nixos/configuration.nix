@@ -188,6 +188,8 @@
 
     pulseaudio.enable = false;
 
+    rpcbind.enable = true;
+
     xserver = {
       # Enable the X server (for graphical display)
       enable = true;
