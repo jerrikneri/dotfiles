@@ -20,6 +20,7 @@ in {
     nvd # nix diff
     gcc
     git
+    mcat
     nil # Nix Language Server
     nixd # Nix LSP
     pciutils # lspci
@@ -36,6 +37,7 @@ in {
     tmuxinator
     tree
     #vimPlugins.LazyVim
+    wakeonlan
     wget
     # wl-clipboard # Wayland
     xan # CSV Magician
@@ -54,6 +56,7 @@ in {
     vkd3d
     xclip
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
+    android-tools
     atuin
     phpactor
   ];
