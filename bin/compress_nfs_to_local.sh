@@ -3,12 +3,18 @@
 set -euo pipefail
 
 # Usage: compress_nfs_to_local.sh <nfs_source_dir> <local_dest_dir> [preset]
-# Optimized for digitized VHS/8mm videos with powerful CPU (3950x)
+# Optimized for 720p digitized VHS/8mm videos with powerful CPU (3950x)
 # Uses CRF-based encoding for better quality/size balance
+#
+# Environment variables:
+#   LIGHTEN=1  - Add -color_range pc flag to brighten dark captures
 
 if [ "$#" -lt 2 ]; then
   echo "Usage: $0 <nfs_source_dir> <local_dest_dir> [preset]"
-  echo "  preset: extreme (default, CRF 24, slow), balanced (CRF 22, medium), fast (CRF 23, faster)"
+  echo "  preset: extreme (default, CRF 25, slow), balanced (CRF 23, medium), fast (CRF 24, faster)"
+  echo ""
+  echo "Optional environment variables:"
+  echo "  LIGHTEN=1  - Brighten dark captures"
   exit 1
 fi
 
@@ -26,25 +32,25 @@ fi
 mkdir -p "$LOCAL_DEST"
 
 # Set ffmpeg parameters based on preset
-# CRF scale: 0-51, lower = better quality, 18-28 typical range
-# For VHS/8mm, higher CRF is fine since source is already low quality
+# CRF scale: 0-51, LOWER=better quality/larger files, HIGHER=worse quality/smaller files
+# For 720p VHS/8mm digitized content - optimized for degraded source at HD resolution
 case "$PRESET" in
   extreme)
-    CRF="24"
+    CRF="25"
     PRESET_SPEED="slow"
-    AUDIO_BITRATE="96k"
+    AUDIO_BITRATE="128k"
     DESC="Maximum compression, slow encode"
     ;;
   balanced)
-    CRF="22"
+    CRF="23"
     PRESET_SPEED="medium"
     AUDIO_BITRATE="128k"
     DESC="Balanced quality/speed"
     ;;
   fast)
-    CRF="23"
+    CRF="24"
     PRESET_SPEED="faster"
-    AUDIO_BITRATE="96k"
+    AUDIO_BITRATE="128k"
     DESC="Faster encode, good compression"
     ;;
   *)
@@ -60,6 +66,11 @@ echo "Preset: $PRESET - $DESC"
 echo "  CRF: $CRF"
 echo "  Speed: $PRESET_SPEED"
 echo "  Audio: $AUDIO_BITRATE AAC"
+if [ "${LIGHTEN:-0}" -eq 1 ]; then
+  echo "  Color: Full range (brightening enabled)"
+else
+  echo "  Color: Standard range"
+fi
 echo ""
 
 # Counter for stats
@@ -92,11 +103,25 @@ for ext in mkv mp4 mov avi MKV MP4 MOV AVI; do
     # -preset slow/medium for better compression (3950x can handle it)
     # -crf for constant quality (better than bitrate for archival)
     # -tag:v hvc1 for better compatibility with Apple devices
+    # -color_range pc can help brighten dark captures (use LIGHTEN=1 env var)
+    # x265-params to maximize CPU utilization on 3950x (32 threads)
+    EXTRA_FLAGS=()
+    if [ "${LIGHTEN:-0}" -eq 1 ]; then
+      EXTRA_FLAGS+=("-color_range" "pc")
+    fi
+
+    # x265 threading params for maximum CPU usage
+    # pools='+' enables multiple thread pools for better parallelism
+    # frame-threads auto-detects optimal frame-level parallelism
+    X265_PARAMS="pools=+:frame-threads=0"
+
     if ffmpeg -hide_banner -i "$f" \
       -c:v libx265 \
       -preset "$PRESET_SPEED" \
       -crf "$CRF" \
       -pix_fmt yuv420p \
+      -x265-params "$X265_PARAMS" \
+      "${EXTRA_FLAGS[@]}" \
       -c:a aac \
       -b:a "$AUDIO_BITRATE" \
       -movflags +faststart \
