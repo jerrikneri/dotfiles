@@ -8,6 +8,7 @@ set -euo pipefail
 #
 # Environment variables:
 #   LIGHTEN=1  - Add -color_range pc flag to brighten dark captures
+#   DENOISE=1  - Apply light denoising to reduce VHS grain/noise (15-25% smaller files)
 
 if [ "$#" -lt 2 ]; then
   echo "Usage: $0 <nfs_source_dir> <local_dest_dir> [preset]"
@@ -15,6 +16,7 @@ if [ "$#" -lt 2 ]; then
   echo ""
   echo "Optional environment variables:"
   echo "  LIGHTEN=1  - Brighten dark captures"
+  echo "  DENOISE=1  - Reduce VHS grain/noise (smaller files, slight softening)"
   exit 1
 fi
 
@@ -71,6 +73,11 @@ if [ "${LIGHTEN:-0}" -eq 1 ]; then
 else
   echo "  Color: Standard range"
 fi
+if [ "${DENOISE:-0}" -eq 1 ]; then
+  echo "  Denoise: Enabled (hqdn3d light)"
+else
+  echo "  Denoise: Disabled"
+fi
 echo ""
 
 # Counter for stats
@@ -104,10 +111,19 @@ for ext in mkv mp4 mov avi MKV MP4 MOV AVI; do
     # -crf for constant quality (better than bitrate for archival)
     # -tag:v hvc1 for better compatibility with Apple devices
     # -color_range pc can help brighten dark captures (use LIGHTEN=1 env var)
+    # hqdn3d denoise filter for VHS grain reduction (use DENOISE=1 env var)
     # x265-params to maximize CPU utilization on 3950x (32 threads)
     EXTRA_FLAGS=()
     if [ "${LIGHTEN:-0}" -eq 1 ]; then
       EXTRA_FLAGS+=("-color_range" "pc")
+    fi
+
+    # Build video filter chain
+    VF_FILTERS=()
+    if [ "${DENOISE:-0}" -eq 1 ]; then
+      # hqdn3d: spatial_luma:spatial_chroma:temporal_luma:temporal_chroma
+      # Conservative settings for VHS: light spatial, moderate temporal
+      VF_FILTERS+=("-vf" "hqdn3d=1.5:1.5:3:3")
     fi
 
     # x265 threading params for maximum CPU usage
@@ -120,6 +136,7 @@ for ext in mkv mp4 mov avi MKV MP4 MOV AVI; do
       -preset "$PRESET_SPEED" \
       -crf "$CRF" \
       -pix_fmt yuv420p \
+      "${VF_FILTERS[@]}" \
       -x265-params "$X265_PARAMS" \
       "${EXTRA_FLAGS[@]}" \
       -c:a aac \
