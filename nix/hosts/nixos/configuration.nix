@@ -35,6 +35,7 @@
     gcc
     gnumake # compile DOOM
     nfs-utils
+    parallel
     rocmPackages.rocm-smi # System Management Interface for AMD GPU
     sunshine # NixOs Desktop Only
     vulkan-tools
