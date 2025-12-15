@@ -36,22 +36,23 @@ mkdir -p "$LOCAL_DEST"
 # Set ffmpeg parameters based on preset
 # CRF scale: 0-51, LOWER=better quality/larger files, HIGHER=worse quality/smaller files
 # For 720p VHS/8mm digitized content - optimized for degraded source at HD resolution
+# VHS source is already degraded, so we can be much more aggressive (CRF 28-32)
 case "$PRESET" in
   extreme)
-    CRF="25"
-    PRESET_SPEED="slow"
+    CRF="32"
+    PRESET_SPEED="veryslow"
     AUDIO_BITRATE="128k"
-    DESC="Maximum compression, slow encode"
+    DESC="Maximum compression, very slow encode (best for VHS)"
     ;;
   balanced)
-    CRF="23"
-    PRESET_SPEED="medium"
+    CRF="30"
+    PRESET_SPEED="slow"
     AUDIO_BITRATE="128k"
-    DESC="Balanced quality/speed"
+    DESC="Balanced quality/speed (good for VHS)"
     ;;
   fast)
-    CRF="24"
-    PRESET_SPEED="faster"
+    CRF="28"
+    PRESET_SPEED="medium"
     AUDIO_BITRATE="128k"
     DESC="Faster encode, good compression"
     ;;
