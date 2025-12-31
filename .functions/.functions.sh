@@ -59,3 +59,13 @@ nbsave() {
     echo "$1 saved to newsboats urls file."
   fi
 }
+
+#Video
+vtrim() {
+  if [ -z "$4" ]; then
+    echo "Usage: trim <input> <start> <end> <output>"
+    echo "Example: trim video.mkv 00:00:00 00:51:12 video_trimmed.mkv"
+    return 1
+  fi
+  ffmpeg -ss "$2" -i "$1" -to "$3" -c copy -avoid_negative_ts make_zero "$4"
+}
