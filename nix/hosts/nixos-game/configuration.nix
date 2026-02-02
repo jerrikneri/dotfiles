@@ -103,11 +103,11 @@
   networking = {
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 47984 47989 47990 48010 ]; # sunshine
-      allowedUDPPortRanges = [
-        { from = 47998; to = 48000; }
-        #{ from = 8000; to = 8010; }
-      ];
+      # Sunshine ports now handled by services.sunshine.openFirewall = true
+      # allowedTCPPorts = [ 47984 47989 47990 48010 ];
+      # allowedUDPPortRanges = [
+      #   { from = 47998; to = 48000; }
+      # ];
     };
     hostName = "nixos"; # Define your hostname.
 
@@ -215,6 +215,13 @@
 
     pulseaudio.enable = false;
 
+    sunshine = {
+      enable = true;
+      autoStart = true;
+      capSysAdmin = true;
+      openFirewall = true;
+    };
+
     xserver = {
       # Enable the X server (for graphical display)
       enable = true;
@@ -228,34 +235,36 @@
     };
   };
 
-  systemd.user.services.sunshine = {
-    description = "Sunshine self-hosted game stream host for Moonlight";
-    wantedBy = [ "graphical-session.target" ];
-    wants = [ "pipewire.service" "graphical-session.target" ];
-    after = [ "pipewire.service" "graphical-session.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.sunshine}/bin/sunshine";
-      Restart = "always";
-      RestartSec = "5s";
-    };
-    environment = {
-      WAYLAND_DISPLAY = "wayland-1";
-      DISPLAY = ":1";
-      XDG_SESSION_TYPE = "wayland";
-      PULSE_SERVER = "unix:/run/user/1000/pulse/native";
-    };
-  };
-
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
 
-  security.wrappers.sunshine = {
-    owner = "root";
-    group = "root";
-    capabilities = "cap_sys_admin+p";
-    source = "${pkgs.sunshine}/bin/sunshine";
-  };
+  # Replaced by services.sunshine module above - manual service had timing issues
+  # with graphical-session.target and hardcoded display variables
+  # systemd.user.services.sunshine = {
+  #   description = "Sunshine self-hosted game stream host for Moonlight";
+  #   wantedBy = [ "graphical-session.target" ];
+  #   wants = [ "pipewire.service" "graphical-session.target" ];
+  #   after = [ "pipewire.service" "graphical-session.target" ];
+  #   serviceConfig = {
+  #     ExecStart = "${pkgs.sunshine}/bin/sunshine";
+  #     Restart = "always";
+  #     RestartSec = "5s";
+  #   };
+  #   environment = {
+  #     WAYLAND_DISPLAY = "wayland-1";
+  #     DISPLAY = ":1";
+  #     XDG_SESSION_TYPE = "wayland";
+  #     PULSE_SERVER = "unix:/run/user/1000/pulse/native";
+  #   };
+  # };
 
+  # Replaced by services.sunshine.capSysAdmin = true
+  # security.wrappers.sunshine = {
+  #   owner = "root";
+  #   group = "root";
+  #   capabilities = "cap_sys_admin+p";
+  #   source = "${pkgs.sunshine}/bin/sunshine";
+  # };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
