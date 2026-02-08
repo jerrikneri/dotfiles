@@ -9,7 +9,7 @@ pve-update() {
     esac
 
     echo "--- Updating $host ($target) ---"
-    ssh -t "$target" "sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get autoremove -y"
+    ssh -t "$target" "apt-get update && apt-get upgrade -y && apt-get autoremove -y"
     echo ""
   done
 }
