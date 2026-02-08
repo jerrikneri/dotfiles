@@ -36,7 +36,8 @@ in {
   programs.zsh.histFile = "$HOME/.config/zsh/.zhistory";
   programs.zsh.histSize = 50000;
   programs.zsh.shellInit = ''
-    echo "Shell Init NIXOS"
+    source ~/code/dotfiles/.scripts/utils.sh
+    _debug_echo "Shell Init NIXOS"
     source ~/.zshenv
     # This sources .zshrc twice, but seems necessary for zsh history while not migrating .zshrc to nix way
     source ~/.config/zsh/.zshrc

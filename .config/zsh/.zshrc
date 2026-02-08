@@ -68,11 +68,11 @@ source $SCRIPTS/set_os.sh
 # Perform actions based on the value of CURRENT_OS
 case "$CURRENT_OS" in
     macOS)
-        echo "You are on macOS."
+        _debug_echo "You are on macOS."
 
         # Try Nix-installed plugins first if NIX_ENABLED
         if [[ "$NIX_ENABLED" == "true" ]]; then
-            echo "NixOS Enabled."
+            _debug_echo "NixOS Enabled."
             [[ -f "$NIX_SHARE_PATH/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] \
               && source "$NIX_SHARE_PATH/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
             [[ -f "$NIX_SHARE_PATH/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh" ]] \
@@ -103,7 +103,7 @@ case "$CURRENT_OS" in
         ;;
 
     arch)
-        echo "You are on Arch Linux."
+        _debug_echo "You are on Arch Linux."
         if [ $(command -v "fzf") ]; then
             source /usr/share/fzf/completion.zsh
             source /usr/share/fzf/key-bindings.zsh
@@ -114,11 +114,11 @@ case "$CURRENT_OS" in
         ;;
 
     debian)
-        echo "You are on Debian-based Linux."
+        _debug_echo "You are on Debian-based Linux."
         ;;
 
     *)
-        echo "Unknown or unsupported OS: $CURRENT_OS"
+        _debug_echo "Unknown or unsupported OS: $CURRENT_OS"
         ;;
 esac
 
@@ -134,7 +134,7 @@ if command -v talosctl &> /dev/null && [ -n "$CONTROL_PLANE_IP" ]; then
     talosctl config endpoint $CONTROL_PLANE_IP
     talosctl config node $CONTROL_PLANE_IP
 else
-    echo "Either talosctl is not installed or CONTROL_PLANE_IP is not set."
+    _debug_echo "Either talosctl is not installed or CONTROL_PLANE_IP is not set."
 fi
 
 # export PROMPT_COMMAND='time_start=$(date +%s); $PROMPT_COMMAND; echo "Startup took $(($(date +%s) - $time_start)) seconds"'
