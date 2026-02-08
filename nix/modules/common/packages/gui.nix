@@ -17,6 +17,7 @@ in {
     godot
     gparted
     librewolf
+    lmstudio # AI
     obsidian # allow unfree
     orca-slicer
     opensnitch

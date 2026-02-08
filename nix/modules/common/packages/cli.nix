@@ -23,6 +23,7 @@ in {
     mcat
     nil # Nix Language Server
     nixd # Nix LSP
+    opencode
     pciutils # lspci
     ripgrep # Grep alternative
     shellcheck # Linter for shell commands
