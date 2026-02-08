@@ -1,3 +1,19 @@
+pve-update() {
+  local hosts=("pve" "pve2" "pbs")
+
+  for host in "${hosts[@]}"; do
+    case "$host" in
+      pve)  target="$ADMIN_USER@$PVE_HOST" ;;
+      pve2) target="$ADMIN_USER@$PVE2_HOST" ;;
+      pbs)  target="$ADMIN_USER@$PBS_HOST" ;;
+    esac
+
+    echo "--- Updating $host ($target) ---"
+    ssh -t "$target" "sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get autoremove -y"
+    echo ""
+  done
+}
+
 s() {
 
   case "$1" in
