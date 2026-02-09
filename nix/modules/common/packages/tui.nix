@@ -8,7 +8,7 @@
     lazygit
     lazysql
     jiratui
-    # newsboat # RSS TUI
+    # newsboat # RSS TUI - broken on darwin with libc++ 20.1.0 (sizeof function type error)
     # posting # Postman TUI # broken package python3.13-textual-4.0.0
     spotify-player
     (weechat.override {
