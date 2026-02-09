@@ -44,5 +44,8 @@ alias nix-config="cd $DOTFILES/nix"
 alias d='dirs -v'
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
+# Utility
+alias weather="curl wttr.in"
+
 # Sourcing
 alias zsrc="source $ZDOTDIR/.zshrc"
