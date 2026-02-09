@@ -45,9 +45,9 @@ alias d='dirs -v'
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
 # Utility
-
 cheat() { curl cheat.sh/$1 | cat }
 cheats() { curl cheat.sh/:list | cat | rg $1 }
+define() { curl dict.org/d:$1 | cat }
 alias weather="curl wttr.in"
 
 # Sourcing
