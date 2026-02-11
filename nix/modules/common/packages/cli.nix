@@ -13,6 +13,7 @@ in {
     fastfetch
     ffmpeg
     fzf # Fuzzy Finder
+    gh # git hub cli, for gh-dash
     # intelli-shell
     neovim
     nh # yet another nix helper
