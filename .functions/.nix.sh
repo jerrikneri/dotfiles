@@ -135,7 +135,9 @@ nixu() {
 }
 
 nixs() {
-  nix search nixpkgs $1
+  nh search -P $1
+  # Doesn't show supported architecture
+  # nix search nixpkgs $1
 }
 
 nhs() {
