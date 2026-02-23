@@ -28,7 +28,6 @@
   # Common packages - /modules/common/packages/index.nix
   # NixOS only packages here
   environment.sessionVariables = {
-    MANGOHUD = "1";
     VKBASALT_CONFIG_FILE = "/etc/vkBasalt.conf";
   };
   environment.systemPackages = with pkgs; [

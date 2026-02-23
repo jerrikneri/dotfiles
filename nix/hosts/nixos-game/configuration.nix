@@ -29,7 +29,6 @@
   # Common packages - /modules/common/packages/index.nix
   # NixOS only packages here
   environment.sessionVariables = {
-    MANGOHUD = "1";
     MOZ_ENABLE_WAYLAND = "1";   # Firefox
     QT_QPA_PLATFORM = "wayland"; # Qt apps
     SDL_VIDEODRIVER = "wayland"; # SDL games
