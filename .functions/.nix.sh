@@ -148,3 +148,18 @@ nixsun() {
   sudo kill $(sudo ss -ltnp | awk '/:48010/ && /sunshine/ { match($NF, /pid=([0-9]+)/, a); print a[1] }')
   sunshine &
 }
+
+sun-pin() {
+  if [ -z "$1" ]; then
+    echo "Usage: sun-pin <4-digit-pin>"
+    return 1
+  fi
+  if [ -z "$SUNSHINE_PASSWORD" ]; then
+    echo "SUNSHINE_PASSWORD not set in .env"
+    return 1
+  fi
+  curl -k -u "sunshine:$SUNSHINE_PASSWORD" \
+    -X POST https://localhost:47990/api/pin \
+    -H "Content-Type: application/json" \
+    -d "{\"pin\": \"$1\"}"
+}
