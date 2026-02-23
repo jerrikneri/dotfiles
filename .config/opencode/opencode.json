@@ -8,7 +8,7 @@
     "list": "allow",
     "bash": {
       "*": "ask",
-      "grep *": "allow"
+      "grep *": "allow",
       "ls *": "allow"
     },
     "task": "allow",
