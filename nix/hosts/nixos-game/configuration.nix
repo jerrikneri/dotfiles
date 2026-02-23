@@ -35,6 +35,7 @@
     VKBASALT_CONFIG_FILE = "/etc/vkBasalt.conf";
   };
   environment.systemPackages = with pkgs; [
+    ethtool
     gcc
     gnumake # compile DOOM
     rocmPackages.rocm-smi # System Management Interface for AMD GPU
@@ -111,6 +112,7 @@
     };
     hostName = "nixos"; # Define your hostname.
 
+    interfaces.enp10s0.wakeOnLan.enable = true;
     interfaces.enp7s0.wakeOnLan.enable = true;
 
     # Enable networking
