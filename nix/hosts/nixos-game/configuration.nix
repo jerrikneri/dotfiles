@@ -237,7 +237,7 @@
     wantedBy = [ "graphical.target" ];
     after = [ "network.target" "graphical.target" ];
     serviceConfig = {
-      ExecStart = "${pkgs.sunshine}/bin/sunshine";
+      ExecStart = "/run/wrappers/bin/sunshine";
       Restart = "always";
       RestartSec = "5s";
       User = "kgh";
@@ -246,6 +246,7 @@
         "WAYLAND_DISPLAY=wayland-0"
         "XDG_SESSION_TYPE=wayland"
         "XDG_RUNTIME_DIR=/run/user/1000"
+        "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus"
       ];
     };
   };
