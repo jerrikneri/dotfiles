@@ -111,7 +111,7 @@
     };
     hostName = "nixos"; # Define your hostname.
 
-    interfaces.enp10s0.wakeOnLan.enable = true;
+    interfaces.enp7s0.wakeOnLan.enable = true;
 
     # Enable networking
     networkmanager.enable = true;
@@ -228,21 +228,21 @@
     };
   };
 
-  systemd.user.services.sunshine = {
+  # System-level sunshine service (more reliable than user service)
+  systemd.services.sunshine = {
     description = "Sunshine self-hosted game stream host for Moonlight";
-    wantedBy = [ "graphical-session.target" ];
-    wants = [ "pipewire.service" "graphical-session.target" ];
-    after = [ "pipewire.service" "graphical-session.target" ];
+    wantedBy = [ "default.target" ];
+    # after = [ "network.target" "graphical.target" ];
     serviceConfig = {
       ExecStart = "${pkgs.sunshine}/bin/sunshine";
       Restart = "always";
       RestartSec = "5s";
-    };
-    environment = {
-      WAYLAND_DISPLAY = "wayland-1";
-      DISPLAY = ":1";
-      XDG_SESSION_TYPE = "wayland";
-      PULSE_SERVER = "unix:/run/user/1000/pulse/native";
+      User = "kgh";
+      Environment = [
+        "DISPLAY=:0"
+        "WAYLAND_DISPLAY=wayland-1"
+        "XDG_SESSION_TYPE=wayland"
+      ];
     };
   };
 
