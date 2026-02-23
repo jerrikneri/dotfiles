@@ -21,6 +21,7 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [
     "amdgpu.ppfeaturemask=0xffffffff"
+    "video=HDMI-A-1:1920x1080@60e"
   ];
 
   # List packages installed in system profile. To search, run:
@@ -233,8 +234,8 @@
   # System-level sunshine service (more reliable than user service)
   systemd.services.sunshine = {
     description = "Sunshine self-hosted game stream host for Moonlight";
-    wantedBy = [ "default.target" ];
-    # after = [ "network.target" "graphical.target" ];
+    wantedBy = [ "graphical.target" ];
+    after = [ "network.target" "graphical.target" ];
     serviceConfig = {
       ExecStart = "${pkgs.sunshine}/bin/sunshine";
       Restart = "always";
@@ -242,8 +243,9 @@
       User = "kgh";
       Environment = [
         "DISPLAY=:0"
-        "WAYLAND_DISPLAY=wayland-1"
+        "WAYLAND_DISPLAY=wayland-0"
         "XDG_SESSION_TYPE=wayland"
+        "XDG_RUNTIME_DIR=/run/user/1000"
       ];
     };
   };
