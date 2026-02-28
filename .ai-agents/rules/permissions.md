@@ -70,6 +70,10 @@ These commands update both `opencode.json` (enforced) and this table (documented
 | bash | git branch --show-current | allow |
 | bash | git diff | allow |
 | bash | git diff * | allow |
+| bash | git log | allow |
+| bash | git log * | allow |
+| bash | git show | allow |
+| bash | git show * | allow |
 | bash | git status | allow |
 | bash | git status * | allow |
 | bash | git reset --hard * | deny |
