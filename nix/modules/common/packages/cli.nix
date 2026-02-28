@@ -6,6 +6,7 @@ in {
   environment.systemPackages = with pkgs; [
     alejandra # Uncompromising Nix Code Formatter
     bat # cat alternative
+    bats # Bash Automated Testing System
     bitwarden-cli
     claude-code
     cmatrix

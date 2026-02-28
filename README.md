@@ -8,3 +8,9 @@
     based on where you've cloned this repo.
 3. `./install.sh`
 4. Source your original profile.
+
+## Testing
+
+- Run all bash tests: `bats tests/bash`
+- Run a single suite: `bats tests/bash/worktree.bats`
+- Lint shell scripts: `shellcheck install.sh .scripts/*.sh .functions/*.sh bin/*.sh`
