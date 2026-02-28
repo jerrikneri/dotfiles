@@ -1,0 +1,3 @@
+# AI agent ignore patterns
+# Merged into target repo's .gitignore by sync-ai-md
+.env

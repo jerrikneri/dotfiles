@@ -1,0 +1,85 @@
+# Session Management Protocol
+
+> Branch-based session documentation system for AI coding agents.
+> Tool-agnostic: works with any AI coding tool that loads this file (Claude Code, Open Code, Cursor, etc.).
+> Trigger words: `[resume]`, `[compact]`, `[log]`
+
+---
+
+## Branch-Based Session Management
+
+At session start:
+1. Detect git branch: `git branch --show-current`
+2. Sanitize name for filesystem: `tests/1846-foo` -> `tests-1846-foo`
+3. Check for `workspace/context/{branch-name}/YYYY-MM-DD-CURRENT.md` (today's date)
+4. If directory doesn't exist: Create `workspace/context/{branch-name}/` and `archive/` subdirectory
+5. Load TODAY's file + LAST session's dated file (for continuity, if different day)
+6. If today's file doesn't exist: Create new `YYYY-MM-DD-CURRENT.md` for this branch
+
+During session -- update the context file automatically at these points:
+- **After completing any multi-step task** (created files, modified config, built a feature)
+- **After making a decision** that affects architecture, tooling, or workflow
+- **After discovering something non-obvious** (a gotcha, a workaround, a pattern)
+- **Before responding to the user** when any of the above apply -- don't wait to be asked
+
+Do NOT document:
+- Trivial single-file edits with obvious intent
+- Read-only exploration that didn't lead to a conclusion
+- Things already captured in git diff (code shows what changed)
+
+Rules:
+- Never delete from current files -- they accumulate until archived
+- Only load today + last session files (token efficient, ~500-1000 tokens)
+- Switching branches automatically loads different dated files (separate context per branch)
+- Documentation must be succinct and to the point -- no fluff
+- Focus on "what changed" and "why" -- the code shows "how"
+
+## Task Tracking
+
+- Use checkbox markdown files for complex tasks: `workspace/context/{branch}/tasks.md`
+- Format: `[ ]` unchecked, `[x]` completed
+- Reference with @workspace/context/{branch}/tasks.md only when needed
+
+## Archiving (Do This Proactively)
+
+- When branch context grows large: Move old `YYYY-MM-DD-CURRENT.md` files to `workspace/context/{branch}/archive/YYYY-MM/`
+- Keep only recent dated files in branch root (today + last few sessions)
+- Archive folder should be excluded from AI tool searches for token efficiency
+
+## Compacting Protocol
+
+1. Summarize key decisions, code changes, and next steps in today's `YYYY-MM-DD-CURRENT.md`
+2. Archive the file to `workspace/context/{branch}/archive/YYYY-MM/`
+3. Remind user to start a new session
+4. New session should read archived summary if continuing work
+
+## Format Rules
+
+- Always date documentation blocks (YYYY-MM-DD)
+- Keep summaries under 100 lines
+- Focus on "what changed" and "why" -- not "how" (code shows how)
+- No emojis in logs
+- Helper scripts: `workspace/context/{branch}/scripts/`
+- Doc blocks for classes/methods ok. Prefer self-documenting code. Comment only non-obvious "why"
+
+## Trigger: [resume]
+
+When user sends `[resume]` (or invokes `/resume` slash command):
+1. Load today's `YYYY-MM-DD-CURRENT.md` + last session's dated file (if exists)
+2. Summarize what was accomplished and current state
+3. Identify next steps from documentation
+4. Ready to continue seamlessly from previous session(s)
+5. When modifying dated current.md file, if removing things, move changes to archive file so they're not lost
+
+## Trigger: [compact]
+
+When user sends `[compact]` (or invokes `/compact` slash command):
+1. Dump full session context to today's `YYYY-MM-DD-CURRENT.md`
+2. Include: Tasks completed, decisions made, code changes, blockers, next steps
+3. Format for easy pickup in new session
+4. After saving, remind user to start fresh session with more token bandwidth
+
+## Trigger: [log]
+
+When user sends a prompt marked with `[log]` (or invokes `/log` slash command):
+- Save the prompt content to `workspace/context/{branch}/prompts/YYYY-MM-DD.md`

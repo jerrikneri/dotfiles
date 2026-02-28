@@ -19,3 +19,4 @@ OpenCode permissions are keyed by tool name, plus a couple of safety guards:
     external_directory — triggered when a tool touches paths outside the project working directory
     doom_loop — triggered when the same tool call repeats 3 times with identical input
 
+Canonical policy source in this repo: `.ai-agents/rules/permissions.md`.

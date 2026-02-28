@@ -162,6 +162,67 @@ _debug_echo "Debug message"
 3. **File backup**: `cp file file.old` before modifications
 4. **Symlinks**: Prefer symlinks for dotfile management
 
+## AI Agent Skills
+
+This repo contains reusable AI agent skill files in `.ai-agents/skills/`. These are model-agnostic markdown protocols that work with any AI coding tool (Claude Code, Open Code, Cursor, etc.).
+
+### Available Skills
+
+| Skill | Purpose | When |
+|-------|---------|------|
+| `.ai-agents/skills/pre-flight.md` | Assess bug clarity, scope, risk before starting | Before any fix |
+| `.ai-agents/skills/bug-triage.md` | Full protocol for investigating and fixing production errors | During the fix |
+| `.ai-agents/skills/hontoni.md` | Self-critique scoring framework (6 dimensions, composite score) | After completing fix |
+| `.ai-agents/rules/session-management.md` | Branch-based session context, resume, compact, archiving | Every session |
+| `.ai-agents/rules/agent-meta-protocol.md` | Document findings, self-improve config, fact-check, second opinion | Always on |
+
+### OpenCode Integration
+
+Skills are auto-loaded via `opencode.json` `instructions` array. Slash commands available:
+- `/pre-flight <error description>` -- run pre-flight assessment
+- `/critique` -- run hontoni scoring on completed work
+- `/second-opinion` -- harsher re-review assuming first critique was too lenient
+- `/resume` -- load branch context and resume from previous session
+- `/compact` -- dump session context for fresh restart
+- `/log <note>` -- save a prompt or note to session log
+- `/perm-allow <tool> <pattern>` -- persist a granular allow rule
+- `/perm-deny <tool> <pattern>` -- persist a granular deny rule
+- `/perm-ask <tool> <pattern>` -- persist a granular ask rule
+
+Command files: `.config/opencode/commands/`
+Config: `.config/opencode/opencode.json`
+Full extensibility reference: `.config/opencode/OPENCODE-EXTENSIBILITY.md`
+
+### Using skills in projects
+
+**Option 1 -- Symlink the skills directory into a project:**
+```bash
+ln -s ~/code/dotfiles/.ai-agents/skills /path/to/project/.ai-agents/skills
+```
+Single source of truth. Updates to dotfiles propagate automatically.
+
+**Option 2 -- Copy skills into a project:**
+```bash
+mkdir -p /path/to/project/.ai-agents/skills
+cp ~/code/dotfiles/.ai-agents/skills/*.md /path/to/project/.ai-agents/skills/
+```
+Use when the project needs its own copy (e.g., project-specific examples added).
+
+**Option 3 -- Reference inline in a project's AGENTS.md:**
+Paste the concise checklist version directly into the project's AGENTS.md and point to the skills directory for depth. See the Trial Partners portal's AGENTS.md for an example of this pattern.
+
+### Adding new skills
+
+Create a new `.md` file in `.ai-agents/skills/`. Follow these conventions:
+- Self-contained: the file must work without any other file
+- Portable: no tool-specific syntax (no `@path` imports, no YAML frontmatter)
+- Header block: include a `>` quoted block explaining what it is and how to use it
+- Language-agnostic where possible (examples in multiple languages, or generic pseudocode)
+
+### Personal project overlays
+
+For project-specific preferences that shouldn't be committed to a shared repo, create `AGENTS.local.md` at the project root (ensure it's in that project's `.gitignore`). This works as a personal overlay on top of the committed `AGENTS.md`.
+
 ## Maintenance Notes
 
 - Keep scripts modular and single-purpose

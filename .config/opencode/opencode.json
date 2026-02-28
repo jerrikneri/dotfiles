@@ -1,5 +1,28 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    ".ai-agents/skills/bug-triage.md",
+    ".ai-agents/skills/hontoni.md",
+    ".ai-agents/skills/pre-flight.md",
+    ".ai-agents/rules/session-management.md",
+    ".ai-agents/rules/agent-meta-protocol.md"
+  ],
+  "agent": {
+    "critic-opus": {
+      "description": "Hontoni reviewer using Claude Opus",
+      "mode": "subagent",
+      "model": "anthropic/claude-opus-4-6",
+      "tools": { "read": true, "edit": false, "bash": false, "grep": true, "glob": true, "list": true },
+      "permission": { "edit": "deny", "bash": "deny" }
+    },
+    "critic-codex": {
+      "description": "Hontoni reviewer using OpenAI Codex",
+      "mode": "subagent",
+      "model": "openai/codex-mini-latest",
+      "tools": { "read": true, "edit": false, "bash": false, "grep": true, "glob": true, "list": true },
+      "permission": { "edit": "deny", "bash": "deny" }
+    }
+  },
   "permission": {
     "read": "allow",
     "edit": "ask",
@@ -9,6 +32,10 @@
     "bash": {
       "*": "ask",
       "find *": "allow",
+      "git diff": "allow",
+      "git diff *": "allow",
+      "git status": "allow",
+      "git status *": "allow",
       "grep *": "ask",
       "ls *": "allow"
     },
