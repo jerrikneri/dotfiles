@@ -8,6 +8,24 @@ This is a personal dotfiles repository for Unix-like systems (macOS, Arch Linux,
 Primary languages: Shell scripts (bash/zsh), with configuration files for various tools.
 Main directories: `.aliases`, `.config`, `.functions`, `.scripts`, `bin`, `nix`, OS-specific dirs.
 
+## Quick Operating Rules
+
+- Follow the short rules in this section first for fast startup context.
+- Use detailed protocols in `.ai-agents/skills/*.md` and `.ai-agents/rules/*.md` for execution details.
+- Treat memory as two-tier: concise reusable bullets in `AGENTS.md`, deeper process detail in skills/rules files.
+- Prefer incremental updates over full rescans when maintaining memory.
+- Keep learned-memory sections compact; merge/prune before adding more bullets.
+- If guidance is personal-only or experimental, store it in `AGENTS.local.md` before promoting to `AGENTS.md`.
+- Follow command safety gates in `.ai-agents/rules/agent-meta-protocol.md`; ask before state-changing operations and include rollback guidance when making changes.
+
+## Security Baseline
+
+- Never commit secrets, credentials, or `.env` files; stop and notify if sensitive files are staged.
+- Prefer least privilege for commands and file permissions; avoid broad permission changes.
+- Treat destructive commands as high risk; run them only with explicit user instruction and a rollback plan.
+- Validate external input and quote shell variables to prevent injection and accidental globbing.
+- Keep security checks in automation (pre-commit and CI), not only manual review.
+
 ## Build/Test Commands
 
 ### Installation
@@ -172,6 +190,7 @@ This repo contains reusable AI agent skill files in `.ai-agents/skills/`. These 
 |-------|---------|------|
 | `.ai-agents/skills/pre-flight.md` | Assess bug clarity, scope, risk before starting | Before any fix |
 | `.ai-agents/skills/bug-triage.md` | Full protocol for investigating and fixing production errors | During the fix |
+| `.ai-agents/skills/continual-improvement.md` | Incremental learning loop for durable preferences and workspace facts | After meaningful work or via `/learn` |
 | `.ai-agents/skills/hontoni.md` | Self-critique scoring framework (6 dimensions, composite score) | After completing fix |
 | `.ai-agents/rules/session-management.md` | Branch-based session context, resume, compact, archiving | Every session |
 | `.ai-agents/rules/agent-meta-protocol.md` | Document findings, self-improve config, fact-check, second opinion | Always on |
@@ -182,12 +201,43 @@ Skills are auto-loaded via `opencode.json` `instructions` array. Slash commands 
 - `/pre-flight <error description>` -- run pre-flight assessment
 - `/critique` -- run hontoni scoring on completed work
 - `/second-opinion` -- harsher re-review assuming first critique was too lenient
+- `/learn` -- run continual improvement memory sync
+- `/learn-from-mistake <note>` -- run fast mistake-to-memory loop with supplied context
+- `/learn-cadence` -- evaluate cadence gates before running memory sync
 - `/resume` -- load branch context and resume from previous session
 - `/compact` -- dump session context for fresh restart
 - `/log <note>` -- save a prompt or note to session log
 - `/perm-allow <tool> <pattern>` -- persist a granular allow rule
 - `/perm-deny <tool> <pattern>` -- persist a granular deny rule
 - `/perm-ask <tool> <pattern>` -- persist a granular ask rule
+
+### Continual learning memory sections
+
+To keep memory updates safe and reusable, learned content in `AGENTS.md` should be maintained only in these managed sections:
+
+- Tier 1: concise, durable bullets in learned sections below
+- Tier 2: detailed implementation protocols in `.ai-agents/skills/*.md` and `.ai-agents/rules/*.md`
+
+## Learned User Preferences
+
+- Prefer concise progress updates with concrete file references.
+- Prefer bash-native solutions over Python for simple local automation tasks.
+- Avoid hardcoded file lists; discover files dynamically from `workspace/context/`.
+- Keep operational helper scripts in `.scripts/` rather than under `workspace/`.
+
+## Learned Workspace Facts
+
+- This repository stores reusable agent skills under `.ai-agents/skills/` and always-on rules under `.ai-agents/rules/`.
+- Learning index state is stored at `workspace/context/_meta/learning-index.json`.
+- Learning cadence state is stored at `workspace/context/_meta/learning-cadence.json`.
+- Learning index refresh helper script is `.scripts/update_learning_index.sh`.
+
+## Learned Agent Workflow Improvements
+
+- Use incremental context processing (new/changed files only) when updating learned memory.
+- Use `/learn-from-mistake <note>` for fast single-incident memory capture.
+- Use `/learn-cadence` before `/learn` for cadence-gated memory sync.
+- Keep learned-memory sections compact by merging/pruning before adding bullets.
 
 Command files: `.config/opencode/commands/`
 Config: `.config/opencode/opencode.json`

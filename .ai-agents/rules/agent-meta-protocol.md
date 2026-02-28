@@ -47,3 +47,19 @@ For non-trivial changes, apply the hontoni framework:
 - Score at minimum: Correctness (root cause vs symptom), Completeness (all paths), and Regression Risk (what could break)
 - If composite score is below 60, flag it to the user before considering the work done
 - For high-risk changes (data handling, auth, destructive operations), always self-critique before presenting as complete
+
+## 5. Command Safety And Change Approval
+
+Use this default safety policy unless a session/user instruction explicitly overrides it:
+
+- Ask before writing or modifying non-temporary files
+- Ask before state-changing commands (install/uninstall, git commit, migrations, service restarts)
+- Ask before deleting or moving files, or running commands with `sudo`
+- Ask before making configuration changes or installing dependencies
+- Group related changes into a single approval request when possible
+- Include brief rollback guidance when proposing state-changing changes
+
+Safe-by-default without extra approval:
+
+- Read-only inspection and status checks (`ls`, `read`, `grep`, `glob`, `git status`, `--help`)
+- Non-mutating validation/test commands

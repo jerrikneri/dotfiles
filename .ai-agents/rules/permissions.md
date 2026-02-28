@@ -67,7 +67,18 @@ These commands update both `opencode.json` (enforced) and this table (documented
 
 | Tool | Pattern | Action |
 |------|---------|--------|
+| bash | git branch --show-current | allow |
 | bash | git diff | allow |
 | bash | git diff * | allow |
 | bash | git status | allow |
 | bash | git status * | allow |
+| bash | git reset --hard * | deny |
+| bash | git clean -fd* | deny |
+| bash | sudo * | deny |
+| bash | rm -rf * | deny |
+| bash | chmod -R 777 * | deny |
+| bash | curl *\|*sh | deny |
+| bash | curl *\|*bash | deny |
+| bash | wget *\|*sh | deny |
+| bash | wget *\|*bash | deny |
+| glob | * | allow |
