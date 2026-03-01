@@ -61,6 +61,7 @@ in {
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     android-tools
     atuin
+    llama-cpp
     phpactor
   ];
 }
