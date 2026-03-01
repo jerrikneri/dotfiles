@@ -39,6 +39,8 @@ Rules:
 - Use checkbox markdown files for complex tasks: `workspace/context/{branch}/tasks.md`
 - Format: `[ ]` unchecked, `[x]` completed
 - Reference with @workspace/context/{branch}/tasks.md only when needed
+- If `tasks.md` is missing, initialize from `workspace/context/_templates/tasks.md`
+- Keep a small `Command Sync` block in `tasks.md` for `/resume`, `/log`, `/compact`, `/learn`, `/learn-cadence`, and `/learn-from-mistake`
 
 ## Archiving (Do This Proactively)
 
