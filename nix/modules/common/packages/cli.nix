@@ -16,6 +16,7 @@ in {
     fzf # Fuzzy Finder
     gh # git hub cli, for gh-dash
     # intelli-shell
+    llama-cpp
     neovim
     nh # yet another nix helper
     nix-output-monitor

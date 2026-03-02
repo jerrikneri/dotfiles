@@ -90,7 +90,7 @@ sync-ai-md() {
       $0 == begin { in_block = 1; next }
       $0 == end { in_block = 0; next }
       !in_block { print }
-    ' "$dest_file" > "$tmp_file"
+    ' "$dest_file" >"$tmp_file"
 
     # Normalize trailing whitespace-only lines to keep sync idempotent.
     awk '
@@ -104,14 +104,14 @@ sync-ai-md() {
           print lines[i]
         }
       }
-    ' "$tmp_file" > "$trimmed_file"
+    ' "$tmp_file" >"$trimmed_file"
 
     {
       cat "$trimmed_file"
       printf "\n%s\n" "$begin_marker"
       cat "$src_file"
       printf "\n%s\n" "$end_marker"
-    } > "$merged_file"
+    } >"$merged_file"
 
     if cmp -s "$merged_file" "$dest_file"; then
       rm -f "$tmp_file" "$trimmed_file" "$merged_file"
@@ -143,17 +143,17 @@ sync-ai-md() {
   _merge_ignore_patterns() {
     local target_ignore="$1"
     local ignore_type="$2"
-    
+
     if [ -f "$target_ignore" ]; then
       local added=0
       while IFS= read -r pattern || [ -n "$pattern" ]; do
         # Skip comments and blank lines
         [[ "$pattern" =~ ^#.*$ || -z "$pattern" ]] && continue
         if ! grep -qFx "$pattern" "$target_ignore"; then
-          echo "$pattern" >> "$target_ignore"
+          echo "$pattern" >>"$target_ignore"
           added=$((added + 1))
         fi
-      done < "$agentsignore"
+      done <"$agentsignore"
       if [ "$added" -gt 0 ]; then
         echo "  appended $added pattern(s) to $ignore_type"
       else
@@ -168,14 +168,14 @@ sync-ai-md() {
 
   # Merge .agentsignore patterns into all relevant ignore files
   local agentsignore="$DOTFILES/.ai-agents/.agentsignore"
-  
+
   if [ -f "$agentsignore" ]; then
     # .gitignore
     _merge_ignore_patterns "$target_dir/.gitignore" ".gitignore"
-    
+
     # .claudeignore
     _merge_ignore_patterns "$target_dir/.claudeignore" ".claudeignore"
-    
+
     # .opencodeignore (if this is the correct name)
     _merge_ignore_patterns "$target_dir/.opencodeignore" ".opencodeignore"
   fi
@@ -311,7 +311,7 @@ learn-cadence-status() {
       eligible=false
       reason="turns-gate-not-met"
     else
-    eligible=true
+      eligible=true
       if [ "$turns_gate" = "pass" ]; then
         reason="minutes-mtime-turns-gates-passed"
       else
@@ -335,4 +335,76 @@ learn-cadence-status() {
     return 0
   fi
   return 1
+}
+
+llama-serve() {
+  local model_name="$1"
+  local context_length="${2:-16384}"
+  local model_dir="${3:-$HOME/models}"
+
+  if [ -z "$model_name" ]; then
+    echo "Usage: llama-serve <model-name|model-file.gguf> [context-length] [model-dir]" >&2
+    echo "Example: llama-serve llama-3.2-3b-q8 32768" >&2
+    echo "Default context: 16384, Default dir: ~/models" >&2
+    return 1
+  fi
+
+  local model_file="$model_name"
+
+  if [[ "$model_file" != *.gguf ]]; then
+    model_file="${model_file}.gguf"
+  fi
+
+  local model_path="${model_dir%/}/${model_file}"
+
+  if [ ! -f "$model_path" ]; then
+    echo "Error: model file not found: $model_path" >&2
+    return 1
+  fi
+
+  echo "Serving model: $model_path with context length: $context_length"
+
+  llama-server \
+    -m "$model_path" \
+    -ngl 999 \
+    -c "$context_length" \
+    --host 127.0.0.1 \
+    --port 1337
+}
+
+# Function to serve MLX models using mlx_lm.server
+# Usage: mlx-serve <model-folder-name> [context-length] [model-dir]
+mlx-serve() {
+  local model_name="$1"
+  local context_length="${2:-16384}"
+  local model_dir="${3:-$HOME/models}"
+
+  if [ -z "$model_name" ]; then
+    echo "Usage: mlx-serve <model-folder-name> [context-length] [model-dir]" >&2
+    echo "Example: mlx-serve gpt-oss-20b 32768" >&2
+    echo "Default context: 16384, Default dir: ~/models" >&2
+    return 1
+  fi
+
+  local model_path="${model_dir%/}/${model_name}"
+
+  # Check if model folder exists
+  if [ ! -d "$model_path" ]; then
+    echo "Error: model folder not found: $model_path" >&2
+    return 1
+  fi
+
+  # Check if it's a valid MLX model folder (should contain config.json)
+  if [ ! -f "$model_path/config.json" ]; then
+    echo "Warning: config.json not found in $model_path - this may not be a valid MLX model" >&2
+  fi
+
+  echo "Serving MLX model from: $model_path with context length: $context_length"
+  
+  # Run mlx_lm server with the model path (brew-installed)
+  mlx_lm server \
+    --model "$model_path" \
+    --host 127.0.0.1 \
+    --port 1338 \
+    --max-tokens "$context_length"
 }
