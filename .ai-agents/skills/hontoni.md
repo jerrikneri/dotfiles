@@ -21,6 +21,20 @@
 
 Rate each dimension 0-100. Every score MUST cite specific `file:line` evidence. No hand-waving, no vibes-based reviews.
 
+**Core Dimensions (Always Scored):**
+1. Correctness
+2. Completeness  
+3. Test Evidence
+4. Fragility
+5. Regression Risk
+6. Seed Data Realism
+
+**Additional Dimensions (When Applicable):**
+7. Security (if handling user input, auth, or sensitive data)
+8. Assumptions (if relying on external services or data shapes)
+9. Architecture (if fix involves structural changes)
+10. Standards Compliance (if project has documented standards)
+
 ### 1. Correctness -- Root cause vs symptom masking
 
 Does the fix address WHY the error happens, or just WHERE it crashes?
@@ -127,6 +141,54 @@ Do the tests use realistic data structures, or minimal stubs that would never ex
 - Would this test catch a bug caused by a missing or null relationship in production data?
 - Am I using factories/fixtures with proper states, or just hardcoded constructor calls?
 
+### 7. Security (When Applicable)
+
+**Only score if:** Fix handles user input, authentication, authorization, or sensitive data.
+
+| Score | Criteria |
+|-------|----------|
+| 90-100 | All inputs validated. No injection vectors. Secrets handled properly. Auth verified. |
+| 70-89 | Basic security measures. Some validation gaps but low exploitability. |
+| 50-69 | Minimal security consideration. Trusts some inputs. Potential for misuse. |
+| 0-49 | Security vulnerabilities present. Injection possible. Secrets exposed. |
+
+**Red flags:** SQL concatenation, shell commands with user input, eval/exec, logging passwords/tokens.
+
+### 8. Assumptions (When Applicable)
+
+**Only score if:** Fix depends on external services, APIs, or specific data shapes.
+
+| Score | Criteria |
+|-------|----------|
+| 90-100 | All assumptions documented and validated. Handles unexpected responses. |
+| 70-89 | Key assumptions identified. Most validation in place. |
+| 50-69 | Implicit assumptions about availability/shape. Limited validation. |
+| 0-49 | Many hidden assumptions. Will break with different responses. |
+
+**Challenge:** What if the API changes tomorrow? What if this field is null?
+
+### 9. Architecture (When Applicable)
+
+**Only score if:** Fix involves structural changes, new abstractions, or cross-component changes.
+
+| Score | Criteria |
+|-------|----------|
+| 90-100 | Clear separation. Low coupling. Easy to test/deploy/monitor. |
+| 70-89 | Generally well-structured. Some coupling but manageable. |
+| 50-69 | Mixed concerns. Moderate coupling. Hard to test in isolation. |
+| 0-49 | High coupling. Untestable. Will cause deployment issues. |
+
+### 10. Standards Compliance (When Applicable)
+
+**Only score if:** Project has documented standards (AGENTS.md, CLAUDE.md, ADRs).
+
+| Score | Criteria |
+|-------|----------|
+| 90-100 | Follows all standards or documents deviations with rationale. |
+| 70-89 | Mostly compliant. Minor undocumented deviations. |
+| 50-69 | Significant drift from standards. No acknowledgment. |
+| 0-49 | Ignores patterns. Reinvents existing utilities. |
+
 ---
 
 ## Composite Score
@@ -171,6 +233,12 @@ After scoring, produce this summary. Include it in your session documentation or
 | Fragility | -- | [One-line summary with file:line reference] |
 | Regression Risk | -- | [One-line summary with file:line reference] |
 | Seed Data | -- | [One-line summary with file:line reference] |
+| Security* | -- | [One-line summary with file:line reference] |
+| Assumptions* | -- | [One-line summary with file:line reference] |
+| Architecture* | -- | [One-line summary with file:line reference] |
+| Standards* | -- | [One-line summary with file:line reference] |
+
+*Only included when applicable (see dimension descriptions)
 
 **Composite: (avg + lowest) / 2 = X.X**
 
@@ -193,3 +261,53 @@ After scoring, produce this summary. Include it in your session documentation or
 4. **Any dimension below 80 MUST generate a specific, actionable recommendation.** Not "improve tests" but "add a test that verifies getDetails returns null when credentials are expired, not just when they are missing."
 5. **Scoring your own work is harder than scoring others.** Default to skepticism. The most dangerous review is the one that lets something slide.
 6. **Second opinion:** If the first critique scored above 80 composite, consider re-running with the explicit instruction "assume the first review was too lenient." Compare the two scores and investigate divergences.
+
+---
+
+## Automatic Review Triggers
+
+The following should always trigger an automatic hontoni review without being asked:
+- Completing a bug fix (any error from monitoring/logs)
+- Creating or modifying `.ai-agents/skills/` or `.ai-agents/rules/`
+- Implementing features that touch 3+ files
+- Any changes involving auth, payments, or data integrity
+- Before opening any PR
+
+Include the review table in your response with a note like "Auto-review complete (composite: X.X)" so it's clear this was proactive, not requested.
+
+---
+
+## Example Review
+
+Here's a complete review of a hypothetical API integration bug fix:
+
+```markdown
+## Hontoni Review
+
+| Dimension | Score | Key Finding |
+|-----------|-------|-------------|
+| Correctness | 85 | api_service.rb:142 - Fixed root cause (missing retry), not just symptom |
+| Completeness | 70 | api_service.rb:89 - Checked 3/4 callers, missed background job caller |
+| Test Evidence | 90 | api_service_spec.rb:234 - Reproduces exact timeout scenario with VCR |
+| Fragility | 75 | api_service.rb:145 - Handles timeout/network errors, not rate limits |
+| Regression Risk | 95 | No signature changes, backward compatible retry behavior |
+| Seed Data | 80 | api_service_spec.rb:45 - Uses factory but simplified API response |
+| Security* | 85 | api_service.rb:148 - Validates webhook signatures properly |
+| Assumptions* | 65 | api_service.rb:152 - Assumes API always returns JSON, no XML handling |
+| Architecture* | N/A | Simple fix, no structural changes |
+| Standards* | 90 | Follows project's established retry pattern from ADR-003 |
+
+*Security included due to webhook handling, Assumptions due to external API dependency, Standards due to existing ADRs
+
+**Composite: (avg + lowest) / 2 = (81.1 + 65) / 2 = 73.05**
+
+### Weaknesses (mandatory)
+1. api_service.rb:89 - BackgroundJobCaller#sync_data also calls this method but wasn't checked for impact
+2. api_service.rb:152 - No handling for API returning XML/HTML error pages instead of JSON
+
+### Recommendations
+1. Add test for BackgroundJobCaller integration and verify retry behavior works in job context
+2. Add response type validation before JSON parsing, handle non-JSON responses gracefully
+```
+
+This example shows how conditional dimensions are included when relevant and omitted when not applicable.

@@ -2,7 +2,7 @@
 
 > Branch-based session documentation system for AI coding agents.
 > Tool-agnostic: works with any AI coding tool that loads this file (Claude Code, Open Code, Cursor, etc.).
-> Trigger words: `[resume]`, `[compact]`, `[log]`
+> Trigger words: `[resume]`, `[document]`, `[log]`
 
 ---
 
@@ -40,7 +40,7 @@ Rules:
 - Format: `[ ]` unchecked, `[x]` completed
 - Reference with @workspace/context/{branch}/tasks.md only when needed
 - If `tasks.md` is missing, initialize from `workspace/context/_templates/tasks.md`
-- Keep a small `Command Sync` block in `tasks.md` for `/resume`, `/log`, `/compact`, `/learn`, `/learn-cadence`, and `/learn-from-mistake`
+- Keep a small `Command Sync` block in `tasks.md` for `/resume`, `/log`, `/document`, `/learn`, `/learn-cadence`, and `/learn-from-mistake`
 
 ## Archiving (Do This Proactively)
 
@@ -48,7 +48,7 @@ Rules:
 - Keep only recent dated files in branch root (today + last few sessions)
 - Archive folder should be excluded from AI tool searches for token efficiency
 
-## Compacting Protocol
+## Documentation Protocol
 
 1. Summarize key decisions, code changes, and next steps in today's `YYYY-MM-DD-CURRENT.md`
 2. Archive the file to `workspace/context/{branch}/archive/YYYY-MM/`
@@ -73,9 +73,9 @@ When user sends `[resume]` (or invokes `/resume` slash command):
 4. Ready to continue seamlessly from previous session(s)
 5. When modifying dated current.md file, if removing things, move changes to archive file so they're not lost
 
-## Trigger: [compact]
+## Trigger: [document]
 
-When user sends `[compact]` (or invokes `/compact` slash command):
+When user sends `[document]` (or invokes `/document` slash command):
 1. Dump full session context to today's `YYYY-MM-DD-CURRENT.md`
 2. Include: Tasks completed, decisions made, code changes, blockers, next steps
 3. Format for easy pickup in new session

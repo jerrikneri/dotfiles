@@ -30,7 +30,41 @@ When suggesting changes:
 - Explain the tradeoff: what convenience is gained, what safety is relaxed
 - Never auto-apply config changes -- always propose and let the user decide
 
-## 3. Fact-Check Yourself
+## 3. Recognize Repetition and Suggest Skills
+
+Watch for repetitive patterns during the session and proactively suggest creating skills:
+
+### Pattern Recognition Triggers
+- User asks for the same type of task more than twice in a session
+- User provides similar instructions across multiple sessions (check context files)
+- A multi-step workflow is repeated with minor variations
+- User describes a process that could be templated
+- Complex instructions that would benefit from structured guidance
+
+### When to Suggest a Skill
+Proactively say: **"I notice this is a repeating pattern. Should we create a skill for this?"** when:
+
+- The task has clear steps that could be codified
+- The pattern is likely to be useful beyond the current project
+- The workflow involves specific decision points or quality checks
+- There's domain-specific knowledge that should be preserved
+
+### What Makes a Good Skill Candidate
+- **Repeatability**: Will this be done again in similar contexts?
+- **Complexity**: Does it have enough steps to benefit from documentation?
+- **Variability**: Can it be parameterized for different scenarios?
+- **Value**: Will it save time or reduce errors in the future?
+
+### How to Suggest
+When suggesting a skill, provide:
+1. A brief description of the pattern noticed
+2. A proposed skill name (e.g., "api-integration-testing", "database-migration-safety")
+3. Key sections the skill would include
+4. Estimated time savings for future use
+
+Example: *"I've noticed we've now done three API integrations with similar patterns around error handling and retry logic. Should we create an 'api-integration-patterns' skill that captures these best practices? It would include sections on error handling, retry strategies, and testing approaches."*
+
+## 4. Fact-Check Yourself
 
 Before presenting conclusions or making changes based on assumptions:
 
@@ -39,7 +73,7 @@ Before presenting conclusions or making changes based on assumptions:
 - **Flag uncertainty**: If you're not sure about something, say so explicitly rather than presenting it as fact
 - **Check recency**: For tool documentation and APIs, prefer reading actual config/source files over training knowledge, which may be outdated
 
-## 4. Get Second Opinion
+## 5. Get Second Opinion
 
 For non-trivial changes, apply the hontoni framework:
 
@@ -48,7 +82,33 @@ For non-trivial changes, apply the hontoni framework:
 - If composite score is below 60, flag it to the user before considering the work done
 - For high-risk changes (data handling, auth, destructive operations), always self-critique before presenting as complete
 
-## 5. Command Safety And Change Approval
+### Automatic Review Triggers
+
+**Always run hontoni review automatically when:**
+- Creating or modifying skills in `.ai-agents/skills/`
+- Updating rules in `.ai-agents/rules/`
+- Making changes to AGENTS.md or other instruction files
+- Implementing complex multi-file features
+- Fixing bugs that affect multiple code paths
+
+**Include in response without being asked:**
+- Append a brief hontoni score table after completing qualifying work
+- If score is below 70, prominently highlight weaknesses
+- For scores 60-69, ask: "Should I address these weaknesses before proceeding?"
+- For scores below 60, state: "This needs improvement. Here's what I should fix..."
+
+**Example auto-review format:**
+```
+[Work completed]
+
+Auto-Review: Hontoni Score
+- Correctness: 85 (addresses root cause)
+- Completeness: 70 (missed edge case X)
+- Test Evidence: 90 (comprehensive examples)
+Composite: 78.3 ✓
+```
+
+## 6. Command Safety And Change Approval
 
 Use this default safety policy unless a session/user instruction explicitly overrides it:
 

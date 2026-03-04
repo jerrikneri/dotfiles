@@ -67,6 +67,7 @@ These commands update both `opencode.json` (enforced) and this table (documented
 
 | Tool | Pattern | Action |
 |------|---------|--------|
+| bash | ./vendor/bin/sail pest * | allow |
 | bash | git branch --show-current | allow |
 | bash | git diff | allow |
 | bash | git diff * | allow |

@@ -27,6 +27,7 @@ This trigger runs a short learning loop from fresh context instead of waiting fo
 - Repeated user preferences (workflow, communication, tool usage)
 - Durable workspace facts (repo conventions, recurring constraints)
 - Reusable process improvements that should become stable protocol
+- Repetitive patterns that could become skills (multi-step workflows, complex instructions)
 
 ## Inclusion Bar
 
@@ -111,16 +112,18 @@ Promotion gates:
 1. Read `AGENTS.md` first, then `AGENTS.local.md` if present.
 2. Load incremental state from `workspace/context/_meta/learning-index.json` if present.
 3. Process only new or modified context/prompt files since last run.
-4. Extract candidate learnings with source references (file and date).
-5. Score each candidate for confidence and durability (`low`, `medium`, `high`).
-6. Keep only `medium` or `high` in both dimensions.
-7. Run contradiction check against existing memory bullets before persisting.
-8. Update matching bullets in place when semantically equivalent.
-9. Add only net-new bullets that survive inclusion bar and quality gate.
-10. Deduplicate aggressively to avoid instruction bloat.
-11. Enforce memory budget for each managed section before writing.
-12. Write updated incremental state with latest file mtimes.
-13. Append a short changelog note in today's branch context file.
+4. **Scan for repetitive patterns** that could become skills (see Pattern Recognition section).
+5. Extract candidate learnings with source references (file and date).
+6. Score each candidate for confidence and durability (`low`, `medium`, `high`).
+7. Keep only `medium` or `high` in both dimensions.
+8. Run contradiction check against existing memory bullets before persisting.
+9. Update matching bullets in place when semantically equivalent.
+10. Add only net-new bullets that survive inclusion bar and quality gate.
+11. **Propose skill creation** for identified patterns (3+ occurrences).
+12. Deduplicate aggressively to avoid instruction bloat.
+13. Enforce memory budget for each managed section before writing.
+14. Write updated incremental state with latest file mtimes.
+15. Append a short changelog note in today's branch context file.
 
 ## Contradiction Resolution
 
@@ -131,12 +134,62 @@ Before writing new memory bullets:
 - Record replacement rationale in branch context changelog.
 - Never keep both sides of a contradiction in managed sections.
 
+## Pattern Recognition for Skills
+
+When scanning context files during learning runs, actively look for:
+
+1. **Repetitive Task Patterns**
+   - Same type of task appearing 3+ times across sessions
+   - Multi-step workflows with consistent structure
+   - Complex instructions that users provide repeatedly
+   - Error patterns that require similar fixes
+
+2. **Skill Creation Triggers**
+   - User says "like we did before" or "same as last time"
+   - Copy-pasting previous instructions with minor edits
+   - Explaining a process in detail multiple times
+   - Workflows that involve specific domain knowledge
+
+3. **Skill Proposal Format**
+   When a pattern is detected, create a learning event:
+   ```markdown
+   ### Skill Candidate: [Proposed Name]
+   - Pattern: [What was repeated]
+   - Frequency: [How often seen]
+   - Value: [Time saved, errors prevented]
+   - Proposed sections: [Key parts of the skill]
+   ```
+
+   **Concrete Example:**
+   ```markdown
+   ### Skill Candidate: api-error-handling
+   - Pattern: Implementing error handling for external API calls with retry logic
+   - Frequency: 4 times in last 3 sessions (Stripe, Twilio, Weather API, OAuth)
+   - Value: ~2 hours per implementation, prevents common timeout/retry mistakes
+   - Proposed sections:
+     - Purpose: Standardize external API error handling
+     - When to Use: Any external HTTP API integration
+     - Error Taxonomy: Network vs API vs Auth errors
+     - Retry Strategy: Exponential backoff with jitter
+     - Circuit Breaker: When to stop retrying
+     - Logging Standards: What to log, PII considerations
+   - Evidence: 
+     - workspace/context/feature/2024-01-15-CURRENT.md (Stripe integration)
+     - workspace/context/api/2024-01-18-CURRENT.md (Twilio webhooks)
+   ```
+
+4. **Auto-Creation Threshold**
+   - If pattern appears 5+ times: Strong recommendation
+   - If pattern appears 3-4 times: Moderate recommendation
+   - If pattern appears 2 times: Note for future consideration
+
 ## Promotion Rules
 
 - Promote to `AGENTS.md` only if broadly reusable for this repository.
 - Write to `AGENTS.local.md` if preference is personal and not for commit.
 - If pattern is repeatable and multi-step, promote to `.ai-agents/skills/*.md`.
 - If behavior must always apply, promote to `.ai-agents/rules/*.md`.
+- If pattern involves domain-specific workflow, create new skill in `.ai-agents/skills/`.
 
 ## Decay And Review
 
@@ -160,6 +213,22 @@ Use this template in branch context when logging candidate learnings:
 - Confidence: {low|medium|high}
 - Durability: {low|medium|high}
 - Destination: {context|AGENTS.local.md|AGENTS.md|skill|rule}
+```
+
+For skill candidates, use this additional template:
+
+```markdown
+### Skill Candidate: {proposed-skill-name}
+
+- Pattern: {description of repeated workflow}
+- Frequency: {times observed across sessions}
+- Value: {estimated time savings or error prevention}
+- Proposed sections:
+  - Purpose
+  - When to Use
+  - {Domain-specific sections}
+  - Common Pitfalls
+- Evidence: {file references where pattern appeared}
 ```
 
 ## Memory Quality Gate

@@ -193,7 +193,7 @@ This repo contains reusable AI agent skill files in `.ai-agents/skills/`. These 
 | `.ai-agents/skills/continual-improvement.md` | Incremental learning loop for durable preferences and workspace facts | After meaningful work or via `/learn` |
 | `.ai-agents/skills/hontoni.md` | Self-critique scoring framework (6 dimensions, composite score) | After completing fix |
 | `.ai-agents/rules/session-management.md` | Branch-based session context, resume, compact, archiving | Every session |
-| `.ai-agents/rules/agent-meta-protocol.md` | Document findings, self-improve config, fact-check, second opinion | Always on |
+| `.ai-agents/rules/agent-meta-protocol.md` | Document findings, self-improve config, recognize repetition, fact-check, second opinion | Always on |
 
 ### OpenCode Integration
 
@@ -205,7 +205,7 @@ Skills are auto-loaded via `opencode.json` `instructions` array. Slash commands 
 - `/learn-from-mistake <note>` -- run fast mistake-to-memory loop with supplied context
 - `/learn-cadence` -- evaluate cadence gates before running memory sync
 - `/resume` -- load branch context and resume from previous session
-- `/compact` -- dump session context for fresh restart
+- `/document` -- dump session context for fresh restart
 - `/log <note>` -- save a prompt or note to session log
 - `/perm-allow <tool> <pattern>` -- persist a granular allow rule
 - `/perm-deny <tool> <pattern>` -- persist a granular deny rule
@@ -238,6 +238,7 @@ To keep memory updates safe and reusable, learned content in `AGENTS.md` should 
 - Use `/learn-from-mistake <note>` for fast single-incident memory capture.
 - Use `/learn-cadence` before `/learn` for cadence-gated memory sync.
 - Keep learned-memory sections compact by merging/pruning before adding bullets.
+- Check for existing test files before creating new ones; add tests to existing files to maintain cohesion.
 
 Command files: `.config/opencode/commands/`
 Config: `.config/opencode/opencode.json`
