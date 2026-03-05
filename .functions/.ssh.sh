@@ -50,6 +50,7 @@ s() {
 wake-list() {
   cat <<'EOF'
 Available wake targets:
+  test-bazzite
   home-server
   proxmox-amd
 EOF
@@ -67,16 +68,20 @@ wake() {
     return 0
   fi
 
+  jump_target="${M1_MAC_USER}@${M1_MAC_HOST}"
+
   case "$target_name" in
+  test-bazzite)
+    target_mac="$BAZZITE_MAC"
+    broadcast_ip="${BAZZITE_HOST}"
+    ;;
   home-server)
     target_mac="$HOME_SERVER_MAC"
-    broadcast_ip="${HOME_SERVER_BROADCAST_IP:-192.168.1.255}"
-    jump_target="${MM_PVE_HOST}@${PVE_UBUNTU_JUMP_IP}"
+    broadcast_ip="${HOME_SERVER_BROADCAST_IP:-192.168.20.255}"
     ;;
   proxmox-amd)
     target_mac="$PROXMOX_MA"
-    broadcast_ip="${PROXMOX_BROADCAST_IP:-192.168.1.255}"
-    jump_target="${MM_PVE_HOST}@${PVE_UBUNTU_JUMP_IP}"
+    broadcast_ip="${PROXMOX_BROADCAST_IP:-192.168.20.255}"
     ;;
   *)
     echo "Unknown wake target: $target_name" >&2
