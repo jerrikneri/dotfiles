@@ -13,6 +13,7 @@
 - After completing any production bug fix (error monitoring alerts, failed jobs, user-reported)
 - Before opening a PR for review
 - When reviewing someone else's bug fix PR
+- When implementing new features or architectural changes
 - When a first review felt too lenient ("LGTM" without receipts)
 
 ---
@@ -34,6 +35,7 @@ Rate each dimension 0-100. Every score MUST cite specific `file:line` evidence. 
 8. Assumptions (if relying on external services or data shapes)
 9. Architecture (if fix involves structural changes)
 10. Standards Compliance (if project has documented standards)
+11. Reinvention Risk (if custom code overlaps battle-tested libraries/utilities)
 
 ### 1. Correctness -- Root cause vs symptom masking
 
@@ -189,6 +191,21 @@ Do the tests use realistic data structures, or minimal stubs that would never ex
 | 50-69 | Significant drift from standards. No acknowledgment. |
 | 0-49 | Ignores patterns. Reinvents existing utilities. |
 
+### 11. Reinvention Risk (When Applicable)
+
+**Only score if:** The change introduces custom logic in areas with common existing solutions.
+
+Did we hand-roll something that already exists and is safer to reuse?
+
+| Score | Criteria |
+|-------|----------|
+| 90-100 | Uses established libraries/patterns, or clearly documents why custom code is required. |
+| 70-89 | Mostly uses libraries, with minor custom logic that is reasonable. |
+| 50-69 | Significant custom implementation where standard libraries already solve it well. |
+| 0-49 | Dangerous reinvention in high-risk areas (auth, crypto, input sanitization, date/time parsing). |
+
+**Danger zones:** auth/session flows, cryptography/token generation, escaping/sanitization, timezone math/parsing, schema validation.
+
 ---
 
 ## Composite Score
@@ -237,6 +254,7 @@ After scoring, produce this summary. Include it in your session documentation or
 | Assumptions* | -- | [One-line summary with file:line reference] |
 | Architecture* | -- | [One-line summary with file:line reference] |
 | Standards* | -- | [One-line summary with file:line reference] |
+| Reinvention* | -- | [One-line summary with file:line reference] |
 
 *Only included when applicable (see dimension descriptions)
 
@@ -261,6 +279,7 @@ After scoring, produce this summary. Include it in your session documentation or
 4. **Any dimension below 80 MUST generate a specific, actionable recommendation.** Not "improve tests" but "add a test that verifies getDetails returns null when credentials are expired, not just when they are missing."
 5. **Scoring your own work is harder than scoring others.** Default to skepticism. The most dangerous review is the one that lets something slide.
 6. **Second opinion:** If the first critique scored above 80 composite, consider re-running with the explicit instruction "assume the first review was too lenient." Compare the two scores and investigate divergences.
+7. **Pre-flight check:** Run a pre-assessment BEFORE starting work to identify clarity/scope/risk/context gaps. See `pre-flight.md`.
 
 ---
 
@@ -296,6 +315,7 @@ Here's a complete review of a hypothetical API integration bug fix:
 | Assumptions* | 65 | api_service.rb:152 - Assumes API always returns JSON, no XML handling |
 | Architecture* | N/A | Simple fix, no structural changes |
 | Standards* | 90 | Follows project's established retry pattern from ADR-003 |
+| Reinvention* | N/A | Reused existing HTTP client/retry utilities |
 
 *Security included due to webhook handling, Assumptions due to external API dependency, Standards due to existing ADRs
 
