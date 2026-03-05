@@ -67,19 +67,12 @@ sync-ai-md() {
     fi
   }
 
-  # Helper: sync source file into managed append block in destination file.
-  _sync_append_block() {
-    local src_file="$1"
-    local dest_file="$2"
-    local label="$3"
-    local begin_marker="<!-- BEGIN DOTFILES AGENTS SYNC -->"
-    local end_marker="<!-- END DOTFILES AGENTS SYNC -->"
-
-    if [ ! -f "$dest_file" ]; then
-      cp "$src_file" "$dest_file"
-      echo "  created $label"
-      return
-    fi
+  # Helper: ensure AGENTS.md contains a managed reference to AGENTS.local.md.
+  _ensure_agents_local_reference() {
+    local agents_file="$1"
+    local begin_marker="<!-- BEGIN DOTFILES AGENTS LOCAL REF -->"
+    local end_marker="<!-- END DOTFILES AGENTS LOCAL REF -->"
+    local managed_line="If present, read and follow instructions in AGENTS.local.md from this repository root."
 
     local tmp_file trimmed_file merged_file
     tmp_file="$(mktemp)"
@@ -90,9 +83,8 @@ sync-ai-md() {
       $0 == begin { in_block = 1; next }
       $0 == end { in_block = 0; next }
       !in_block { print }
-    ' "$dest_file" >"$tmp_file"
+    ' "$agents_file" >"$tmp_file"
 
-    # Normalize trailing whitespace-only lines to keep sync idempotent.
     awk '
       { lines[NR] = $0 }
       END {
@@ -109,35 +101,49 @@ sync-ai-md() {
     {
       cat "$trimmed_file"
       printf "\n%s\n" "$begin_marker"
-      cat "$src_file"
-      printf "\n%s\n" "$end_marker"
+      printf "%s\n" "$managed_line"
+      printf "%s\n" "$end_marker"
     } >"$merged_file"
 
-    if cmp -s "$merged_file" "$dest_file"; then
+    if cmp -s "$merged_file" "$agents_file"; then
       rm -f "$tmp_file" "$trimmed_file" "$merged_file"
-      echo "  $label already synced"
+      echo "  AGENTS.md already references AGENTS.local.md"
       return
     fi
 
     local backup
-    backup="$(_backup_path "$dest_file")"
-    /bin/cp "$merged_file" "$dest_file"
+    backup="$(_backup_path "$agents_file")"
+    /bin/cp "$merged_file" "$agents_file"
 
     rm -f "$tmp_file" "$trimmed_file" "$merged_file"
-    echo "  synced $label (appended managed block, backup: $backup)"
+    echo "  updated AGENTS.md (managed AGENTS.local.md reference, backup: $backup)"
   }
 
   echo "Syncing AI config from $DOTFILES -> $target_dir"
 
-  # AGENTS.md (append-managed sync instead of symlink overwrite)
-  _sync_append_block "$DOTFILES/AGENTS.md" "$target_dir/AGENTS.md" "AGENTS.md"
+  local target_agents="$target_dir/AGENTS.md"
+  local target_agents_local="$target_dir/AGENTS.local.md"
 
-  # .ai-agents/skills/
-  mkdir -p "$target_dir/.ai-agents"
-  _sync_link "$DOTFILES/.ai-agents/skills" "$target_dir/.ai-agents/skills" ".ai-agents/skills"
+  if [ -L "$target_agents" ]; then
+    echo "  AGENTS.md is a symlink; leaving as-is"
+  elif [ ! -e "$target_agents" ]; then
+    ln -sfn "$DOTFILES/AGENTS.md" "$target_agents"
+    echo "  linked AGENTS.md"
+  else
+    _sync_link "$DOTFILES/AGENTS.md" "$target_agents_local" "AGENTS.local.md"
+    _ensure_agents_local_reference "$target_agents"
+  fi
 
-  # .ai-agents/rules/
-  _sync_link "$DOTFILES/.ai-agents/rules" "$target_dir/.ai-agents/rules" ".ai-agents/rules"
+  if [ -L "$target_dir/.ai-agents" ]; then
+    echo "  .ai-agents is a symlink; leaving as-is"
+  else
+    # .ai-agents/skills/
+    mkdir -p "$target_dir/.ai-agents"
+    _sync_link "$DOTFILES/.ai-agents/skills" "$target_dir/.ai-agents/skills" ".ai-agents/skills"
+
+    # .ai-agents/rules/
+    _sync_link "$DOTFILES/.ai-agents/rules" "$target_dir/.ai-agents/rules" ".ai-agents/rules"
+  fi
 
   # Helper: merge .agentsignore patterns into a target ignore file
   _merge_ignore_patterns() {
@@ -181,7 +187,7 @@ sync-ai-md() {
   fi
 
   echo "Done."
-  unset -f _backup_path _sync_link _sync_append_block _merge_ignore_patterns
+  unset -f _backup_path _sync_link _ensure_agents_local_reference _merge_ignore_patterns
 }
 
 # Evaluate continual-learning cadence gates.

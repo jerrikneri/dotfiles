@@ -123,3 +123,100 @@ Safe-by-default without extra approval:
 
 - Read-only inspection and status checks (`ls`, `read`, `grep`, `glob`, `git status`, `--help`)
 - Non-mutating validation/test commands
+
+## 7. Automatic Test Execution
+
+After completing work that modifies code files, automatically run relevant tests before presenting the work as complete.
+
+### When to Run Tests Automatically
+
+**Always run tests when:**
+- Completing bug fixes (run test suite for affected components)
+- Adding new features (run full test suite + new tests)
+- Modifying existing functionality (run tests for changed files)
+- Refactoring code (run tests to ensure no regressions)
+- Before marking any code-modifying task as complete
+
+**Skip test execution only when:**
+- Changes are purely documentation (README, comments)
+- Changes are configuration-only (no code logic)
+- Working in exploration/investigation mode
+- User explicitly says "skip tests" or "I'll run tests later"
+
+### Test Execution Protocol
+
+1. **Identify test scope**:
+   - For focused changes: run tests for modified files/modules
+   - For cross-cutting changes: run broader test suite
+   - For bug fixes: include tests that reproduce the original issue
+
+2. **Run tests with appropriate commands**:
+   - Check for test scripts in package.json, Makefile, etc.
+   - Use project-specific test runners (pytest, jest, rspec, etc.)
+   - Capture both stdout and stderr
+
+3. **Analyze results**:
+   - If all pass: proceed with completion summary
+   - If failures: fix issues before considering work complete
+   - If flaky: re-run to confirm (note flakiness in documentation)
+
+4. **Fix any failures**:
+   - Address test failures immediately
+   - Update tests if the change legitimately alters expected behavior
+   - Never present work as complete with failing tests
+
+5. **Document results**:
+   - Include test summary in completion response
+   - Note any significant changes to test coverage
+   - Document any test modifications made
+
+### Completion Format with Tests
+
+When presenting completed work, include test status:
+
+```
+✓ Implemented [feature/fix description]
+✓ Tests: 42 passed, 0 failed
+✓ Coverage: maintained at 89%
+✓ All changes verified by automated tests
+```
+
+For failures that were fixed:
+
+```
+✓ Implemented [feature/fix description]
+✓ Fixed 3 failing tests affected by changes
+✓ Tests: 42 passed, 0 failed (after fixes)
+✓ Updated test expectations for new behavior
+```
+
+### Integration with Hontoni Review
+
+- Test execution happens BEFORE the hontoni self-critique
+- Test results inform the "Test Evidence" dimension score
+- Failing tests automatically cap the Test Evidence score at 50
+- Fixed test failures should be noted in the review
+
+### Common Test Commands Reference
+
+Detect and use the appropriate test command for the project:
+
+- **JavaScript/TypeScript**: `npm test`, `yarn test`, `pnpm test`
+- **Python**: `pytest`, `python -m pytest`, `python -m unittest`
+- **Ruby**: `rspec`, `rake test`, `bundle exec rspec`
+- **Go**: `go test ./...`, `go test -v ./...`
+- **Rust**: `cargo test`
+- **Shell**: `shellcheck *.sh`, `bats test/`
+- **Make**: `make test`, `make check`
+
+If no standard test command is found, check for:
+- `test/`, `tests/`, `spec/`, `__tests__/` directories
+- Test files matching `*_test.*`, `*_spec.*`, `test_*.*`
+- CI configuration files (.github/workflows, .gitlab-ci.yml)
+
+### Exceptions and Edge Cases
+
+**When tests are slow**: Run a focused subset first, note if full suite should be run later
+**When tests require services**: Document if tests need database, Redis, etc.
+**When adding tests to untested code**: Note the improvement in test coverage
+**When tests don't exist**: Flag this as a risk in the hontoni review
