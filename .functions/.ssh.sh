@@ -60,7 +60,7 @@ wake() {
   local target_name="$1"
   local port="${2:-9}"
   local target_mac=""
-  local broadcast_ip=""
+  local broadcast_ip="$VLAN_20"
   local jump_target=""
 
   if [ -z "$target_name" ] || [ "$target_name" = "--list" ]; then
@@ -73,15 +73,12 @@ wake() {
   case "$target_name" in
   test-bazzite)
     target_mac="$BAZZITE_MAC"
-    broadcast_ip="${BAZZITE_HOST}"
     ;;
   home-server)
     target_mac="$HOME_SERVER_MAC"
-    broadcast_ip="${HOME_SERVER_BROADCAST_IP:-192.168.20.255}"
     ;;
   proxmox-amd)
     target_mac="$PROXMOX_MA"
-    broadcast_ip="${PROXMOX_BROADCAST_IP:-192.168.20.255}"
     ;;
   *)
     echo "Unknown wake target: $target_name" >&2
