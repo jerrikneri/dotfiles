@@ -134,9 +134,9 @@ prompt_purification_setup() {
     ZSH_THEME_GIT_PROMPT_AHEAD="%B%F{green}%f%b "
 
     prompt_git_branch
-    RPROMPT='$(prompt_git_info) $(git_prompt_status)'
-    # Two-line prompt: full path on first line, normal prompt on second line
-    PROMPT=$'%F{cyan}%~%f\n%B%F{red}%n@%m %B%F{blue}>%f%b '
+    RPROMPT=''
+    # Three-line prompt: git info on first line, full path on second line, prompt on third line
+    PROMPT=$'$(prompt_git_info) $(git_prompt_status)\n%F{cyan}%~%f\n%B%F{red}%n@%m %B%F{blue}>%f%b '
 }
 
 prompt_purification_setup
