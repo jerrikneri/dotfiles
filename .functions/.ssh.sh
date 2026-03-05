@@ -68,7 +68,7 @@ wake() {
     return 0
   fi
 
-  jump_target="${M1_MAC_USER}@${M1_MAC_HOST}"
+  jump_target="${M1_MAX_USER}@${M1_MAX_HOST}"
 
   case "$target_name" in
   test-bazzite)
