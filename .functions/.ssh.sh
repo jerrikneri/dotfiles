@@ -47,55 +47,35 @@ s() {
   esac
 }
 
-wake-list() {
-  cat <<'EOF'
-Available wake targets:
-  test-bazzite
-  home-server
-  proxmox-amd
-EOF
-}
-
 wake() {
   local target_name="$1"
-  local port="${2:-9}"
+  local port=9 # NixOS confirmed to work on port 9
   local target_mac=""
   local broadcast_ip="$VLAN_20"
-  local jump_target=""
+  local jump_target="${M1_MAX_USER}@${M1_MAX_HOST}"
 
-  if [ -z "$target_name" ] || [ "$target_name" = "--list" ]; then
-    wake-list
+  if [ -z "$target_name" ] || [ "$target_name" = "--help" ]; then
+    echo "Usage: wake <target>"
+    echo "Available target:"
+    echo " nix-server "
+    echo " nix-gaming "
     return 0
   fi
 
-  jump_target="${M1_MAX_USER}@${M1_MAX_HOST}"
-
   case "$target_name" in
-  test-bazzite)
-    target_mac="$BAZZITE_MAC"
+  nix-gaming)
+    target_max="${NIX_GAMING_MAC}"
     ;;
-  home-server)
-    target_mac="$HOME_SERVER_MAC"
-    ;;
-  proxmox-amd)
-    target_mac="$PROXMOX_MA"
+  nix-server)
+    target_mac="${NIX_SERVER_MAC}"
     ;;
   *)
     echo "Unknown wake target: $target_name" >&2
-    wake-list
+    echo "Available target: nixos"
     return 1
     ;;
   esac
 
-  if [ -z "$target_mac" ]; then
-    echo "Missing MAC for target: $target_name" >&2
-    return 1
-  fi
-
-  if [ -z "$MM_PVE_HOST" ] || [ -z "$PVE_UBUNTU_JUMP_IP" ]; then
-    echo "Missing jump host variables: MM_PVE_HOST/PVE_UBUNTU_JUMP_IP" >&2
-    return 1
-  fi
-
-  ssh "$jump_target" "if command -v wakeonlan >/dev/null 2>&1; then wakeonlan -i '$broadcast_ip' -p '$port' '$target_mac'; elif command -v wol >/dev/null 2>&1; then wol -i '$broadcast_ip' '$target_mac'; else echo 'wakeonlan/wol not installed on jump host' >&2; exit 127; fi"
+  echo "Waking $target_name via $jump_target..."
+  ssh "$jump_target" "if command -v wakeonlan >/dev/null 2>&1; then wakeonlan -i '$broadcast_ip' -p '$port' '$target_mac'; else echo 'wakeonlan not installed on jump host' >&2; exit 127; fi"
 }
