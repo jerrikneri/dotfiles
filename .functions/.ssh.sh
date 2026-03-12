@@ -51,7 +51,7 @@ wake() {
   local target_name="$1"
   local port=9 # NixOS confirmed to work on port 9
   local target_mac=""
-  local broadcast_ip="$VLAN_20"
+  local broadcast_ip="255.255.255.255"
   local jump_target="${M1_MAX_USER}@${M1_MAX_HOST}"
 
   if [ -z "$target_name" ] || [ "$target_name" = "--help" ]; then
