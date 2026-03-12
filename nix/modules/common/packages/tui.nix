@@ -5,7 +5,6 @@
     # btop # htop / top alternative
     caligula # DD TUI (writing to disks)
     gh-dash
-    jiratui
     lazydocker
     lazygit
     lazysql
@@ -26,6 +25,7 @@
     yazi # File TUI
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     btop # htop / top alternative
+    jiratui
   ];
 }
 

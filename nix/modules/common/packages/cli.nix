@@ -7,7 +7,6 @@ in {
     alejandra # Uncompromising Nix Code Formatter
     bat # cat alternative
     bitwarden-cli
-    claude-code
     cmatrix
     diff-so-fancy
     fastfetch
@@ -60,6 +59,7 @@ in {
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     android-tools
     atuin
+    claude-code
     phpactor
   ];
 }
