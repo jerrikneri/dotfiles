@@ -64,7 +64,7 @@ wake() {
 
   case "$target_name" in
   nix-gaming)
-    target_max="${NIX_GAMING_MAC}"
+    target_mac="${NIX_GAMING_MAC}"
     ;;
   nix-server)
     target_mac="${NIX_SERVER_MAC}"
