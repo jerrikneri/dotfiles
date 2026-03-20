@@ -15,6 +15,7 @@ in {
     ffmpeg
     fzf # Fuzzy Finder
     gh # git hub cli, for gh-dash
+    glow
     # intelli-shell
     llama-cpp
     neovim
