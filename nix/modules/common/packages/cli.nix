@@ -8,7 +8,6 @@ in {
     bat # cat alternative
     bats # Bash Automated Testing System
     bitwarden-cli
-    claude-code
     cmatrix
     diff-so-fancy
     fastfetch
@@ -64,6 +63,7 @@ in {
     android-tools
     atuin
     llama-cpp
+    claude-code
     phpactor
   ];
 }

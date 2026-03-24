@@ -19,7 +19,7 @@ in {
     gamemode
     lm_sensors
     lutris
-    mangohud # sometimes interferes with lutris installs
+    # mangohud # sometimes interferes with lutris installs
     mesa # glxinfo
     moonlight-qt
     # obs-studio
@@ -29,7 +29,8 @@ in {
     radeontop
     vkbasalt
     winetricks
-    wineWowPackages.stableFull
+    #wineWowPackages.stableFull
+    wineWow64Packages.stableFull
   ] ++ lib.optionals (game) [
     discord # allow unsupported
     # steam # x86 only? programs.steam.enable covers this
