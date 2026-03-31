@@ -1,6 +1,6 @@
 {
   brews = [
-    "newsboat"
+    # "newsboat"
   ];
 
 # postman
