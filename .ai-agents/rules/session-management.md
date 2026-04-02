@@ -2,7 +2,7 @@
 
 > Branch-based session documentation system for AI coding agents.
 > Tool-agnostic: works with any AI coding tool that loads this file (Claude Code, Open Code, Cursor, etc.).
-> Trigger words: `[resume]`, `[document]`, `[log]`
+> Trigger words: `[resume]`, `[document]`, `[log]`, `[record-session]`
 
 ---
 
@@ -40,7 +40,7 @@ Rules:
 - Format: `[ ]` unchecked, `[x]` completed
 - Reference with @workspace/context/{branch}/tasks.md only when needed
 - If `tasks.md` is missing, initialize from `workspace/context/_templates/tasks.md`
-- Keep a small `Command Sync` block in `tasks.md` for `/resume`, `/log`, `/document`, `/learn`, `/learn-cadence`, and `/learn-from-mistake`
+- Keep a small `Command Sync` block in `tasks.md` for `/resume`, `/log`, `/document`, `/record-session`, `/learn`, `/learn-cadence`, and `/learn-from-mistake`
 
 ## Archiving (Do This Proactively)
 
@@ -85,3 +85,34 @@ When user sends `[document]` (or invokes `/document` slash command):
 
 When user sends a prompt marked with `[log]` (or invokes `/log` slash command):
 - Save the prompt content to `workspace/context/{branch}/prompts/YYYY-MM-DD.md`
+
+## Trigger: [record-session]
+
+When user sends `[record-session]` (or invokes `/record-session` slash command):
+1. Detect current branch and sanitize branch name for filesystem
+2. Create `workspace/context/{branch}/records/` if missing
+3. Write `workspace/context/{branch}/records/YYYY-MM-DD-HHMM-record-session.md`
+4. Include full verbatim transcript of the current session (user and assistant turns)
+5. Include changed-files context from `git status --short` and `git diff --name-only`
+6. Include metadata: timestamp, branch, repository root, and trigger source
+7. Include any slash command arguments in a short `Notes` section
+
+Cross-agent command text (copy/paste template):
+
+```markdown
+Execute the [record-session] protocol from the session management rule.
+
+Read the full protocol from `.ai-agents/rules/session-management.md` (or `~/code/dotfiles/.ai-agents/rules/session-management.md` if project-level doesn't exist).
+
+Steps:
+1. Detect current branch: !`git branch --show-current`
+2. Sanitize branch name for filesystem (replace `/` with `-`)
+3. Create `workspace/context/{branch}/records/` if missing
+4. Write `workspace/context/{branch}/records/YYYY-MM-DD-HHMM-record-session.md`
+5. Include the full verbatim conversation transcript (user and assistant turns) from this session
+6. Include changed files summary from `git status --short` and `git diff --name-only`
+7. Include a short metadata block: date/time, branch, repo root, and trigger source
+8. If called with arguments, include them as a "Notes" section
+
+$ARGUMENTS
+```
