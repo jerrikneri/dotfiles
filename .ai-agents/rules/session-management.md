@@ -2,7 +2,7 @@
 
 > Branch-based session documentation system for AI coding agents.
 > Tool-agnostic: works with any AI coding tool that loads this file (Claude Code, Open Code, Cursor, etc.).
-> Trigger words: `[resume]`, `[document]`, `[log]`, `[record-session]`
+> Trigger words: `[resume]`, `[document]`, `[log]`, `[record-session]`, `[ticket]`
 
 ---
 
@@ -116,3 +116,28 @@ Steps:
 
 $ARGUMENTS
 ```
+
+## Trigger: [ticket]
+
+When user includes `[ticket]` in a message (without relying on slash commands):
+1. Remove only the `[ticket]` marker from the captured content
+2. Detect current branch: `git branch --show-current`
+3. Resolve `ticket_name` and optional `branch_name` from the message
+   - Prefer explicit labels: `ticket name: ...`, `branch name: ...`
+   - If no explicit `ticket_name`, use Jira-style ID if present (`[A-Z][A-Z0-9]+-[0-9]+`)
+4. If `ticket_name` is still missing, ask exactly one follow-up for ticket name
+5. Resolve `branch_name` by priority:
+   - explicit branch name
+   - derived from `ticket_name` slug (lowercase, spaces/underscores to `-`, remove non `[a-z0-9-]`, collapse repeated dashes, trim edge dashes)
+6. Ensure git branch exists and switch to it:
+   - if local branch exists: checkout `{branch_name}`
+   - otherwise: create and checkout `{branch_name}`
+7. Ensure `workspace/context/{branch_name}/` exists
+8. If details content is empty after cleanup, ask exactly one follow-up for ticket details
+9. Write deterministic file `workspace/context/{branch_name}/ticket-details.md` with:
+   - ticket_name
+   - branch_name
+   - captured_at_local and captured_at_iso
+   - source: `[ticket]`
+   - raw input
+   - cleaned details body
