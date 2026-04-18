@@ -17,6 +17,17 @@ Main directories: `.aliases`, `.config`, `.functions`, `.scripts`, `bin`, `nix`,
 - Keep learned-memory sections compact; merge/prune before adding more bullets.
 - If guidance is personal-only or experimental, store it in `AGENTS.local.md` before promoting to `AGENTS.md`.
 - Follow command safety gates in `.ai-agents/rules/agent-meta-protocol.md`; ask before state-changing operations and include rollback guidance when making changes.
+- End each user-facing response with a brief self-check line: `Confidence: X/10` and `Would you like me to pressure-test this answer?`.
+- If confidence is below `8/10`, include the top uncertainty and the fastest verification step.
+
+## Response Reliability Guardrails
+
+- Never fabricate facts, metrics, citations, benchmarks, dates, command output, or test results.
+- For numeric claims (counts, percentages, frequencies, timings), provide a verifiable source or state `Unknown`.
+- Label uncertain claims as `Unverified` and avoid presenting them as facts.
+- Distinguish `Observed` (direct evidence), `Inferred` (reasoned from evidence), and `Speculative` (hypothesis needing validation).
+- Prefer `I don't know yet` over guessing, and include the fastest concrete verification step.
+- If evidence is missing or conflicting, ask one targeted question or run a read-only verification command before concluding.
 
 ## Security Baseline
 

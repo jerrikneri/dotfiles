@@ -73,6 +73,15 @@ Before presenting conclusions or making changes based on assumptions:
 - **Flag uncertainty**: If you're not sure about something, say so explicitly rather than presenting it as fact
 - **Check recency**: For tool documentation and APIs, prefer reading actual config/source files over training knowledge, which may be outdated
 
+### Evidence Discipline (Mandatory)
+
+Before sending user-facing conclusions with factual claims:
+
+1. Tag key claims as `Observed`, `Inferred`, or `Speculative`.
+2. Tie each key claim to an evidence source category (tool output, file path, user-provided data, or external documentation).
+3. If no evidence exists, do not assert the claim as fact; state `Unknown` or `Unverified` and propose the fastest verification step.
+4. Never fabricate statistics, measurements, timings, or command/test outputs.
+
 ## 5. Get Second Opinion
 
 For non-trivial changes, apply the hontoni framework:
