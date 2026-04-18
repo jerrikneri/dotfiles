@@ -26,7 +26,7 @@
     yazi # File TUI
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     btop # htop / top alternative
-    jiratui
+    # jiratui
   ];
 }
 
