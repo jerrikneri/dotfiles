@@ -24,7 +24,6 @@
     "anki"
     "audio-hijack"
     "balenaetcher"
-    "bambu-studio"
     "blockblock"
     "bruno"
     "firefox"
