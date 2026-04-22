@@ -5,6 +5,7 @@
     ".ai-agents/skills/continual-improvement.md",
     ".ai-agents/skills/hontoni.md",
     ".ai-agents/skills/pre-flight.md",
+    ".ai-agents/skills/release-readiness.md",
     ".ai-agents/rules/session-management.md",
     ".ai-agents/rules/agent-meta-protocol.md"
   ],
@@ -32,6 +33,10 @@
     "list": "allow",
     "bash": {
       "*": "ask",
+      "./vendor/bin/sail pest *": "allow",
+      "./vendor/bin/sail php artisan test *": "allow",
+      "./vendor/bin/sail artisan test *": "allow",
+      "./vendor/bin/sail pint *": "allow",
       "find *": "allow",
       "git branch --show-current": "allow",
       "git diff": "allow",

@@ -2,7 +2,7 @@
 
 > Branch-based session documentation system for AI coding agents.
 > Tool-agnostic: works with any AI coding tool that loads this file (Claude Code, Open Code, Cursor, etc.).
-> Trigger words: `[resume]`, `[document]`, `[log]`, `[record-session]`, `[ticket]`
+> Trigger words: `[resume]`, `[document]`, `[log]`, `[record-session]`, `[ticket]`, `[ready]`
 
 ---
 
@@ -141,3 +141,16 @@ When user includes `[ticket]` in a message (without relying on slash commands):
    - source: `[ticket]`
    - raw input
    - cleaned details body
+
+## Trigger: [ready]
+
+When user includes `[ready]` in a message (without relying on slash commands):
+1. Remove only the `[ready]` marker from the captured content
+2. Detect current branch: `git branch --show-current`
+3. Sanitize branch name for filesystem paths (replace `/` with `-`) when resolving `workspace/context/{branch}/...`
+4. Execute the same protocol as `/ready`
+5. Use `workspace/context/{branch}/ticket-details.md` as the ONLY acceptance-criteria source
+6. If ticket file or criteria are missing/incomplete, ask exactly one targeted follow-up, then continue the `/ready` protocol
+7. If criteria remain incomplete after that follow-up, fail the Requirements Gate
+8. Run requirements traceability, tests/manual verification, in-process hontoni review, and second-opinion subagent review
+9. Return `READY` only if all gates pass (including both review composites `> 80` and no unresolved major/critical flaws); otherwise return `NOT READY` with blockers and next actions
