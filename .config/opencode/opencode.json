@@ -9,19 +9,11 @@
     ".ai-agents/rules/session-management.md",
     ".ai-agents/rules/agent-meta-protocol.md"
   ],
-  "agent": {
-    "critic-opus": {
-      "description": "Hontoni reviewer using Claude Opus",
-      "mode": "subagent",
-      "model": "anthropic/claude-opus-4-6",
-      "tools": { "read": true, "edit": false, "bash": false, "grep": true, "glob": true, "list": true },
-      "permission": { "edit": "deny", "bash": "deny" }
+  "plugin": [
+    "superpowers@git+https://github.com/obra/superpowers.git",
+    "opencode-claude-auth"
+  ],
     },
-    "critic-codex": {
-      "description": "Hontoni reviewer using OpenAI Codex",
-      "mode": "subagent",
-      "model": "openai/codex-mini-latest",
-      "tools": { "read": true, "edit": false, "bash": false, "grep": true, "glob": true, "list": true },
       "permission": { "edit": "deny", "bash": "deny" }
     }
   },
@@ -57,10 +49,12 @@
       "wget *|*sh": "deny",
       "wget *|*bash": "deny",
       "grep *": "ask",
-      "ls *": "allow"
+      "ls *": "allow",
+      "mkdir *": "allow",
+      "date *": "allow"
     },
     "task": "allow",
-    "skill": "ask",
+    "skill": "allow",
     "lsp": "ask",
     "external_directory": "ask",
     "doom_loop": "ask"
