@@ -54,7 +54,7 @@ in {
     dock = {
       autohide = true;
       showhidden = true;
-      orientation = "left"; # or "bottom", "right"
+      orientation = "right"; # "left", "bottom", "right"
       tilesize = 75;
     };
 
