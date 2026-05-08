@@ -92,8 +92,10 @@
           #   home-manager.useUserPackages = true;
           #   home-manager.users.${username} = {
           #     imports = [
-          #       ./modules/common/programs.nix
+          #       ./hosts/darwin/home.nix
+          #       ./modules/nvim.nix
           #     ];
+          #     home.stateVersion = "25.11";
           #   };
           # }
         ];
