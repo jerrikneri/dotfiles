@@ -14,7 +14,7 @@
       lazy-nvim
     ];
 
-    extraLuaConfig =
+    initLua =
       let
         plugins = with pkgs.vimPlugins; [
           # LazyVim
@@ -63,10 +63,11 @@
           { name = "mini.ai"; path = mini-nvim; }
           { name = "mini.bufremove"; path = mini-nvim; }
           { name = "mini.comment"; path = mini-nvim; }
-          { name = "mini.indentscope"; path = mini-nvim; }
-          { name = "mini.pairs"; path = mini-nvim; }
-          { name = "mini.surround"; path = mini-nvim; }
-        ];
+            { name = "mini.indentscope"; path = mini-nvim; }
+            { name = "mini.pairs"; path = mini-nvim; }
+            { name = "mini.surround"; path = mini-nvim; }
+            { name = "easy-dotnet.nvim"; path = easy-dotnet-nvim; }
+          ];
         mkEntryFromDrv = drv:
           if lib.isDerivation drv then
             { name = "${lib.getName drv}"; path = drv; }
@@ -117,5 +118,5 @@
     "${parsers}/parser";
 
   # Normal LazyVim config here, see https://github.com/LazyVim/starter/tree/main/lua
-  xdg.configFile."nvim/lua".source = ./lua;
+  xdg.configFile."nvim/lua".source = ../../.config/nvim/lua;
 }
