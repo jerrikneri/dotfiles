@@ -133,17 +133,6 @@
   # nixpkgs.config.allowUnsupportedSystem = true;
   nixpkgs.config.rocmSupport = true;
 
-  nixpkgs.overlays = [
-    (final: prev: {
-      openldap = prev.openldap.overrideAttrs (old: {
-        doCheck = false;
-      });
-      udisks = prev.udisks.overrideAttrs (old: {
-        doCheck = false;
-      });
-    })
-  ];
-
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
