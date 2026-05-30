@@ -138,6 +138,9 @@
       openldap = prev.openldap.overrideAttrs (old: {
         doCheck = false;
       });
+      udisks = prev.udisks.overrideAttrs (old: {
+        doCheck = false;
+      });
     })
   ];
 
