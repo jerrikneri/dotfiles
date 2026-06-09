@@ -1,6 +1,6 @@
 {
   brews = [
-    # "newsboat"
+    "newsboat"
   ];
 
 # postman
@@ -31,7 +31,7 @@
     "godot"
     "google-chrome"
     "homerow"
-    "karabiner-elements"
+    # "karabiner-elements"
     "knockknock"
     # "lulu"
     "medis"
