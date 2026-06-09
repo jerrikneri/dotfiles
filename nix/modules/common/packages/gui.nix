@@ -16,8 +16,8 @@ in {
     freetube
     godot
     gparted
-    librewolf
-    lmstudio # AI
+    # librewolf # long compile times
+    # lmstudio # AI
     obsidian # allow unfree
     orca-slicer
     opensnitch

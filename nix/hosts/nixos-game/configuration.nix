@@ -125,9 +125,6 @@
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Experimental flags
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnsupported = true;
   # nixpkgs.config.allowUnsupportedSystem = true;

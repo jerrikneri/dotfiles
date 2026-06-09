@@ -33,6 +33,7 @@
         modules = [
           ./hosts/nixos/configuration.nix
           ./modules/common/packages/index.nix
+          ./modules/common/nix-settings.nix
           ./modules/common/programs.nix
           ./modules/common/shell.nix
           ./modules/linux/system.nix
@@ -47,6 +48,7 @@
         modules = [
           ./hosts/nixos-game/configuration.nix
           ./modules/common/packages/index.nix
+          ./modules/common/nix-settings.nix
           ./modules/common/programs.nix
           ./modules/common/shell.nix
           ./modules/linux/system.nix
@@ -60,6 +62,7 @@
         modules = [
           ./hosts/nixos-pve/configuration.nix
           ./modules/common/packages/index.nix
+          ./modules/common/nix-settings.nix
           ./modules/common/shell.nix
           ./modules/linux/system.nix
           home-manager.nixosModules.default
@@ -72,6 +75,7 @@
         modules = [
           ./hosts/nixos-utm/configuration.nix
           ./modules/common/packages/index.nix
+          ./modules/common/nix-settings.nix
           ./modules/common/shell.nix
           ./modules/linux/system.nix
           home-manager.nixosModules.default
@@ -125,4 +129,3 @@
       );
     };
 }
-

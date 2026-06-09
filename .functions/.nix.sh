@@ -78,7 +78,7 @@ nixb() {
   case "$os_name" in
   Darwin)
     echo "Detected macOS"
-    sudo darwin-rebuild switch --flake .\#darwin
+    nh darwin switch --flake .\#darwin
     ;;
 
   Linux)
@@ -88,9 +88,9 @@ nixb() {
       nixos)
         echo "Detected NixOS"
         if [ $1 ]; then
-          sudo nixos-rebuild switch --flake .\#nixos-$1
+          nh os switch --flake .\#nixos-$1
         else
-          sudo nixos-rebuild switch --flake .\#nixos
+          nh os switch --flake .\#nixos
         fi
         ;;
       *)

@@ -30,7 +30,7 @@ in {
     vkbasalt
     winetricks
     #wineWowPackages.stableFull
-    wineWow64Packages.stableFull
+    # wineWow64Packages.stableFull
   ] ++ lib.optionals (game) [
     discord # allow unsupported
     # steam # x86 only? programs.steam.enable covers this

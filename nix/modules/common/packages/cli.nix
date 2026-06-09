@@ -16,7 +16,7 @@ in {
     gh # git hub cli, for gh-dash
     glow
     # intelli-shell
-    llama-cpp
+    # llama-cpp
     neovim
     nh # yet another nix helper
     nix-output-monitor
@@ -62,7 +62,6 @@ in {
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     android-tools
     atuin
-    llama-cpp
     claude-code
     phpactor
   ];
