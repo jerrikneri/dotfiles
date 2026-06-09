@@ -5,7 +5,7 @@
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
       max-jobs = 1;
-      cores = 4;
+      cores = 2;
       extra-substituters = [
         "https://nix-community.cachix.org"
       ];
