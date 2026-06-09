@@ -6,6 +6,10 @@
       experimental-features = [ "nix-command" "flakes" ];
       max-jobs = 1;
       cores = 2;
+      max-substitution-jobs = 4;
+      keep-failed = true;
+      keep-going = true;
+      build-dir = "/var/tmp/nix-builds";
       extra-substituters = [
         "https://nix-community.cachix.org"
       ];

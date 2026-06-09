@@ -51,6 +51,11 @@
     options = [ "defaults" ];
   };
 
+  swapDevices = [{
+    device = "/var/swapfile";
+    size = 8192;
+  }];
+
   hardware = {
     enableAllFirmware = true;
     enableRedistributableFirmware = true;
@@ -125,7 +130,8 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnsupported = true;
   # nixpkgs.config.allowUnsupportedSystem = true;
-  nixpkgs.config.rocmSupport = true;
+  # nixpkgs.config.rocmSupport = true;   # rocm builds cause OOM during nixos-rebuild
+  nixpkgs.config.rocmSupport = false;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -198,6 +204,11 @@
         variant = "";
       };
     };
+  };
+
+  systemd.services.nix-daemon.serviceConfig = {
+    MemoryMax = "8G";
+    MemoryHigh = "6G";
   };
 
   systemd.services.sunshine = {
