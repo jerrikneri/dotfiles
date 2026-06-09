@@ -78,7 +78,7 @@ nixb() {
   case "$os_name" in
   Darwin)
     echo "Detected macOS"
-    nh darwin switch --flake .\#darwin
+    nh darwin switch .\#darwin
     ;;
 
   Linux)
@@ -88,9 +88,9 @@ nixb() {
       nixos)
         echo "Detected NixOS"
         if [ $1 ]; then
-          nh os switch --flake .\#nixos-$1
+          nh os switch .\#nixos-$1
         else
-          nh os switch --flake .\#nixos
+          nh os switch .\#nixos
         fi
         ;;
       *)
