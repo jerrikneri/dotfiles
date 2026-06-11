@@ -1,6 +1,7 @@
 {
   brews = [
     "newsboat"
+    # "omlx"
   ];
 
 # postman
@@ -19,7 +20,7 @@
 # homerow                         phpstorm                        zoom
 
   casks = [
-    "aerospace"
+    # aerospace moved to nixpkgs — add via darwin.packages [ pkgs.aerospace ]
     "alacritty"
     "anki"
     "audio-hijack"

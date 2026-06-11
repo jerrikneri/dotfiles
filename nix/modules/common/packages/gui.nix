@@ -7,6 +7,7 @@ in {
     sniffnet
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     # reserve for any GUI apps not in homebrew but available in nixpkgs
+    aerospace
   ] ++ lib.optionals (!pkgs.stdenv.isAarch64) [
 
   ] ++ lib.optionals isLinux [

@@ -23,13 +23,17 @@
     // },
     "mlx": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "LMStudio (local)",
+      "name": "omlx (local)",
       "options": {
-        "baseURL": "http://127.0.0.1:1234/v1"
+        "baseURL": "http://127.0.0.1:1234/v1",
+        "apiKey": "{env:OMLX_API_KEY}"
       },
       "models": {
         "zai-org/glm-4.7-flash": {
-          "name": "GLM-4.7-Flash (LMStudio)"
+          "name": "GLM-4.7-Flash (omlx)"
+        },
+        "qwen3.6-35b-a3b-mlx-4bit": {
+          "name": "Qwen3.6-35B-A3B-MLX-4bit (omlx)"
         }
       }
     }
