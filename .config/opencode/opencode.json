@@ -9,18 +9,6 @@
     // "superpowers@git+https://github.com/obra/superpowers.git",
   ],
   "provider": {
-    // "llamacpp": {
-    //   "npm": "@ai-sdk/openai-compatible",
-    //   "name": "llama.cpp (local)",
-    //   "options": {
-    //     "baseURL": "http://127.0.0.1:1337/v1"
-    //   },
-    //   "models": {
-    //     "GLM-4.7-FLASH-Q8_0.gguf": {
-    //       "name": "GLM-4.7-FLASH-Q8_0 (local)"
-    //     }
-    //   }
-    // },
     "mlx": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "omlx (local)",
