@@ -48,7 +48,6 @@
     "ransomwhere"
     "reikey"
     "rider"
-    "spotify"
     "stats"
     "steam"
     "superduper"
