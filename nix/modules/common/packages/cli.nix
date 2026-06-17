@@ -62,7 +62,7 @@ in {
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     android-tools
     atuin
-    claude-code
+    # claude-code
     phpactor
   ];
 }

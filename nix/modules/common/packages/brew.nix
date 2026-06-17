@@ -21,8 +21,8 @@
 
   casks = [
     # aerospace moved to nixpkgs — add via darwin.packages [ pkgs.aerospace ]
-    "alacritty"
-    "anki"
+    # "alacritty"
+    # "anki"
     "audio-hijack"
     "balenaetcher"
     "blockblock"
@@ -55,7 +55,7 @@
     "taskexplorer"
     "utm"
     "vscodium"
-    "yubico-authenticator"
+    # "yubico-authenticator"
   ];
 
   taps = [
