@@ -1,3 +1,5 @@
+alias infra="cd ~/code/homelab-infrastructure"
+
 #Home Server
 alias h-check="ping $HOME_SERVER_IP"
 alias h-luks="ssh -o \"HostKeyAlgorithms ssh-rsa\" -p $HOME_SERVER_PORT root@$HOME_SERVER_IP"
