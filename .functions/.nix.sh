@@ -88,9 +88,9 @@ nixb() {
       nixos)
         echo "Detected NixOS"
         if [ $1 ]; then
-          nh os switch .\#nixos-$1
+          nh os switch .\#nixosConfigurations.nixos-$1
         else
-          nh os switch .\#nixos
+          nh os switch .\#nixosConfigurations.nixos
         fi
         ;;
       *)
