@@ -9,7 +9,8 @@
       max-substitution-jobs = 4;
       keep-failed = true;
       keep-going = true;
-      build-dir = "/var/tmp/nix-builds";
+      # build-dir removed: /var/tmp is 1777 world-writable, Nix sandbox rejects it
+      # defaults to /tmp which Nix handles fine
       extra-substituters = [
         "https://nix-community.cachix.org"
       ];
