@@ -5,6 +5,12 @@
 { config, pkgs, ... }:
 
 {
+  # 9800X3D (8c/16t) + 32GB RAM
+  nix.settings = {
+    max-jobs = 4;
+    cores = 4;
+  };
+
   # Bootloader.
   boot = {
     loader = {

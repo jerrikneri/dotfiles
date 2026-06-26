@@ -5,6 +5,12 @@
 { config, pkgs, ... }:
 
 {
+  # 3950X (16c/32t) + 64GB RAM
+  nix.settings = {
+    max-jobs = 8;
+    cores = 4;
+  };
+
   # Bootloader.
   boot = {
     loader = {

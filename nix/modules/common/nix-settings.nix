@@ -4,8 +4,7 @@
   nix = {
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
-      max-jobs = 1;
-      cores = 2;
+      # max-jobs and cores set per-host
       max-substitution-jobs = 4;
       keep-failed = true;
       keep-going = true;
