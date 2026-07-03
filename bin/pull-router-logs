@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+OUTPUT_DIR="${OUTPUT_DIR:-${HOME}/code/forgejo/homelab-backups/logs/router}"
+SSH_HOST="${SSH_HOST:-router}"
+mkdir -p "$OUTPUT_DIR"
+
+LOG_SOURCES=(
+  "filter:/var/log/filter"
+  "system:/var/log/system"
+  "dhcpd:/var/log/dhcpd"
+)
+
+DAYS="${1:-7}"
+date_label=$(date +%Y%m%d-%H%M%S)
+
+pull_logs() {
+  local name="$1" logdir="$2"
+  local out="$OUTPUT_DIR/${name}-${date_label}.txt"
+
+  echo "Pulling ${name} logs (last ${DAYS} days)..."
+  ssh "$SSH_HOST" 'sudo sh -s' >"$out" <<EOF
+cutoff=\$(date -v-${DAYS}d +%Y%m%d)
+for f in ${logdir}/${name}_*.log; do
+  [ -f "\$f" ] || continue
+  fdate=\$(basename "\$f" .log | sed "s/${name}_//")
+  case "\$fdate" in
+    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9])
+      [ "\$fdate" -ge "\$cutoff" ] && cat "\$f"
+      ;;
+  esac
+done
+EOF
+
+  local bytes
+  bytes=$(wc -c <"$out" | tr -d ' ')
+  echo "Saved: $out (${bytes} bytes)"
+}
+
+pull_raw() {
+  local name="$1"
+  shift
+  local out="$OUTPUT_DIR/${name}-${date_label}.txt"
+
+  echo "Pulling ${name}..."
+  ssh "$SSH_HOST" "
+    for f in $*; do
+      [ -f \"\$f\" ] || continue
+      sudo cat \"\$f\"
+    done
+  " >"$out"
+
+  local bytes
+  bytes=$(wc -c <"$out" | tr -d ' ')
+  echo "Saved: $out (${bytes} bytes)"
+}
+
+for source in "${LOG_SOURCES[@]}"; do
+  name="${source%%:*}"
+  logdir="${source##*:}"
+  pull_logs "$name" "$logdir"
+done
+
+if ssh "$SSH_HOST" '[ -d /var/log/suricata ]' 2>/dev/null; then
+  pull_raw "suricata" "/var/log/suricata/eve.json /var/log/suricata/fast.log"
+fi
+
+echo "Done. Logs saved to ${OUTPUT_DIR}/"

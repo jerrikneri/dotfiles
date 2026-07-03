@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+BACKUP_DIR="${ROUTER_BACKUP_DIR:-$HOME/code/forgejo/homelab-backups/config/opnsense}"
+mkdir -p "$BACKUP_DIR"
+
+case "${1:-config}" in
+config)
+  FILE="$BACKUP_DIR/config-$(date +%Y%m%d-%H%M%S).xml"
+  ssh router 'cat /conf/config.xml' >"$FILE"
+  echo "Saved: $FILE ($(wc -c <"$FILE" | tr -d ' ') bytes)"
+  ;;
+full)
+  FILE="$BACKUP_DIR/full-$(date +%Y%m%d-%H%M%S).tgz"
+  ssh router 'tar czf - -C /conf .' >"$FILE"
+  echo "Saved: $FILE ($(wc -c <"$FILE" | tr -d ' ') bytes)"
+  ;;
+*)
+  echo "Usage: router-backup [config|full]"
+  exit 1
+  ;;
+esac
