@@ -1,4 +1,6 @@
-alias infra="cd ~/code/homelab-infrastructure"
+alias rbackup="cd ~/code/forgejo/homelab-backups/ && scripts/./router-backup full"
+alias docs="cd ~/code/forgejo/homelab-documentation"
+alias infra="cd ~/code/forgejo/homelab-infrastructure"
 
 #Home Server
 alias h-check="ping $HOME_SERVER_IP"

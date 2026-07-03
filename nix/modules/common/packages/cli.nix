@@ -61,8 +61,12 @@ in {
     xclip
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     android-tools
+    ansible
     atuin
     # claude-code
+    mongodb-tools
     phpactor
+    rtk
+    terraform
   ];
 }
