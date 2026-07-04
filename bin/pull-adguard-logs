@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+OUTPUT_DIR="${OUTPUT_DIR:-${HOME}/code/forgejo/homelab-backups/logs/adguard}"
+ADGUARD_DATA_DIR="${ADGUARD_DATA_DIR:-/opt/AdGuardHome/data}"
+SSH_HOST="${SSH_HOST:-agh}"
+
+mkdir -p "$OUTPUT_DIR"
+
+date_label=$(date +%Y%m%d-%H%M%S)
+
+echo "Pulling querylog from ${SSH_HOST}..."
+out_raw="$OUTPUT_DIR/querylog-${date_label}.json"
+scp -q "${SSH_HOST}:${ADGUARD_DATA_DIR}/querylog.json" "$out_raw" 2>/dev/null || true
+
+if [ ! -s "$out_raw" ]; then
+  rm -f "$out_raw"
+  echo "Error: no querylog.json found or empty" >&2
+  exit 1
+fi
+
+raw_bytes=$(wc -c <"$out_raw" | tr -d ' ')
+echo "  Raw JSON: ${raw_bytes} bytes"
+
+if command -v jq >/dev/null 2>&1; then
+  out_txt="$OUTPUT_DIR/querylog-${date_label}.txt"
+  jq -r '.[] | [
+    (.T // "?"),
+    (if (.Result.IsFiltered? // false) then "BLOCKED" else "ALLOWED" end),
+    (.IP // "?"),
+    (.C // ""),
+    (.QH // "?"),
+    (.Result.Rule? // "")
+  ] | @tsv' "$out_raw" 2>/dev/null | sort -r >"$out_txt" || true
+
+  txt_bytes=$(wc -c <"$out_txt" | tr -d ' ')
+  echo "  Text summary: ${txt_bytes} bytes"
+fi
+
+echo "Pulling stats from ${SSH_HOST}..."
+out_stats="$OUTPUT_DIR/stats-${date_label}.db"
+
+ssh "$SSH_HOST" "test -f ${ADGUARD_DATA_DIR}/stats.db && cat ${ADGUARD_DATA_DIR}/stats.db" >"$out_stats" || true
+
+if [ -s "$out_stats" ]; then
+  stats_bytes=$(wc -c <"$out_stats" | tr -d ' ')
+  echo "  Stats DB: ${stats_bytes} bytes"
+
+  if command -v sqlite3 >/dev/null 2>&1; then
+    out_stats_txt="$OUTPUT_DIR/stats-${date_label}.txt"
+    {
+      echo "=== Tables ==="
+      sqlite3 "$out_stats" ".tables" 2>/dev/null
+      echo ""
+
+      for table in $(sqlite3 "$out_stats" ".tables" 2>/dev/null); do
+        row_count=$(sqlite3 "$out_stats" "SELECT COUNT(*) FROM [${table}];" 2>/dev/null || echo "?")
+        echo "=== ${table} (${row_count} rows) ==="
+        echo ".schema ${table}"
+        sqlite3 "$out_stats" ".schema ${table}" 2>/dev/null
+        echo ""
+        if [ "$row_count" != "?" ] && [ "$row_count" -le 100 ]; then
+          sqlite3 -header -column "$out_stats" "SELECT * FROM [${table}] LIMIT 100;" 2>/dev/null
+        else
+          sqlite3 -header -column "$out_stats" "SELECT * FROM [${table}] ORDER BY ROWID DESC LIMIT 20;" 2>/dev/null
+        fi
+        echo ""
+      done
+    } >"$out_stats_txt" 2>/dev/null
+
+    if [ -s "$out_stats_txt" ]; then
+      txt_bytes=$(wc -c <"$out_stats_txt" | tr -d ' ')
+      echo "  Stats summary: ${txt_bytes} bytes"
+    else
+      rm -f "$out_stats_txt"
+    fi
+  fi
+else
+  rm -f "$out_stats"
+  echo "  Stats not available"
+fi
+
+echo "Done. Saved to ${OUTPUT_DIR}/"

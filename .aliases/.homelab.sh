@@ -1,4 +1,5 @@
 alias rbackup="cd ~/code/forgejo/homelab-backups/ && scripts/./router-backup full"
+alias bups="cd ~/code/forgejo/homelab-backups"
 alias docs="cd ~/code/forgejo/homelab-documentation"
 alias infra="cd ~/code/forgejo/homelab-infrastructure"
 
