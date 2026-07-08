@@ -10,8 +10,6 @@
     lazysql
     # newsboat # RSS TUI - broken on darwin with libc++ 20.1.0 (sizeof function type error)
     # posting # Postman TUI # broken package python3.13-textual-4.0.0
-    slides
-    spotify-player
     # (weechat.override {
     #   configure = { availablePlugins, ... }: {
     #     plugins = with availablePlugins; [
@@ -28,6 +26,8 @@
     btop
   ] ++ lib.optionals (isLinux && desktop) [
     # -- desktop: move packages here --
+    slides
+    spotify-player
   ] ++ lib.optionals (isLinux && game) [
     # -- gaming: move packages here --
   ];

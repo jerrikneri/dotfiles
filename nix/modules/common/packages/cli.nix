@@ -5,7 +5,6 @@
     alejandra # Uncompromising Nix Code Formatter
     bat # cat alternative
     bats # Bash Automated Testing System
-    bitwarden-cli
     cmatrix
     diff-so-fancy
     fastfetch
@@ -24,11 +23,9 @@
     mcat
     nil # Nix Language Server
     nixd # Nix LSP
-    opencode
     pciutils # lspci
     ripgrep # Grep alternative
     shellcheck # Linter for shell commands
-    tailscale
     tmux
     # tmuxPlugins.copycat
     # tmuxPlugins.sensible
@@ -64,6 +61,9 @@
     phpactor
   ] ++ lib.optionals (isLinux && desktop) [
     # -- desktop: move packages here --
+    bitwarden-cli
+    opencode
+    tailscale
   ] ++ lib.optionals (isLinux && game) [
     # -- gaming: move packages here --
   ];
