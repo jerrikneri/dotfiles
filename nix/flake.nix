@@ -29,7 +29,7 @@
     in {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { game = true; };
+        specialArgs = { desktop = true; game = true; };
         modules = [
           ./hosts/nixos/configuration.nix
           ./modules/common/packages/index.nix

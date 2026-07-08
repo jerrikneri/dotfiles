@@ -1,10 +1,6 @@
-{ pkgs, lib, specialArgs ? {}, ... }:
+{ pkgs, lib, isLinux, isArm, game, ... }:
 
-let
-  isArm = pkgs.stdenv.isAarch64;
-  isLinux = pkgs.stdenv.isLinux;
-  game = builtins.hasAttr "game" specialArgs && specialArgs.game;
-in {
+{
   environment.systemPackages = with pkgs; [
     # dxvk # included with wine?
   ] ++ lib.optionals (!isArm && isLinux) [

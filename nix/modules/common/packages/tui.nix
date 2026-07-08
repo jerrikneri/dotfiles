@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, isLinux, isDarwin, desktop, game, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -10,8 +10,6 @@
     lazysql
     # newsboat # RSS TUI - broken on darwin with libc++ 20.1.0 (sizeof function type error)
     # posting # Postman TUI # broken package python3.13-textual-4.0.0
-    slides
-    spotify-player
     # (weechat.override {
     #   configure = { availablePlugins, ... }: {
     #     plugins = with availablePlugins; [
@@ -24,9 +22,14 @@
     #   };
     # })
     yazi # File TUI
-  ] ++ lib.optionals pkgs.stdenv.isDarwin [
-    btop # htop / top alternative
-    # jiratui
+  ] ++ lib.optionals isDarwin [
+    btop
+  ] ++ lib.optionals (isLinux && desktop) [
+    # -- desktop: move packages here --
+    slides
+    spotify-player
+  ] ++ lib.optionals (isLinux && game) [
+    # -- gaming: move packages here --
   ];
 }
 

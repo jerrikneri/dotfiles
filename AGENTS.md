@@ -242,6 +242,8 @@ To keep memory updates safe and reusable, learned content in `AGENTS.md` should 
 - Learning index state is stored at `workspace/context/_meta/learning-index.json`.
 - Learning cadence state is stored at `workspace/context/_meta/learning-cadence.json`.
 - Learning index refresh helper script is `.scripts/update_learning_index.sh`.
+- NixOS chicken-and-egg: `build-dir = /var/tmp/nix-builds` in stale `/etc/nix/nix.conf` blocks rebuild with `Path "/var/tmp" is world-writable`. Fix: `./nix/fix-build-dir.sh [hostname]` overrides for one build. Config (`nix/modules/common/nix-settings.nix`) already removed `build-dir`; only stale machines need this.
+- Host role flags in `specialArgs` (flake.nix): `desktop` (full dev desktop), `game` (gaming packages). Used in `packages/index.nix` to gate imports and in `cli.nix`/`gui.nix`/`tui.nix`/`gaming.nix` via `lib.optionals (isLinux && desktop)` / `(isLinux && game)` placeholder gates.
 
 ## Learned Agent Workflow Improvements
 

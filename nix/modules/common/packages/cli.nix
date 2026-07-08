@@ -1,13 +1,10 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, isLinux, isDarwin, desktop, game, ... }:
 
-let
-  isLinux = pkgs.stdenv.isLinux;
-in {
+{
   environment.systemPackages = with pkgs; [
     alejandra # Uncompromising Nix Code Formatter
     bat # cat alternative
     bats # Bash Automated Testing System
-    bitwarden-cli
     cmatrix
     diff-so-fancy
     fastfetch
@@ -26,11 +23,9 @@ in {
     mcat
     nil # Nix Language Server
     nixd # Nix LSP
-    opencode
     pciutils # lspci
     ripgrep # Grep alternative
     shellcheck # Linter for shell commands
-    tailscale
     tmux
     # tmuxPlugins.copycat
     # tmuxPlugins.sensible
@@ -59,7 +54,7 @@ in {
     pulseaudioFull
     vkd3d
     xclip
-  ] ++ lib.optionals pkgs.stdenv.isDarwin [
+  ] ++ lib.optionals isDarwin [
     android-tools
     ansible
     atuin
@@ -68,5 +63,12 @@ in {
     phpactor
     rtk
     terraform
+  ] ++ lib.optionals (isLinux && desktop) [
+    # -- desktop: move packages here --
+    bitwarden-cli
+    opencode
+    tailscale
+  ] ++ lib.optionals (isLinux && game) [
+    # -- gaming: move packages here --
   ];
 }
