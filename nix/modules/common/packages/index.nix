@@ -5,11 +5,11 @@ let
 in
 {
   imports = [
+    ../role.nix
     ./cli.nix
-    ./gui.nix
     ./tui.nix
+    ./gui.nix
   ] ++ lib.optionals game [
     ./gaming.nix
   ];
 }
-

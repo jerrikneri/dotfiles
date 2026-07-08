@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, isLinux, isDarwin, desktop, game, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -24,9 +24,12 @@
     #   };
     # })
     yazi # File TUI
-  ] ++ lib.optionals pkgs.stdenv.isDarwin [
-    btop # htop / top alternative
-    # jiratui
+  ] ++ lib.optionals isDarwin [
+    btop
+  ] ++ lib.optionals (isLinux && desktop) [
+    # -- desktop: move packages here --
+  ] ++ lib.optionals (isLinux && game) [
+    # -- gaming: move packages here --
   ];
 }
 

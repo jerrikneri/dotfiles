@@ -1,8 +1,6 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, isLinux, isDarwin, desktop, game, ... }:
 
-let
-  isLinux = pkgs.stdenv.isLinux;
-in {
+{
   environment.systemPackages = with pkgs; [
     alejandra # Uncompromising Nix Code Formatter
     bat # cat alternative
@@ -59,10 +57,14 @@ in {
     pulseaudioFull
     vkd3d
     xclip
-  ] ++ lib.optionals pkgs.stdenv.isDarwin [
+  ] ++ lib.optionals isDarwin [
     android-tools
     atuin
     # claude-code
     phpactor
+  ] ++ lib.optionals (isLinux && desktop) [
+    # -- desktop: move packages here --
+  ] ++ lib.optionals (isLinux && game) [
+    # -- gaming: move packages here --
   ];
 }
