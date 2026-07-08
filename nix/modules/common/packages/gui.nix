@@ -9,23 +9,23 @@
   ] ++ lib.optionals (!pkgs.stdenv.isAarch64) [
   ] ++ lib.optionals isLinux [
     alacritty # Terminal
+    gparted
+    # librewolf # long compile times
+    # lmstudio # AI
+    pavucontrol # GUI to manage audio in PulseAudio / Pipewire
+  ] ++ lib.optionals (isLinux && desktop) [
+    # -- desktop: move packages here --
     bruno
     firefox
     freetube
     godot
-    gparted
-    # librewolf # long compile times
-    # lmstudio # AI
     obsidian # allow unfree
     orca-slicer
     opensnitch
-    pavucontrol # GUI to manage audio in PulseAudio / Pipewire
     postman
     rofi
     vscodium
     zeal # offline documentation
-  ] ++ lib.optionals (isLinux && desktop) [
-    # -- desktop: move packages here --
   ] ++ lib.optionals (isLinux && game) [
     # -- gaming: move packages here --
   ];
