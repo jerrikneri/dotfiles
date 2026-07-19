@@ -5,7 +5,7 @@
 { config, pkgs, ... }:
 
 {
-  # 9800X3D (8c/16t) + 32GB RAM
+  # Hardware: 9800X3D (8c/16t), RX 9070 XT, 32GB DDR5
   nix.settings = {
     max-jobs = 4;
     cores = 8;

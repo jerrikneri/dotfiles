@@ -17,6 +17,54 @@
 
 ---
 
+## Host Hardware
+
+> Keep this section current. After hardware changes, update with: `lscpu | grep "Model name"`, `lspci -nn | grep -i vga`, `vulkaninfo --summary | grep deviceName`, `free -h`, `uname -r`, `nixos-version`.
+
+### nixos (desktop)
+
+| Attribute | Value |
+|-----------|-------|
+| CPU | AMD Ryzen 9 3950X, 16c/32t, Zen 2 |
+| GPU | Radeon RX Vega 56/64 [1002:687f] — RADV VEGA10 (GCN 5) |
+| Vulkan video encode | **No** (GCN 5 lacks `VK_KHR_video_encode_h264`) |
+| Encoder used | `vaapi` (set via `dotfiles.sunshine.encoder = "vaapi"`) |
+| RAM | 64 GB DDR4 |
+| Kernel | 7.1.1 |
+| NixOS | 26.11 (Zokor) |
+| DRM | card1 → 1002:687f (amdgpu) |
+| Nix build | max-jobs=8, cores=4 |
+| IP | 192.168.20.100 |
+
+### nixos-game
+
+| Attribute | Value |
+|-----------|-------|
+| CPU | AMD Ryzen 7 9800X3D, 8c/16t, Zen 5 (3D V-Cache) |
+| GPU (dGPU) | Radeon RX 9070 XT [1002:7550] — RADV GFX1201 (RDNA 4) |
+| GPU (iGPU) | Granite Ridge [1002:13c0] — RADV RAPHAEL_MENDOCINO |
+| Vulkan video encode | **Yes** (RDNA 4 supports `VK_KHR_video_encode_h264`) |
+| RAM | 32 GB DDR5 |
+| Kernel | 7.1.3 |
+| NixOS | 26.11 (Zokor) |
+| DRM | card0 → 1002:13c0 (iGPU), card1 → 1002:7550 (dGPU) |
+| Nix build | max-jobs=4, cores=8 |
+| IP | 192.168.20.102 |
+
+### nixos-pve
+
+Proxmox VM. No GPU passthrough. headless.
+
+### nixos-utm
+
+UTM VM on macOS. No GPU passthrough. headless.
+
+### darwin
+
+macOS workstation (M-series). Manages Nix eval from laptop — can evaluate all Linux configs without building.
+
+---
+
 ## `nixe` -- Shortcut wrapper (use instead of raw `nix eval`)
 
 The `nixe` shell function wraps `nix eval` with host resolution matching `nixb`. Always pass the host suffix as the first argument.

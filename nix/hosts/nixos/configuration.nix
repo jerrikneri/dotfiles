@@ -5,7 +5,7 @@
 { config, pkgs, ... }:
 
 {
-  # 3950X (16c/32t) + 64GB RAM
+  # Hardware: 3950X (16c/32t), RX Vega 56, 64GB DDR4
   nix.settings = {
     max-jobs = 8;
     cores = 4;
@@ -104,6 +104,9 @@
       ../../modules/common/font.nix
       ../../modules/common/sunshine.nix
     ];
+
+  # Vega 56 doesn't support VK_KHR_video_encode_h264; force VA-API
+  dotfiles.sunshine.encoder = "vaapi";
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
