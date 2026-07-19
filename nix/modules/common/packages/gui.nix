@@ -14,7 +14,6 @@
     # librewolf # long compile times
     librewolf-bin
     # lmstudio # AI
-    pavucontrol # GUI to manage audio in PulseAudio / Pipewire
   ] ++ lib.optionals (isLinux && desktop) [
     # -- desktop: move packages here --
     bruno

@@ -48,19 +48,6 @@
       suspendType=0
     '';
 
-    # In your home.nix or a module imported via home-manager.users.kgh
-    home.file.".config/systemd/user/sunshine-null-sink.service".text = ''
-    [Unit]
-    Description=Create PipeWire null sink for Sunshine
-    After=pipewire.service
 
-    [Service]
-    Type=oneshot
-    ExecStart=${pkgs.pulseaudio}/bin/pactl load-module module-null-sink sink_name=SunshineSink sink_properties=device.description=SunshineSink
-    RemainAfterExit=yes
-
-    [Install]
-    WantedBy=default.target
-    '';
   }
 

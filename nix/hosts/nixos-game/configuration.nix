@@ -5,7 +5,7 @@
 { config, pkgs, ... }:
 
 {
-  # 9800X3D (8c/16t) + 32GB RAM
+  # Hardware: 9800X3D (8c/16t), RX 9070 XT, 32GB DDR5
   nix.settings = {
     max-jobs = 4;
     cores = 8;
@@ -46,7 +46,6 @@
     gnumake # compile DOOM
     rocmPackages.rocm-smi # System Management Interface for AMD GPU
     # rtw89-unstable
-    sunshine # NixOs Desktop Only
     vulkan-tools
   ];
 
@@ -100,6 +99,7 @@
       #
       ./hardware-configuration.nix
       ../../modules/common/font.nix
+      ../../modules/common/sunshine.nix
     ];
 
   # Open ports in the firewall.
@@ -110,11 +110,6 @@
   networking = {
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 47984 47989 47990 48010 ]; # sunshine
-      allowedUDPPortRanges = [
-        { from = 47998; to = 48000; }
-        #{ from = 8000; to = 8010; }
-      ];
     };
     hostName = "nixos"; # Define your hostname.
 
@@ -196,26 +191,6 @@
       pulse.enable = true;
       jack.enable = true;
       audio.enable = true;
-
-      # Create virtual audio sink for Sunshine to capture
-      extraConfig.pipewire."92-sunshine-virtual-sink" = {
-        "context.modules" = [
-          {
-            name = "libpipewire-module-combine-stream";
-            args = {
-              "combine.mode" = "sink";
-              "node.name" = "SunshineSink";
-              "node.description" = "Sunshine Virtual Sink";
-              "stream.rules" = [
-                {
-                  matches = [ { "media.class" = "Audio/Sink"; } ];
-                  actions = { create-stream = { }; };
-                }
-              ];
-            };
-          }
-        ];
-      };
     };
 
     pulseaudio.enable = false;
@@ -233,35 +208,8 @@
     };
   };
 
-  # System-level sunshine service (more reliable than user service)
-  systemd.services.sunshine = {
-    description = "Sunshine self-hosted game stream host for Moonlight";
-    wantedBy = [ "graphical.target" ];
-    after = [ "network.target" "graphical.target" ];
-    serviceConfig = {
-      ExecStart = "/run/wrappers/bin/sunshine";
-      Restart = "always";
-      RestartSec = "5s";
-      User = "kgh";
-      Environment = [
-        "DISPLAY=:0"
-        "WAYLAND_DISPLAY=wayland-0"
-        "XDG_SESSION_TYPE=wayland"
-        "XDG_RUNTIME_DIR=/run/user/1000"
-        "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus"
-      ];
-    };
-  };
-
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
-
-  security.wrappers.sunshine = {
-    owner = "root";
-    group = "root";
-    capabilities = "cap_sys_admin+p";
-    source = "${pkgs.sunshine}/bin/sunshine";
-  };
 
 
   # This value determines the NixOS release from which the default
