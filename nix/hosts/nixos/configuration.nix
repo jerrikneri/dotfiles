@@ -42,7 +42,6 @@
     nfs-utils
     parallel
     rocmPackages.rocm-smi # System Management Interface for AMD GPU
-    sunshine # NixOs Desktop Only
     vulkan-tools
   ];
 
@@ -103,6 +102,7 @@
       #
       ./hardware-configuration.nix
       ../../modules/common/font.nix
+      ../../modules/common/sunshine.nix
     ];
 
   # Open ports in the firewall.
@@ -113,11 +113,6 @@
   networking = {
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 47984 47989 47990 48010 ]; # sunshine
-      allowedUDPPortRanges = [
-        { from = 47998; to = 48000; }
-        #{ from = 8000; to = 8010; }
-      ];
     };
     hostName = "nixos"; # Define your hostname.
 
@@ -217,26 +212,8 @@
     MemoryHigh = "6G";
   };
 
-  systemd.services.sunshine = {
-    description = "Sunshine game streaming server";
-    wantedBy = [ "default.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.sunshine}/bin/sunshine";
-      Restart = "on-failure";
-      Environment = "DISPLAY=:0";
-      # add WAYLAND_DISPLAY if using Wayland
-    };
-  };
-
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
-
-  security.wrappers.sunshine = {
-    owner = "root";
-    group = "root";
-    capabilities = "cap_sys_admin+p";
-    source = "${pkgs.sunshine}/bin/sunshine";
-  };
 
 
   # This value determines the NixOS release from which the default
