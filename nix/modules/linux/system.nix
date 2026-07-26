@@ -1,6 +1,9 @@
 { config, pkgs, lib, ... }:
 
 {
+  imports = [
+    ../common/stable-overrides.nix
+  ];
   # services.xserver.enable = true;
   # services.xserver.windowManager.i3.enable = true;
 

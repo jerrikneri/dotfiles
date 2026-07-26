@@ -3,14 +3,13 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05"; # darwin branch
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     darwin = {
       url = "github:lnl7/nix-darwin";
-      # url = "github:lnl7/nix-darwin/nix-darwin-25.05"; # darwin branch
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
@@ -19,17 +18,18 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, stylix, darwin, ... }:
+  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, stylix, darwin, ... }:
     let
       supportedSystems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
       forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems f;
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
       username = builtins.getEnv "USER";
+      stablePkgs = import nixpkgs-stable { inherit system; };
     in {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { desktop = true; game = true; };
+        specialArgs = { desktop = true; game = true; inherit stablePkgs; };
         modules = [
           ./hosts/nixos/configuration.nix
           ./modules/common/packages/index.nix
@@ -44,7 +44,7 @@
 
       nixosConfigurations.nixos-game = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { game = true; };
+        specialArgs = { game = true; inherit stablePkgs; };
         modules = [
           ./hosts/nixos-game/configuration.nix
           ./modules/common/packages/index.nix
@@ -59,6 +59,7 @@
 
       nixosConfigurations.nixos-pve = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = { inherit stablePkgs; };
         modules = [
           ./hosts/nixos-pve/configuration.nix
           ./modules/common/packages/index.nix
@@ -72,6 +73,7 @@
 
       nixosConfigurations.nixos-utm = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = { inherit stablePkgs; };
         modules = [
           ./hosts/nixos-utm/configuration.nix
           ./modules/common/packages/index.nix

@@ -5,6 +5,9 @@
 { config, pkgs, ... }:
 
 {
+  # When a package breaks on unstable, force its stable (26.05) version:
+  # dotfiles.stableOverrides = [ "bottles" ];
+
   # Hardware: 9800X3D (8c/16t), RX 9070 XT, 32GB DDR5
   nix.settings = {
     max-jobs = 4;

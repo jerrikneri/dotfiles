@@ -5,6 +5,9 @@
 { config, pkgs, ... }:
 
 {
+  # When a package breaks on unstable, force its stable (26.05) version:
+  # dotfiles.stableOverrides = [ "bottles" ];
+
   # Hardware: 3950X (16c/32t), RX Vega 56, 64GB DDR4
   nix.settings = {
     max-jobs = 8;
