@@ -20,6 +20,7 @@
       #   device = "/dev/sda";
       # };
       systemd-boot.enable = true;
+      systemd-boot.memtest86.enable = true;
     };
   };
 
