@@ -1,0 +1,19 @@
+# /Users/jan/.config/tmuxinator/dev.yml
+
+name: dev
+root: ~/
+
+windows:
+  - omlx:
+      - omlx serve --model-dir ~/.lmstudio/models
+
+  - opencode:
+      layout: main-horizontal
+      panes:
+      - opencode:
+        - cfg && opencode
+        - cfg
+
+  - btop:
+      panes:
+        - btop
