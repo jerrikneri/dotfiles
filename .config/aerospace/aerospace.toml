@@ -286,9 +286,10 @@ automatically-unhide-macos-hidden-apps = false
     l = 'resize width +50'
     esc = 'mode main'
 
-# [on-window-detected]
-    # if.app
-#
+[on-window-detected]
+    if.app-id = "com.mitchellh.ghostty"
+    run = "move-node-to-workspace T"
+
 
 [workspace-to-monitor-force-assignment]
 
