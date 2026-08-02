@@ -1,6 +1,8 @@
 # Place a copy of this config to ~/.aerospace.toml
 # After that, you can edit ~/.aerospace.toml to your liking
 
+config-version = 2
+
 # You can use it to add commands that run after login to macOS user session.
 # 'start-at-login' needs to be 'true' for 'after-login-command' to work
 # Available commands: https://nikitabobko.github.io/AeroSpace/commands
@@ -45,10 +47,64 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 # Also see: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
 automatically-unhide-macos-hidden-apps = false
 
-# Possible values: (qwerty|dvorak)
+persistent-workspaces = [
+    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+    "A", "B", "C", "D", "E", "G", "I", "M", "N", "O", "P", "Q",
+    "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+]
+
+focus-follows-mouse.enabled = false
+
+# Possible values: (qwerty|dvorak|colemak)
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
-[key-mapping]
-    preset = 'qwerty'
+key-mapping.preset = 'qwerty'
+
+on-window-detected = [
+    {
+        if = 'test %{app-bundle-id} = com.mitchellh.ghostty',
+        run = ['move-node-to-workspace T'],
+    },
+    {
+        if = 'test %{app-bundle-id} = com.tinyspeck.slackmacgap',
+        run = ['move-node-to-workspace S'],
+    },
+    {
+        if = 'test %{app-bundle-id} = com.apple.iCal',
+        run = ['move-node-to-workspace C'],
+    },
+    {
+        if = 'test %{app-bundle-id} = com.apple.mail',
+        run = ['move-node-to-workspace M'],
+    },
+    {
+        if = 'test %{app-bundle-id} = md.obsidian',
+        run = ['move-node-to-workspace 1'],
+    },
+    {
+        if = 'test %{app-bundle-id} = com.tinyapp.TablePlus',
+        run = ['move-node-to-workspace D'],
+    },
+    {
+        if = 'test %{app-bundle-id} = com.usebruno.app',
+        run = ['move-node-to-workspace B'],
+    },
+    {
+        if = 'test %{app-bundle-id} = com.google.Chrome',
+        run = ['move-node-to-workspace G'],
+    },
+    {
+        if = 'test %{app-bundle-id} = org.mozilla.firefox',
+        run = ['move-node-to-workspace I'],
+    },
+    {
+        if = 'test %{app-bundle-id} = com.spotify.client',
+        run = ['move-node-to-workspace M'],
+    },
+    {
+        if = 'test %{app-bundle-id} = com.bitwarden.desktop',
+        run = ['move-node-to-workspace B'],
+    },
+]
 
 # Gaps between windows (inner-*) and between monitor edges (outer-*).
 # Possible values:
@@ -58,13 +114,12 @@ automatically-unhide-macos-hidden-apps = false
 #                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
 #                 See:
 #                 https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
-[gaps]
-    inner.horizontal = [{ monitor."Studio Display" = 10 }, 5]
-    inner.vertical =   [{ monitor."Studio Display" = 10 }, 5]
-    outer.left =       [{ monitor."Studio Display" = 8 },  5]
-    outer.bottom =     [{ monitor."Studio Display" = 8 },  5]
-    outer.top =        [{ monitor."Studio Display" = 8 },  5]
-    outer.right =      [{ monitor."Studio Display" = 8 },  5]
+gaps.inner.horizontal = [{ monitor."Studio Display" = 10 }, 5]
+gaps.inner.vertical =   [{ monitor."Studio Display" = 10 }, 5]
+gaps.outer.left =       [{ monitor."Studio Display" = 8 },  5]
+gaps.outer.bottom =     [{ monitor."Studio Display" = 8 },  5]
+gaps.outer.top =        [{ monitor."Studio Display" = 8 },  5]
+gaps.outer.right =      [{ monitor."Studio Display" = 8 },  5]
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -156,32 +211,6 @@ automatically-unhide-macos-hidden-apps = false
     alt-y = 'workspace Y'
     alt-z = 'workspace Z'
 
-    alt-ctrl-a = 'workspace a'
-    alt-ctrl-b = 'workspace b'
-    alt-ctrl-c = 'workspace c'
-    alt-ctrl-d = 'workspace d'
-    alt-ctrl-e = 'workspace e'
-    alt-ctrl-f = 'workspace f'
-    alt-ctrl-g = 'workspace g'
-    alt-ctrl-h = 'workspace h'
-    alt-ctrl-i = 'workspace i'
-    alt-ctrl-j = 'workspace j'
-    alt-ctrl-k = 'workspace k'
-    alt-ctrl-l = 'workspace l'
-    alt-ctrl-m = 'workspace m'
-    alt-ctrl-n = 'workspace n'
-    alt-ctrl-o = 'workspace o'
-    alt-ctrl-p = 'workspace p'
-    alt-ctrl-q = 'workspace q'
-    alt-ctrl-s = 'workspace s'
-    alt-ctrl-t = 'workspace t'
-    alt-ctrl-u = 'workspace u'
-    alt-ctrl-v = 'workspace v'
-    alt-ctrl-w = 'workspace w'
-    alt-ctrl-x = 'workspace x'
-    alt-ctrl-y = 'workspace y'
-    alt-ctrl-z = 'workspace z'
-
     # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
     alt-shift-1 = 'move-node-to-workspace 1'
     alt-shift-2 = 'move-node-to-workspace 2'
@@ -198,8 +227,6 @@ automatically-unhide-macos-hidden-apps = false
     alt-shift-c = 'move-node-to-workspace C'
     alt-shift-d = 'move-node-to-workspace D'
     alt-shift-e = 'move-node-to-workspace E'
-
-    alt-shift-f = 'move-node-to-workspace f'
 
     alt-shift-g = 'move-node-to-workspace G'
     alt-shift-i = 'move-node-to-workspace I'
@@ -230,6 +257,11 @@ automatically-unhide-macos-hidden-apps = false
     alt-shift-backspace = 'mode bookmark'
     alt-ctrl-r = 'mode resize'
 
+    alt-ctrl-h = 'swap left'
+    alt-ctrl-j = 'swap down'
+    alt-ctrl-k = 'swap up'
+    alt-ctrl-l = 'swap right'
+
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -247,6 +279,10 @@ automatically-unhide-macos-hidden-apps = false
     alt-shift-k = ['join-with up', 'mode main']
     alt-shift-l = ['join-with right', 'mode main']
 
+    alt-shift-b = ['balance-sizes', 'mode main']
+
+    alt-shift-e = ['enable toggle', 'mode main']
+
     down = 'volume down'
     up = 'volume up'
     shift-down = ['volume set 0', 'mode main']
@@ -255,30 +291,12 @@ automatically-unhide-macos-hidden-apps = false
     esc = ['reload-config', 'mode main']
 
     # Navigation
-    shift-b = ['workspace B', 'exec-and-forget open -a Bruno.app', 'mode main']
-    b = ['exec-and-forget open -a Bruno.app', 'mode main']
-    shift-d = ['workspace D', 'exec-and-forget open -a TablePlus.app', 'mode main']
-    d = ['exec-and-forget open -a TablePlus.app', 'mode main']
-    shift-f = ['workspace B', 'exec-and-forget open -a Firefox.app', 'mode main']
-    f = ['exec-and-forget open -a Firefox.app', 'mode main']
-    shift-g = ['workspace G', 'exec-and-forget open -a Google\ Chrome.app', 'mode main']
-    g = ['exec-and-forget open -a Google\ Chrome.app', 'mode main']
-    shift-o = ['workspace O', 'exec-and-forget open -a Obsidian.app', 'mode main']
-    o = ['exec-and-forget open -a Obsidian.app', 'mode main']
-    shift-p = ['workspace P', 'exec-and-forget open -a Phpstorm.app', 'mode main']
-    p = ['exec-and-forget open -a Phpstorm.app', 'mode main']
     # shift-t = ['workspace T', 'exec-and-forget open -a Alacritty.app', 'mode main']
     # t = ['exec-and-forget open -a Alacritty.app', 'mode main']
-    shift-s = ['workspace S', 'exec-and-forget open -a Slack.app', 'mode main']
-    s = ['exec-and-forget open -a Slack.app', 'mode main']
-    # shift-v = ['workspace V', 'exec-and-forget open -a Visual\ Studio\ Code.app', 'mode main']
-    # v = ['exec-and-forget open -a Visual\ Studio\ Code.app', 'mode main']
-    shift-v = ['workspace V', 'exec-and-forget open -a Windsurf.app', 'mode main']
-    v = ['exec-and-forget open -a Windsurf.app', 'mode main']
 
 [mode.bookmark.binding]
-    a = ["exec-and-forget open https://chatgpt.com", 'mode main']
-    g = ["exec-and-forget open -n -a Firefox.app https://google.com", 'mode main']
+    # a = ["exec-and-forget open https://chatgpt.com", 'mode main']
+    # g = ["exec-and-forget open -n -a Firefox.app https://google.com", 'mode main']
     esc = 'mode main'
 
 [mode.resize.binding]
@@ -287,50 +305,6 @@ automatically-unhide-macos-hidden-apps = false
     k = 'resize height -50'
     l = 'resize width +50'
     esc = 'mode main'
-
-[[on-window-detected]]
-    if.app-id = "com.mitchellh.ghostty"
-    run = "move-node-to-workspace T"
-
-[[on-window-detected]]
-    if.app-id = "com.tinyspeck.slackmacgap"
-    run = "move-node-to-workspace S"
-
-[[on-window-detected]]
-    if.app-id = "com.apple.iCal"
-    run = "move-node-to-workspace C"
-
-[[on-window-detected]]
-    if.app-id = "com.apple.mail"
-    run = "move-node-to-workspace M"
-
-[[on-window-detected]]
-    if.app-id = "md.obsidian"
-    run = "move-node-to-workspace 1"
-
-[[on-window-detected]]
-    if.app-id = "com.tinyapp.TablePlus"
-    run = "move-node-to-workspace D"
-
-[[on-window-detected]]
-    if.app-id = "com.usebruno.app"
-    run = "move-node-to-workspace M"
-
-[[on-window-detected]]
-    if.app-id = "com.google.Chrome"
-    run = "move-node-to-workspace G"
-
-[[on-window-detected]]
-    if.app-id = "org.mozilla.firefox"
-    run = "move-node-to-workspace I"
-
-[[on-window-detected]]
-    if.app-id = "com.spotify.client"
-    run = "move-node-to-workspace M"
-
-[[on-window-detected]]
-    if.app-id = "com.bitwarden.desktop"
-    run = "move-node-to-workspace B"
 
 
 [workspace-to-monitor-force-assignment]
@@ -373,30 +347,4 @@ X = ['Studio Display', 'secondary', 'built-in', 'main']
 Y = ['Studio Display', 'secondary', 'built-in', 'main']
 Z = ['Studio Display', 'secondary', 'built-in', 'main']
 
-a = ['Studio Display', 'secondary', 'built-in', 'main']
-b = ['Studio Display', 'secondary', 'built-in', 'main']
-c = ['Studio Display', 'secondary', 'built-in', 'main']
-d = ['Studio Display', 'secondary', 'built-in', 'main']
-e = ['Studio Display', 'secondary', 'built-in', 'main']
-f = ['Studio Display', 'secondary', 'built-in', 'main']
-g = ['Studio Display', 'secondary', 'built-in', 'main']
-h = ['Studio Display', 'secondary', 'built-in', 'main']
-i = ['Studio Display', 'secondary', 'built-in', 'main']
-j = ['Studio Display', 'secondary', 'built-in', 'main']
-k = ['Studio Display', 'secondary', 'built-in', 'main']
-l = ['Studio Display', 'secondary', 'built-in', 'main']
-m = ['Studio Display', 'secondary', 'built-in', 'main']
-n = ['Studio Display', 'secondary', 'built-in', 'main']
-o = ['Studio Display', 'secondary', 'built-in', 'main']
-p = ['Studio Display', 'secondary', 'built-in', 'main']
-q = ['Studio Display', 'secondary', 'built-in', 'main']
-r = ['Studio Display', 'secondary', 'built-in', 'main']
-s = ['Studio Display', 'secondary', 'built-in', 'main']
-t = ['Studio Display', 'secondary', 'built-in', 'main']
-u = ['Studio Display', 'secondary', 'built-in', 'main']
-v = ['Studio Display', 'secondary', 'built-in', 'main']
-w = ['Studio Display', 'secondary', 'built-in', 'main']
-x = ['Studio Display', 'secondary', 'built-in', 'main']
-y = ['Studio Display', 'secondary', 'built-in', 'main']
-z = ['Studio Display', 'secondary', 'built-in', 'main']
 
