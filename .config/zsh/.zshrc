@@ -141,3 +141,7 @@ fi
 
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="$DOTFILES/bin:$PATH"
+
+if [[ "$USE_BITWARDEN" == "true" ]]; then
+    export SSH_AUTH_SOCK="$HOME/.bitwarden-ssh-agent.sock"
+fi
