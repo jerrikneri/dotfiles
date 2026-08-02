@@ -1,5 +1,6 @@
 {
   brews = [
+    # "borders"
     "newsboat"
     # "omlx"
   ];
@@ -59,6 +60,6 @@
   ];
 
   taps = [
-
+    # "FelixKratz/formulae"
   ];
 }

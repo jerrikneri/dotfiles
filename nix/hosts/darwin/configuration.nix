@@ -53,9 +53,13 @@ in {
   system.defaults = {
     dock = {
       autohide = true;
+      autohide-time-modifier = 0.0;
+      autohide-delay = 0.0;
+      minimize-to-application = true;
       showhidden = true;
       orientation = "right"; # "left", "bottom", "right"
       tilesize = 75;
+      expose-animation-duration = 0.0;
     };
 
     finder = {
@@ -74,6 +78,23 @@ in {
       AppleShowAllExtensions = true;
       InitialKeyRepeat = 15;
       KeyRepeat = 2;
+      NSAutomaticWindowAnimationsEnabled = false;
+      NSScrollAnimationEnabled = false;
+      NSWindowResizeTime = 0.001;
     };
   };
+
+  system.activationScripts.disableAnimations.text = ''
+    defaults write NSGlobalDomain QLPanelAnimationDuration -float 0
+    defaults write NSGlobalDomain NSToolbarFullScreenAnimationDuration -float 0
+    defaults write NSGlobalDomain NSBrowserColumnAnimationSpeedMultiplier -float 0
+    defaults write NSGlobalDomain NSDocumentRevisionsWindowTransformAnimation -bool false
+    defaults write NSGlobalDomain NSScrollViewRubberbanding -bool false
+    defaults write com.apple.finder DisableAllAnimations -bool true
+    defaults write com.apple.mail DisableSendAnimations -bool true
+    defaults write com.apple.mail DisableReplyAnimations -bool true
+    defaults write com.apple.dock springboard-show-duration -float 0
+    defaults write com.apple.dock springboard-hide-duration -float 0
+    defaults write com.apple.dock springboard-page-duration -float 0
+  '';
 }
