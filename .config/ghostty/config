@@ -41,7 +41,7 @@ keybind = super+left=previous_tab
 keybind = super+right=next_tab
 
 # quick terminal (global keybinding) 
-# keybind = global:super+grave_accent=toggle_quick_terminal
+keybind = global:grave_accent=toggle_quick_terminal
 
 # tmux-like prefix controlled keybindings
 # keybind = super+b>x=close_surface
