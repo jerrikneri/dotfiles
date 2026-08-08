@@ -90,6 +90,7 @@ in {
     defaults write NSGlobalDomain NSBrowserColumnAnimationSpeedMultiplier -float 0
     defaults write NSGlobalDomain NSDocumentRevisionsWindowTransformAnimation -bool false
     defaults write NSGlobalDomain NSScrollViewRubberbanding -bool false
+    defaults write NSGlobalDomain _HIHideMenuBar -bool true
     defaults write com.apple.finder DisableAllAnimations -bool true
     defaults write com.apple.mail DisableSendAnimations -bool true
     defaults write com.apple.mail DisableReplyAnimations -bool true

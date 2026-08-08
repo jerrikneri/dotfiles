@@ -58,6 +58,7 @@
     android-tools
     atuin
     # claude-code
+    opencode
     phpactor
   ] ++ lib.optionals (isLinux && desktop) [
     # -- desktop: move packages here --
