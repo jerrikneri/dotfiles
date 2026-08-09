@@ -67,6 +67,15 @@ detect_drives() {
       continue
     fi
 
+    local fs_type
+    fs_type=$(mount | grep -F "on $mountpoint (" | head -1 | sed 's/.*(\([^,]*\).*/\1/')
+    if [[ "$fs_type" =~ ^(smbfs|afpfs|nfs|cifs)$ ]]; then
+      echo "  KEEP $volname — network share ($fs_type)"
+      labels+=("$volname")
+      volumes+=("$mountpoint")
+      continue
+    fi
+
     local info
     info=$(diskutil info "$mountpoint" 2>/dev/null) || {
       echo "  SKIP $volname — diskutil failed" >&2
@@ -82,7 +91,15 @@ detect_drives() {
     base_disk="${device%s[0-9]*}"
 
     if ! diskutil list external | grep -qF "$base_disk"; then
-      echo "  SKIP $volname ($device) — not in diskutil list external" >&2
+      local fs_type
+      fs_type=$(mount | grep -F "on $mountpoint (" | head -1 | sed 's/.*(\([^,]*\).*/\1/')
+      if [[ "$fs_type" =~ ^(smbfs|afpfs|nfs|cifs)$ ]]; then
+        echo "  KEEP $volname — network share ($fs_type)"
+        labels+=("$volname")
+        volumes+=("$mountpoint")
+        continue
+      fi
+      echo "  SKIP $volname ($device) — not an external or network drive" >&2
       continue
     fi
 
