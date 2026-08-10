@@ -41,37 +41,37 @@ keybind = super+left=previous_tab
 keybind = super+right=next_tab
 
 # quick terminal (global keybinding) 
-keybind = global:grave_accent=toggle_quick_terminal
+keybind = global:alt+grave_accent=toggle_quick_terminal
 
 # tmux-like prefix controlled keybindings
-# keybind = super+b>x=close_surface
-# keybind = super+b>c=new_tab 
-# keybind = super+b>n=new_window
-# keybind = super+b>f=toggle_fullscreen
+keybind = ctrl+,>x=close_surface
+# keybind = ctrl+,>c=new_tab
+# keybind = ctrl+,>n=new_window
+# keybind = ctrl+,>f=toggle_fullscreen
 
 # tab navigation
-# keybind = super+b>1=goto_tab:1
-# keybind = super+b>2=goto_tab:2
-# keybind = super+b>3=goto_tab:3
-# keybind = super+b>4=goto_tab:4
-# keybind = super+b>5=goto_tab:5
-# keybind = super+b>6=goto_tab:6
-# keybind = super+b>7=goto_tab:7
-# keybind = super+b>8=goto_tab:8
-# keybind = super+b>9=goto_tab:9
+keybind = ctrl+,>1=goto_tab:1
+keybind = ctrl+,>2=goto_tab:2
+keybind = ctrl+,>3=goto_tab:3
+keybind = ctrl+,>4=goto_tab:4
+keybind = ctrl+,>5=goto_tab:5
+keybind = ctrl+,>6=goto_tab:6
+keybind = ctrl+,>7=goto_tab:7
+keybind = ctrl+,>8=goto_tab:8
+keybind = ctrl+,>9=goto_tab:9
 
 # splits
-# keybind = super+b>\=new_split:right
-# keybind = super+b>-=new_split:down
-# keybind = super+b>e=equalize_splits
-# keybind = super+b>z=toggle_split_zoom
+keybind = ctrl+,>\=new_split:right
+keybind = ctrl+,>-=new_split:down
+keybind = ctrl+,>e=equalize_splits
+keybind = ctrl+,>z=toggle_split_zoom
 
 # split navigation 
-# keybind = super+b>h=goto_split:left
-# keybind = super+b>j=goto_split:bottom
-# keybind = super+b>k=goto_split:top
-# keybind = super+b>l=goto_split:right
-# keybind = super+b>left=goto_split:left
-# keybind = super+b>down=goto_split:bottom
-# keybind = super+b>up=goto_split:top
-# keybind = super+b>right=goto_split:right
+keybind = ctrl+,>h=goto_split:left
+keybind = ctrl+,>j=goto_split:bottom
+keybind = ctrl+,>k=goto_split:top
+keybind = ctrl+,>l=goto_split:right
+keybind = ctrl+,>left=goto_split:left
+keybind = ctrl+,>down=goto_split:bottom
+keybind = ctrl+,>up=goto_split:top
+keybind = ctrl+,>right=goto_split:right
