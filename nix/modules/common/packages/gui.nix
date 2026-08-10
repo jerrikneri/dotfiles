@@ -9,10 +9,11 @@
   ] ++ lib.optionals (!pkgs.stdenv.isAarch64) [
   ] ++ lib.optionals isLinux [
     alacritty # Terminal
+    firefox-bin
     ghostty
     gparted
     # librewolf # long compile times
-    librewolf-bin
+    # librewolf-bin
     # lmstudio # AI
   ] ++ lib.optionals (isLinux && desktop) [
     # -- desktop: move packages here --
