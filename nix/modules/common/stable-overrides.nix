@@ -5,11 +5,16 @@ in
 {
   options.dotfiles.stableOverrides = lib.mkOption {
     type = lib.types.listOf lib.types.str;
-    default = [];
+    default = [ "firefox-bin" "tailscale" "bitwarden-cli" "opensnitch" ];
     example = [ "bottles" ];
     description = ''
       Top-level package names to pull from nixpkgs-stable (nixos-26.05)
-      instead of nixpkgs-unstable. Example: ["bottles"]
+      instead of nixpkgs-unstable, so they receive stable-channel vetting
+      and security backports without pulling brand-new upstream releases.
+      Defaults pin security-sensitive leaf applications. Setting this list
+      per-host replaces the default. Only list leaf applications (not shared
+      libraries like curl/openssl) to avoid forcing wide rebuilds of
+      dependent packages.
     '';
   };
 
