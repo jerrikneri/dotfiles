@@ -266,7 +266,123 @@ nix-patches() {
 
 nixu() {
   nix-config
+
+  local min_days="${NIXU_MIN_AGE_DAYS:-3}"
+  case "$min_days" in ''|*[!0-9]*) min_days=3 ;; esac
+  local force=0
+  if [ "${1:-}" = "--force" ] || [ "${NIXU_FORCE:-0}" = "1" ]; then
+    force=1
+  fi
+
+  local lock="$PWD/flake.lock"
+  if [ ! -f "$lock" ]; then
+    echo "Error: flake.lock not found at $lock" >&2
+    return 1
+  fi
+
+  local backup
+  backup=$(mktemp "${TMPDIR:-/tmp}/nixu-lock.XXXXXX")
+  cp "$lock" "$backup"
+
+  echo "Updating flake inputs..."
   sudo nix flake update
+  local upd_exit=$?
+
+  if [ "$upd_exit" -ne 0 ]; then
+    echo "nix flake update failed (exit $upd_exit); flake.lock left as-is." >&2
+    rm -f "$backup"
+    return "$upd_exit"
+  fi
+
+  local last_mod new_rev
+  last_mod=$(jq -r '.nodes["nixpkgs"].locked.lastModified // empty' "$lock" 2>/dev/null)
+  new_rev=$(jq -r '.nodes["nixpkgs"].locked.rev // empty' "$lock" 2>/dev/null)
+
+  if [ -z "$last_mod" ]; then
+    echo "Warning: could not read nixpkgs.lastModified (jq missing or schema changed?)." >&2
+    echo "Update kept; cannot verify commit age." >&2
+    rm -f "$backup"
+    return 0
+  fi
+
+  local now age_sec min_sec age_days mod_date
+  now=$(date +%s)
+  age_sec=$((now - last_mod))
+  min_sec=$((min_days * 86400))
+  age_days=$((age_sec / 86400))
+
+  if date -r "$last_mod" '+%Y-%m-%d %H:%M:%S' >/dev/null 2>&1; then
+    mod_date=$(date -r "$last_mod" '+%Y-%m-%d %H:%M:%S')
+  else
+    mod_date=$(date -d "@$last_mod" '+%Y-%m-%d %H:%M:%S' 2>/dev/null || echo "epoch $last_mod")
+  fi
+
+  echo ""
+  echo "nixpkgs (unstable):"
+  echo "  rev:          $new_rev"
+  echo "  lastModified: $mod_date"
+  echo "  age:          ${age_days} day(s)"
+
+  if [ "$age_sec" -lt "$min_sec" ]; then
+    echo "" >&2
+    echo "WARNING: nixpkgs commit is only ${age_days} day(s) old (min ${min_days})." >&2
+    echo "Fresh commits may lack full Hydra CI signal." >&2
+    if [ "$force" = "1" ]; then
+      echo "NIXU_FORCE/--force: keeping the update anyway." >&2
+    else
+      local days_short
+      days_short=$(( (min_sec - age_sec + 86399) / 86400 ))
+      echo "Restoring previous flake.lock." >&2
+      echo "Retry in ~${days_short} day(s), or re-run with --force / NIXU_FORCE=1." >&2
+      if ! cp "$backup" "$lock" 2>/dev/null; then
+        sudo cp "$backup" "$lock"
+      fi
+      rm -f "$backup"
+      return 1
+    fi
+  else
+    echo "OK: commit age >= ${min_days} day minimum. Update kept."
+  fi
+  rm -f "$backup"
+}
+
+nixu-age() {
+  nix-config
+
+  local min_days="${NIXU_MIN_AGE_DAYS:-3}"
+  case "$min_days" in ''|*[!0-9]*) min_days=3 ;; esac
+  local lock="$PWD/flake.lock"
+  local last_mod new_rev
+  last_mod=$(jq -r '.nodes["nixpkgs"].locked.lastModified // empty' "$lock" 2>/dev/null)
+  new_rev=$(jq -r '.nodes["nixpkgs"].locked.rev // empty' "$lock" 2>/dev/null)
+
+  if [ -z "$last_mod" ]; then
+    echo "Could not read nixpkgs.lastModified from $lock" >&2
+    return 1
+  fi
+
+  local now age_sec age_days min_sec mod_date
+  now=$(date +%s)
+  age_sec=$((now - last_mod))
+  age_days=$((age_sec / 86400))
+  min_sec=$((min_days * 86400))
+
+  if date -r "$last_mod" '+%Y-%m-%d %H:%M:%S' >/dev/null 2>&1; then
+    mod_date=$(date -r "$last_mod" '+%Y-%m-%d %H:%M:%S')
+  else
+    mod_date=$(date -d "@$last_mod" '+%Y-%m-%d %H:%M:%S' 2>/dev/null || echo "epoch $last_mod")
+  fi
+
+  echo "nixpkgs (unstable):"
+  echo "  rev:          $new_rev"
+  echo "  lastModified: $mod_date"
+  echo "  age:          ${age_days} day(s)"
+  if [ "$age_sec" -lt "$min_sec" ]; then
+    echo "  status:       TOO FRESH (< ${min_days} day minimum)"
+    return 1
+  fi
+  echo "  status:       ok (>= ${min_days} day minimum)"
+  return 0
 }
 
 nixs() {

@@ -4,7 +4,6 @@
     dotfilesDir = builtins.path { name = "dotfiles"; path = ../../..; };
   in
   {
-    imports = [ ./firefox.nix ];
     # home.file.".aliases".source = "${dotfilesDir}/.aliases/index";
     # home.file.".functions".source = "${dotfilesDir}/.functions/index";
     home.file = {

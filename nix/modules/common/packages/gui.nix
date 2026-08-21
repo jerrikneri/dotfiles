@@ -9,10 +9,12 @@
   ] ++ lib.optionals (!pkgs.stdenv.isAarch64) [
   ] ++ lib.optionals isLinux [
     alacritty # Terminal
-    firefox-bin
+    librewolf-bin
     ghostty
     gparted
     # librewolf # long compile times
+    # ungoogled-chromium # free (BSD-3-Clause) so no allowUnfree needed,
+    # but builds from source (long compile; fetch from binary cache if available)
     # librewolf-bin
     # lmstudio # AI
   ] ++ lib.optionals (isLinux && desktop) [

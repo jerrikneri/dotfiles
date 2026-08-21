@@ -1,3 +1,16 @@
+# NOTE: This module is currently DISABLED and not imported by any host.
+# It is kept for reference only.
+#
+# Why disabled: the `ffAddons` binding below calls
+#   pkgs.callPackage (pkgs.path + "/pkgs/applications/networking/browsers/firefox/addons") {}
+# but that path no longer exists in the pinned nixpkgs (nixpkgs-unstable),
+# causing a hard config-evaluation error on every host:
+#   error: path '.../pkgs/applications/networking/browsers/firefox/addons' does not exist
+#
+# To re-enable: source the extensions a different way (e.g. a
+# `nixpkgs/firefox-addons` flake input, or NUR) and re-add
+# `imports = [ ./firefox.nix ];` to modules/common/home.nix.
+
 { config, pkgs, ... }:
 
 let

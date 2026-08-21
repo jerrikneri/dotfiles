@@ -5,7 +5,7 @@ in
 {
   options.dotfiles.stableOverrides = lib.mkOption {
     type = lib.types.listOf lib.types.str;
-    default = [ "firefox-bin" "tailscale" "bitwarden-cli" "opensnitch" ];
+    default = [ "librewolf-bin" "tailscale" "bitwarden-cli" "opensnitch" ];
     example = [ "bottles" ];
     description = ''
       Top-level package names to pull from nixpkgs-stable (nixos-26.05)
