@@ -13,6 +13,7 @@
     gh # git hub cli, for gh-dash
     glow
     # intelli-shell
+    herdr
     # llama-cpp
     neovim
     nh # yet another nix helper
