@@ -59,6 +59,7 @@
     android-tools
     atuin
     # claude-code
+    nmap
     opencode
     phpactor
   ] ++ lib.optionals (isLinux && desktop) [
