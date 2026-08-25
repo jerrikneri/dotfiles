@@ -203,6 +203,7 @@ This repo contains reusable AI agent skill files in `.ai-agents/skills/`. These 
 | `.ai-agents/skills/bug-triage.md` | Full protocol for investigating and fixing production errors | During the fix |
 | `.ai-agents/skills/continual-improvement.md` | Incremental learning loop for durable preferences and workspace facts | After meaningful work or via `/learn` |
 | `.ai-agents/skills/hontoni.md` | Self-critique scoring framework (6 dimensions, composite score) | After completing fix |
+| `.ai-agents/skills/tmux-subagents.md` | Spawn parallel sub-agents in tmux panes via `opencode run` | When parallel work or context isolation is needed |
 | `.ai-agents/rules/session-management.md` | Branch-based session context, resume, compact, archiving | Every session |
 | `.ai-agents/rules/agent-meta-protocol.md` | Document findings, self-improve config, recognize repetition, fact-check, second opinion, auto-run tests | Always on |
 

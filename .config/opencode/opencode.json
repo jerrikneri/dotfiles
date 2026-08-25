@@ -3,6 +3,7 @@
   "instructions": [
     ".ai-agents/skills/pre-flight.md",
     ".ai-agents/skills/teach-me.md",
+    ".ai-agents/skills/tmux-subagents.md",
     ".ai-agents/rules/session-management.md",
     ".ai-agents/rules/agent-meta-protocol.md"
   ],
