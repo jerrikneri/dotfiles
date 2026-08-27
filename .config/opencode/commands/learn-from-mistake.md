@@ -2,7 +2,7 @@
 description: "Run fast mistake-to-memory loop"
 ---
 
-Execute the mistake-to-memory loop from `.ai-agents/skills/continual-improvement.md`.
+Execute the mistake-to-memory loop from `.ai-agents/skills/continual-improvement/SKILL.md`.
 
 Input context:
 - Mistake note: `$ARGUMENTS`

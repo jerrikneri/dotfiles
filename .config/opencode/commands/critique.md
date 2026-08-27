@@ -10,7 +10,7 @@ Steps:
    - Load `workspace/context/{branch}/YYYY-MM-DD-CURRENT.md` (today's date)
    - If exists, also load last session's dated file for continuity
    - This ensures full visibility into session work (same as `/resume` would provide)
-2. Read the full hontoni protocol from `.ai-agents/skills/hontoni.md`
+2. Read the full hontoni protocol from `.ai-agents/skills/hontoni/SKILL.md`
 3. Identify what was changed in this session (check git diff, git status, session context, recent file modifications)
 4. Score all 6 dimensions (0-100) with specific file:line evidence:
    - Correctness: Root cause vs symptom masking

@@ -2,7 +2,7 @@
 description: "Run continual improvement memory sync"
 ---
 
-Execute the continual improvement protocol from `.ai-agents/skills/continual-improvement.md`.
+Execute the continual improvement protocol from `.ai-agents/skills/continual-improvement/SKILL.md`.
 
 Quick trigger phrase for mistake-driven learning:
 - `Reflect on this mistake. Abstract and generalize the learning. Propose updates to AGENTS.md managed sections.`

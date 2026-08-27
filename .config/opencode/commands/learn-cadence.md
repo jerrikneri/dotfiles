@@ -2,7 +2,7 @@
 description: "Evaluate continual-learning cadence gates"
 ---
 
-Evaluate cadence gates from `.ai-agents/skills/continual-improvement.md` before running `/learn`.
+Evaluate cadence gates from `.ai-agents/skills/continual-improvement/SKILL.md` before running `/learn`.
 
 Inputs:
 - `workspace/context/_meta/learning-cadence.json`

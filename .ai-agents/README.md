@@ -8,39 +8,43 @@ Model-agnostic protocols and instructions for AI coding tools (Claude Code, Open
 .ai-agents/
   .agentsignore                      # Ignore patterns merged into target .gitignore by sync-ai-md
   rules/                             # Global always-on protocols
-    session-management.md            # Branch-based session docs, [resume], [compact], [log]
-    agent-meta-protocol.md           # Core behaviors: document findings, self-improve, fact-check
-    permissions.md                   # Canonical permission policy (read-only = allow, writes = ask)
+    session-management/SKILL.md      # Branch-based session docs, [resume], [compact], [log]
+    agent-meta-protocol/SKILL.md     # Core behaviors: document findings, self-improve, fact-check
+    permissions/SKILL.md             # Canonical permission policy (read-only = allow, writes = ask)
   skills/                            # Task-specific protocols (invoked per-task)
-    pre-flight.md                    # Assess bug before starting (clarity, scope, risk)
-    bug-triage.md                    # Full investigate-fix-test-document protocol
-    hontoni.md                       # Post-fix self-critique scoring (6 dimensions)
+    pre-flight/SKILL.md              # Assess bug before starting (clarity, scope, risk)
+    hontoni/SKILL.md                 # Post-fix self-critique scoring (6 dimensions)
+    continual-improvement/SKILL.md   # Incremental learning loop
+    teach-me/SKILL.md                # Interactive mentor protocol
+    release-readiness/SKILL.md       # Pre-release validation
+    spec-driven-development/SKILL.md # Spec-first development
+    nix-validation/SKILL.md          # Nix build validation
 ```
 
 ## How tools pick this up
 
-**Claude Code**: `~/.claude/CLAUDE.md` references `rules/session-management.md`. Skills are loaded when projects symlink the `.ai-agents/` directory.
+**Claude Code**: Skills auto-discovered from `~/.claude/skills/<name>/SKILL.md`. Use `sync-skills claude` to symlink them (rules synced as skills too, except `permissions`).
 
-**Open Code**: `opencode.json` `instructions[]` array auto-loads skill files. Commands in `.config/opencode/commands/` provide `/pre-flight`, `/critique`, `/second-opinion` slash commands.
+**Open Code**: Skills auto-discovered from `~/.config/opencode/skills/<name>/SKILL.md`; rules loaded via `opencode.json` `instructions[]` array. Use `sync-skills opencode` to symlink skills. Slash commands in `.config/opencode/commands/` provide `/pre-flight`, `/critique`, `/second-opinion`.
 
 **Any tool**: `AGENTS.md` at project root documents the skills and links to them. Any AI tool that reads a project's root markdown will find them.
 
-## Syncing into projects
+## Syncing
 
 ```bash
-# Symlinks AGENTS.md, .ai-agents/skills/, .ai-agents/rules/
-# and merges .agentsignore patterns into the target's .gitignore.
-sync-ai-md /path/to/project
+# Symlink skills (+ rules for agents without a rules concept) into agent global dirs.
+# Interactive multi-select (fzf) or: sync-skills claude opencode / --all / --list
+sync-skills
 
-# Or from within the project:
-sync-ai-md .
+# Symlink AGENTS.md + .ai-agents/ into a target project, merge .agentsignore.
+sync-ai-md /path/to/project
 ```
 
-The `sync-ai-md` function is defined in `$DOTFILES/.functions/.ai.sh` and uses `$DOTFILES` env var (set in `.config/zsh/.zshenv`).
+Both functions are defined in `$DOTFILES/.functions/.ai.sh` and use `$DOTFILES` env var (set in `.config/zsh/.zshenv`).
 
 ## Adding new skills
 
-Create a `.md` file in `skills/`. Conventions:
+Create a directory `skills/<name>/SKILL.md`. Conventions:
 - Self-contained (works without any other file)
 - Portable (no tool-specific syntax, no YAML frontmatter)
 - Header block: include a `>` quoted block explaining what it is and how to use it
@@ -48,4 +52,4 @@ Create a `.md` file in `skills/`. Conventions:
 
 ## Adding new rules
 
-Create a `.md` file in `rules/`. These are always-on global protocols (session management, permissions, behavioral directives) rather than task-specific skills.
+Create a directory `rules/<name>/SKILL.md`. These are always-on global protocols (session management, permissions, behavioral directives) rather than task-specific skills. Note: the `permissions` rule is skipped when syncing rules-as-skills (agent-specific config).

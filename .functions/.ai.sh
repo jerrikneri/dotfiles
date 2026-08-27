@@ -190,6 +190,254 @@ sync-ai-md() {
   unset -f _backup_path _sync_link _ensure_agents_local_reference _merge_ignore_patterns
 }
 
+# Sync skills (and optionally rules) from .ai-agents/ into AI agent global
+# skill directories. Each .ai-agents/skills/<name>/ directory becomes a
+# <agent_dir>/<name> symlink -> source dir (single source of truth).
+#
+# Agents without a native "rules" concept (e.g. Claude) also get rules
+# synced as skills. Agents that handle rules elsewhere (e.g. opencode's
+# instructions array) set sync_rules=false.
+#
+# Scalable: add an agent to the REGISTRY below (one "name|dir|sync_rules|desc" line).
+#
+# Usage:
+#   sync-skills              # interactive multi-select (fzf, or toggle fallback)
+#   sync-skills claude       # sync only the named agents (non-interactive)
+#   sync-skills claude opencode
+#   sync-skills --all        # sync every registered agent
+#   sync-skills --list       # list registered agents
+#   sync-skills --help
+sync-skills() {
+  if [ -z "$DOTFILES" ]; then
+    echo "Error: DOTFILES environment variable not set" >&2
+    return 1
+  fi
+
+  local skills_dir="$DOTFILES/.ai-agents/skills"
+  local rules_dir="$DOTFILES/.ai-agents/rules"
+  if [ ! -d "$skills_dir" ]; then
+    echo "Error: skills directory not found: $skills_dir" >&2
+    return 1
+  fi
+
+  # Agent registry. One agent per line: "name|target_dir|sync_rules|description".
+  # sync_rules=true  -> also symlink .ai-agents/rules/<name> as skills
+  # sync_rules=false -> rules handled elsewhere (e.g. opencode instructions array)
+  # $HOME expands at assignment time. To add an agent, append a line here.
+  local registry="claude|$HOME/.claude/skills|true|Claude Code (global, rules as skills)
+opencode|$HOME/.config/opencode/skills|false|opencode (global, rules via instructions)"
+
+  # Collect source dirs as "name|path" records (newline-delimited).
+  local skill_dirs="" rule_dirs=""
+  local d base
+  for d in "$skills_dir"/*/; do
+    [ -d "$d" ] || continue
+    base="${d%/}"; base="${base##*/}"
+    skill_dirs="$skill_dirs$base|${d%/}"$'\n'
+  done
+  if [ -z "$skill_dirs" ]; then
+    echo "Error: no skill dirs found in $skills_dir" >&2
+    return 1
+  fi
+  # Rules to skip when syncing rules-as-skills (agent-specific, not portable).
+  # Space-separated list of rule directory names.
+  local rule_skip="permissions"
+
+  if [ -d "$rules_dir" ]; then
+    local skip_match
+    for d in "$rules_dir"/*/; do
+      [ -d "$d" ] || continue
+      base="${d%/}"; base="${base##*/}"
+      skip_match=0
+      local r
+      for r in $rule_skip; do [ "$base" = "$r" ] && { skip_match=1; break; }; done
+      [ "$skip_match" -eq 1 ] && continue
+      rule_dirs="$rule_dirs$base|${d%/}"$'\n'
+    done
+  fi
+
+  local selected_names=""
+
+  if [ "$#" -gt 0 ]; then
+    case "$1" in
+      --help|-h)
+        cat <<'EOF'
+Usage: sync-skills [agent ...] | --all | --list | --help
+
+Symlink every .ai-agents/skills/<name>/ dir into each agent's global
+skill directory as <dir>/<name>. Agents with sync_rules=true also get
+.ai-agents/rules/<name>/ symlinked as skills. Run with no args for an
+interactive multi-select.
+EOF
+        return 0
+        ;;
+      --list|-l)
+        echo "Registered skill-sync agents:"
+        while IFS='|' read -r n d sr desc; do
+          [ -z "$n" ] && continue
+          printf '  %-10s %s  (%s)\n' "$n" "$desc" "$d"
+        done <<<"$registry"
+        return 0
+        ;;
+      --all|-a)
+        while IFS='|' read -r n d sr desc; do
+          [ -z "$n" ] && continue
+          selected_names="${selected_names}${n}"$'\n'
+        done <<<"$registry"
+        ;;
+      *)
+        local arg found
+        for arg in "$@"; do
+          found=""
+          while IFS='|' read -r n d sr desc; do
+            [ -z "$n" ] && continue
+            if [ "$n" = "$arg" ]; then
+              selected_names="${selected_names}${n}"$'\n'
+              found=1
+              break
+            fi
+          done <<<"$registry"
+          if [ -z "$found" ]; then
+            echo "Error: unknown agent '$arg' (run 'sync-skills --list' for options)" >&2
+            return 1
+          fi
+        done
+        ;;
+    esac
+  else
+    # Interactive multi-select
+    if command -v fzf >/dev/null 2>&1; then
+      local fzf_input=""
+      while IFS='|' read -r n d sr desc; do
+        [ -z "$n" ] && continue
+        fzf_input="$fzf_input${n} | ${desc} (${d})"$'\n'
+      done <<<"$registry"
+      local picked
+      picked="$(printf '%s' "$fzf_input" | fzf -m \
+        --header="TAB select, ENTER confirm  |  sync .ai-agents/{skills,rules} -> agent skill dirs" \
+        --prompt="agents> " --height=40% --border)"
+      [ -z "$picked" ] && { echo "No agents selected."; return 0; }
+      local line pname
+      while IFS= read -r line; do
+        [ -z "$line" ] && continue
+        pname="${line%% | *}"
+        selected_names="${selected_names}${pname}"$'\n'
+      done <<<"$picked"
+    else
+      # Fallback: numbered toggle loop (no fzf)
+      local chosen=""
+      local total=0 choice
+      while IFS='|' read -r _ _ _ _; do total=$((total + 1)); done <<<"$registry"
+      while true; do
+        echo "Skill-sync agents (toggle number, blank or 'done' to confirm):"
+        local idx=0 n d sr desc mark tname
+        while IFS='|' read -r n d sr desc; do
+          [ -z "$n" ] && continue
+          idx=$((idx + 1))
+          mark=" "
+          if printf '%s\n' "$chosen" | grep -qx "$n"; then mark="x"; fi
+          printf '  [%s] %d) %-10s %s  (%s)\n' "$mark" "$idx" "$n" "$desc" "$d"
+        done <<<"$registry"
+        printf 'choice> '
+        read -r choice
+        [ -z "$choice" ] && break
+        [ "$choice" = "done" ] && break
+        case "$choice" in
+          *[!0-9]*) echo "  invalid: '$choice' (enter a number)"; continue ;;
+        esac
+        if [ "$choice" -lt 1 ] || [ "$choice" -gt "$total" ]; then
+          echo "  out of range: $choice"
+          continue
+        fi
+        idx=0
+        tname=""
+        while IFS='|' read -r n d sr desc; do
+          [ -z "$n" ] && continue
+          idx=$((idx + 1))
+          [ "$idx" = "$choice" ] && { tname="$n"; break; }
+        done <<<"$registry"
+        if printf '%s\n' "$chosen" | grep -qx "$tname"; then
+          chosen="$(printf '%s\n' "$chosen" | grep -vx "$tname")"
+        else
+          chosen="${chosen}${tname}"$'\n'
+        fi
+      done
+      selected_names="$chosen"
+    fi
+  fi
+
+  if [ -z "$selected_names" ]; then
+    echo "No agents selected."
+    return 0
+  fi
+
+  # Helper: backup an existing path to .bkup (timestamped if .bkup exists).
+  _ss_backup_path() {
+    local target_path="$1"
+    local backup="${target_path}.bkup"
+    if [ -e "$backup" ] || [ -L "$backup" ]; then
+      backup="${backup}.$(date +%Y%m%d%H%M%S)"
+    fi
+    /bin/cp -R "$target_path" "$backup"
+    echo "$backup"
+  }
+
+  # Helper: replace dest with symlink to src dir, backing up if needed.
+  _ss_link_dir() {
+    local src="$1"
+    local dest="$2"
+    local label="$3"
+    if [ -L "$dest" ]; then
+      local cur
+      cur="$(readlink "$dest")"
+      if [ "$cur" = "$src" ]; then
+        echo "  $label already synced"
+      else
+        ln -sfn "$src" "$dest"
+        echo "  updated $label (symlink refreshed)"
+      fi
+    elif [ -e "$dest" ]; then
+      local backup
+      backup="$(_ss_backup_path "$dest")"
+      rm -rf "$dest"
+      ln -sfn "$src" "$dest"
+      echo "  replaced $label (backup: $backup)"
+    else
+      ln -sfn "$src" "$dest"
+      echo "  linked $label"
+    fi
+  }
+
+  local aname adir asr sname spath rname rpath
+  while IFS= read -r aname; do
+    [ -z "$aname" ] && continue
+    adir=""; asr=""
+    while IFS='|' read -r n d sr desc; do
+      [ -z "$n" ] && continue
+      [ "$n" = "$aname" ] && { adir="$d"; asr="$sr"; break; }
+    done <<<"$registry"
+    [ -z "$adir" ] && continue
+
+    echo "Syncing skills -> $aname ($adir)"
+    mkdir -p "$adir"
+    while IFS='|' read -r sname spath; do
+      [ -z "$sname" ] && continue
+      _ss_link_dir "$spath" "$adir/$sname" "$aname: skill/$sname"
+    done <<<"$skill_dirs"
+
+    if [ "$asr" = "true" ] && [ -n "$rule_dirs" ]; then
+      echo "Syncing rules as skills -> $aname"
+      while IFS='|' read -r rname rpath; do
+        [ -z "$rname" ] && continue
+        _ss_link_dir "$rpath" "$adir/$rname" "$aname: rule/$rname"
+      done <<<"$rule_dirs"
+    fi
+  done <<<"$selected_names"
+
+  echo "Done."
+  unset -f _ss_backup_path _ss_link_dir
+}
+
 # Evaluate continual-learning cadence gates.
 # Returns 0 when eligible, 1 when deferred.
 learn-cadence-status() {

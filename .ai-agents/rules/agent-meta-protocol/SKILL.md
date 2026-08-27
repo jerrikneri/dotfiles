@@ -86,7 +86,7 @@ Before sending user-facing conclusions with factual claims:
 
 For non-trivial changes, apply the hontoni framework:
 
-- After completing a fix or feature, run a self-critique using the protocol in `.ai-agents/skills/hontoni.md`
+- After completing a fix or feature, run a self-critique using the protocol in `.ai-agents/skills/hontoni/SKILL.md`
 - Score at minimum: Correctness (root cause vs symptom), Completeness (all paths), and Regression Risk (what could break)
 - If composite score is below 60, flag it to the user before considering the work done
 - For high-risk changes (data handling, auth, destructive operations), always self-critique before presenting as complete

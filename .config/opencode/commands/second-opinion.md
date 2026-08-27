@@ -9,7 +9,7 @@ Steps:
    - Check current git branch: `git branch --show-current`
    - Load `workspace/context/{branch}/YYYY-MM-DD-CURRENT.md` (today's date)
    - If exists, also load last session's dated file for continuity
-2. Read the full hontoni protocol from `.ai-agents/skills/hontoni.md`
+2. Read the full hontoni protocol from `.ai-agents/skills/hontoni/SKILL.md`
 3. Identify what changed in this session (git diff, git status, session context, recent file modifications)
 4. Re-score all 6 dimensions (0-100) independently with specific file:line evidence:
    - Correctness

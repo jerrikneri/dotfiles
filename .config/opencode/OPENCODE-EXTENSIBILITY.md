@@ -43,8 +43,6 @@ Use `instructions` array in `opencode.json` to load extra files alongside AGENTS
 {
   "instructions": [
     "docs/guidelines.md",
-    ".ai-agents/skills/bug-triage.md",
-    ".ai-agents/skills/hontoni.md",
     ".cursor/rules/*.md",
     "https://example.com/rules.md"
   ]
@@ -323,8 +321,6 @@ OpenCode's `instructions` array in `opencode.json` solves the "skills files aren
 ```json
 {
   "instructions": [
-    ".ai-agents/skills/bug-triage.md",
-    ".ai-agents/skills/hontoni.md"
   ]
 }
 ```
@@ -341,8 +337,6 @@ Add `instructions` array to auto-load skills:
 ```json
 {
   "instructions": [
-    "~/.ai-agents/skills/bug-triage.md",
-    "~/.ai-agents/skills/hontoni.md"
   ]
 }
 ```
@@ -353,8 +347,6 @@ Override or extend with project-specific skills:
 ```json
 {
   "instructions": [
-    ".ai-agents/skills/bug-triage.md",
-    ".ai-agents/skills/hontoni.md"
   ]
 }
 ```

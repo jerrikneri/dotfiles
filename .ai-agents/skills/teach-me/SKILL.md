@@ -214,13 +214,13 @@ Copy/symlink to `.config/opencode/commands/teach-me.md` (the command wrapper tha
 ### Claude Code
 Option A — Symlink the skill:
 ```bash
-mkdir -p .claude/skills/teach-me
-ln -s ~/code/dotfiles/.ai-agents/skills/teach-me.md .claude/skills/teach-me/SKILL.md
+mkdir -p ~/.claude/skills
+ln -s ~/code/dotfiles/.ai-agents/skills/teach-me ~/.claude/skills/teach-me
 ```
 
 Option B — Paste into a session:
 ```
-Read the full protocol from ~/code/dotfiles/.ai-agents/skills/teach-me.md
+Read the full protocol from ~/code/dotfiles/.ai-agents/skills/teach-me/SKILL.md
 Now teach me about: [topic]
 ```
 
@@ -228,7 +228,7 @@ Now teach me about: [topic]
 Paste the entire block below into a new session or your project's instruction file:
 
 ```
-Follow the Teach Me protocol from ~/code/dotfiles/.ai-agents/skills/teach-me.md
+Follow the Teach Me protocol from ~/code/dotfiles/.ai-agents/skills/teach-me/SKILL.md
 for learning about: [topic]
 ```
 
