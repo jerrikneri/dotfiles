@@ -1,6 +1,8 @@
 .env
 
 .config/tmux/plugins/
+.config/obsidian/.obsidian/workspace.json
+.config/obsidian/.obsidian/workspace-mobile.json
 
 ./macOS/Brewfile.lock.json
 .config/karabiner
