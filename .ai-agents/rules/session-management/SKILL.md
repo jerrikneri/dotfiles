@@ -39,7 +39,8 @@ Rules:
 - Use checkbox markdown files for complex tasks: `workspace/context/{branch}/tasks.md`
 - Format: `[ ]` unchecked, `[x]` completed
 - Reference with @workspace/context/{branch}/tasks.md only when needed
-- If `tasks.md` is missing, initialize from `workspace/context/_templates/tasks.md`
+- If `tasks.md` is missing, initialize from `.ai-agents/templates/tasks.md` (project-level; fallback `$DOTFILES/.ai-agents/templates/tasks.md`, then legacy `workspace/context/_templates/tasks.md`)
+- Task lines carry an exact target (file:line or config key) and a `Done when` completion criterion; include a source link block pointing to the originating report/ticket for full context
 - Keep a small `Command Sync` block in `tasks.md` for `/resume`, `/log`, `/document`, `/record-session`, `/learn`, `/learn-cadence`, and `/learn-from-mistake`
 
 ## Archiving (Do This Proactively)

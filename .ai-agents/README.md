@@ -19,6 +19,8 @@ Model-agnostic protocols and instructions for AI coding tools (Claude Code, Open
     release-readiness/SKILL.md       # Pre-release validation
     spec-driven-development/SKILL.md # Spec-first development
     nix-validation/SKILL.md          # Nix build validation
+  templates/                        # Reusable starter files (instantiate, never edit in place)
+    tasks.md                        # Branch task checklist: source links, groups, Done-when criteria
 ```
 
 ## How tools pick this up
@@ -53,3 +55,7 @@ Create a directory `skills/<name>/SKILL.md`. Conventions:
 ## Adding new rules
 
 Create a directory `rules/<name>/SKILL.md`. These are always-on global protocols (session management, permissions, behavioral directives) rather than task-specific skills. Note: the `permissions` rule is skipped when syncing rules-as-skills (agent-specific config).
+
+## Templates
+
+Reusable starter files, committed here so every project gets them via `sync-ai-md`. Instantiate into the project (e.g. `templates/tasks.md` -> `workspace/context/{branch}/tasks.md`), never edit in place. Conventions: `{placeholder}` markers, a `>` header block explaining usage, and self-documenting structure that needs no external reference.
