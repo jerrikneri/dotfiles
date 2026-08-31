@@ -258,3 +258,93 @@ EOF
   ! tail -n2 "$TARGET_DIR/AGENTS.md" | head -n1 | grep -q '^$'
   grep -q "BEGIN DOTFILES AGENTS LOCAL REF" "$TARGET_DIR/AGENTS.md"
 }
+
+# ---------------------------------------------------------------------------
+# sync-skills
+# ---------------------------------------------------------------------------
+
+@test "sync-skills --list shows registered agents" {
+  run env DOTFILES="$DOTFILES_ROOT" bash -lc 'source "$DOTFILES/.functions/.ai.sh"; sync-skills --list'
+  [ "$status" -eq 0 ]
+  echo "$output" | grep -q "claude"
+  echo "$output" | grep -q "opencode"
+}
+
+@test "sync-skills symlinks each skill dir to the claude target" {
+  FAKE_HOME="$TEST_TMPDIR/home"
+  mkdir -p "$FAKE_HOME"
+  run env DOTFILES="$DOTFILES_ROOT" HOME="$FAKE_HOME" bash -lc 'source "$DOTFILES/.functions/.ai.sh"; sync-skills claude'
+  [ "$status" -eq 0 ]
+  [ -L "$FAKE_HOME/.claude/skills/pre-flight" ]
+  [ "$(readlink "$FAKE_HOME/.claude/skills/pre-flight")" = "$DOTFILES_ROOT/.ai-agents/skills/pre-flight" ]
+  [ -L "$FAKE_HOME/.claude/skills/teach-me" ]
+  [ "$(readlink "$FAKE_HOME/.claude/skills/teach-me")" = "$DOTFILES_ROOT/.ai-agents/skills/teach-me" ]
+}
+
+@test "sync-skills syncs rules as skills for claude (except permissions)" {
+  FAKE_HOME="$TEST_TMPDIR/home"
+  mkdir -p "$FAKE_HOME"
+  run env DOTFILES="$DOTFILES_ROOT" HOME="$FAKE_HOME" bash -lc 'source "$DOTFILES/.functions/.ai.sh"; sync-skills claude'
+  [ "$status" -eq 0 ]
+  [ -L "$FAKE_HOME/.claude/skills/session-management" ]
+  [ "$(readlink "$FAKE_HOME/.claude/skills/session-management")" = "$DOTFILES_ROOT/.ai-agents/rules/session-management" ]
+  [ -L "$FAKE_HOME/.claude/skills/agent-meta-protocol" ]
+  [ ! -e "$FAKE_HOME/.claude/skills/permissions" ]
+}
+
+@test "sync-skills does not sync rules for opencode" {
+  FAKE_HOME="$TEST_TMPDIR/home"
+  mkdir -p "$FAKE_HOME"
+  run env DOTFILES="$DOTFILES_ROOT" HOME="$FAKE_HOME" bash -lc 'source "$DOTFILES/.functions/.ai.sh"; sync-skills opencode'
+  [ "$status" -eq 0 ]
+  [ -L "$FAKE_HOME/.config/opencode/skills/teach-me" ]
+  [ ! -e "$FAKE_HOME/.config/opencode/skills/session-management" ]
+}
+
+@test "sync-skills --all syncs every registered agent" {
+  FAKE_HOME="$TEST_TMPDIR/home"
+  mkdir -p "$FAKE_HOME"
+  run env DOTFILES="$DOTFILES_ROOT" HOME="$FAKE_HOME" bash -lc 'source "$DOTFILES/.functions/.ai.sh"; sync-skills --all'
+  [ "$status" -eq 0 ]
+  [ -L "$FAKE_HOME/.claude/skills/teach-me" ]
+  [ -L "$FAKE_HOME/.config/opencode/skills/teach-me" ]
+}
+
+@test "sync-skills accepts multiple agent args" {
+  FAKE_HOME="$TEST_TMPDIR/home"
+  mkdir -p "$FAKE_HOME"
+  run env DOTFILES="$DOTFILES_ROOT" HOME="$FAKE_HOME" bash -lc 'source "$DOTFILES/.functions/.ai.sh"; sync-skills claude opencode'
+  [ "$status" -eq 0 ]
+  [ -L "$FAKE_HOME/.claude/skills/pre-flight" ]
+  [ -L "$FAKE_HOME/.config/opencode/skills/pre-flight" ]
+}
+
+@test "sync-skills is idempotent on re-run" {
+  FAKE_HOME="$TEST_TMPDIR/home"
+  mkdir -p "$FAKE_HOME"
+  env DOTFILES="$DOTFILES_ROOT" HOME="$FAKE_HOME" bash -lc 'source "$DOTFILES/.functions/.ai.sh"; sync-skills claude' >/dev/null
+  run env DOTFILES="$DOTFILES_ROOT" HOME="$FAKE_HOME" bash -lc 'source "$DOTFILES/.functions/.ai.sh"; sync-skills claude'
+  [ "$status" -eq 0 ]
+  [ -L "$FAKE_HOME/.claude/skills/pre-flight" ]
+  [ "$(readlink "$FAKE_HOME/.claude/skills/pre-flight")" = "$DOTFILES_ROOT/.ai-agents/skills/pre-flight" ]
+}
+
+@test "sync-skills backs up an existing real skill dir before linking" {
+  FAKE_HOME="$TEST_TMPDIR/home"
+  mkdir -p "$FAKE_HOME/.claude/skills/pre-flight"
+  printf "old project content\n" > "$FAKE_HOME/.claude/skills/pre-flight/SKILL.md"
+  run env DOTFILES="$DOTFILES_ROOT" HOME="$FAKE_HOME" bash -lc 'source "$DOTFILES/.functions/.ai.sh"; sync-skills claude'
+  [ "$status" -eq 0 ]
+  [ -L "$FAKE_HOME/.claude/skills/pre-flight" ]
+  [ -d "$FAKE_HOME/.claude/skills/pre-flight.bkup" ]
+}
+
+@test "sync-skills errors on unknown agent" {
+  run env DOTFILES="$DOTFILES_ROOT" bash -lc 'source "$DOTFILES/.functions/.ai.sh"; sync-skills nope'
+  [ "$status" -ne 0 ]
+}
+
+@test "sync-skills errors when DOTFILES is unset" {
+  run bash -lc 'unset DOTFILES; source "$(pwd)/.functions/.ai.sh"; sync-skills --list'
+  [ "$status" -ne 0 ]
+}

@@ -112,6 +112,7 @@ To keep memory updates safe and reusable, learned content in `AGENTS.md` should 
 - Learning index state is stored at `workspace/context/_meta/learning-index.json`.
 - Learning cadence state is stored at `workspace/context/_meta/learning-cadence.json`.
 - Learning index refresh helper script is `.scripts/update_learning_index.sh`.
+- Agent-context audit: `/manifest` (skill `.ai-agents/skills/manifest/SKILL.md`, scanner `.scripts/agent_manifest.sh`) inventories + audits all loaded agent components; snapshots go to `workspace/context/_meta/manifest-latest.md`.
 
 ## Learned Agent Workflow Improvements
 
