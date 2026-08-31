@@ -168,6 +168,36 @@ scan_skill_dir() { # base_dir harness category -- <name>/SKILL.md layouts
   done
 }
 
+scan_skill_tree() { # base_dir harness -- recursive **/SKILL.md (opencode skills.paths layout)
+  local base="$1" harness="$2"
+  local sk dir name target flags
+  [ -d "$base" ] || return 0
+  while IFS= read -r sk; do
+    dir="$(dirname -- "$sk")"
+    name="$(basename -- "$dir")"
+    flags=""
+    if [ -L "$dir" ]; then
+      target="$(readlink "$dir")"
+      case "$target" in
+        /*) : ;;
+        *) target="$(dirname -- "$dir")/$target" ;;
+      esac
+      [ -e "$dir" ] || flags="orphan-symlink"
+    else
+      target="$dir"
+    fi
+    target="$(resolve_path "$target")"
+    desc_flags "$sk" "$name"
+    [ -n "$DESC_FLAG" ] && flags="${flags:+$flags,}$DESC_FLAG"
+    file_stats "$sk"
+    last_commit "$sk"
+    if [ -n "$LAST_EPOCH" ] && [ "$LAST_EPOCH" -lt "$STALE_CUT" ]; then
+      flags="${flags:+$flags,}stale>6mo"
+    fi
+    emit "skill" "$name" "$harness" "$sk" "$target" "$STATS_LINES" "$STATS_TOKENS" "$LAST_COMMIT_DATE" "$flags"
+  done < <(find -L "$base" -name SKILL.md -type f 2>/dev/null | sort)
+}
+
 scan_md_dir() { # base_dir harness category -- flat *.md layouts
   local base="$1" harness="$2" category="$3"
   local f name flags
@@ -462,7 +492,7 @@ for cfg in "$OPENCODE_GLOBAL" "$OPENCODE_PROJECT"; do
       \~*) x="${HOME_DIR}/${x#\~/}" ;;
       *) x="$PROJECT_DIR/$x" ;;
     esac
-    scan_skill_dir "$x" "opencode-extra" "skill"
+    scan_skill_tree "$x" "opencode-extra"
   done <<<"$extra_paths"
 done
 
