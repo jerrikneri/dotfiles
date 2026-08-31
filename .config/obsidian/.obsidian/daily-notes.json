@@ -1,4 +1,4 @@
 {
-  "folder": "Journal",
-  "template": "Templates/{{date}}.md"
+  "folder": "Work Journal",
+  "template": "Templates/Work.md"
 }
