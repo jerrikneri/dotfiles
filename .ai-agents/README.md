@@ -15,7 +15,8 @@ Model-agnostic protocols and instructions for AI coding tools (Claude Code, Open
     pre-flight/SKILL.md              # Assess bug before starting (clarity, scope, risk)
     hontoni/SKILL.md                 # Post-fix self-critique scoring (6 dimensions)
     continual-improvement/SKILL.md   # Incremental learning loop
-    teach-me/SKILL.md                # Interactive mentor protocol
+    teach-me/SKILL.md                # Interactive mentor protocol (lightweight)
+    really-teach-me/SKILL.md         # Thorough understanding-first protocol (probe/plan/teach, adapted from amosblomqvist/learn)
     release-readiness/SKILL.md       # Pre-release validation
     spec-driven-development/SKILL.md # Spec-first development
     nix-validation/SKILL.md          # Nix build validation
