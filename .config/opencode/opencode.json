@@ -4,8 +4,12 @@
     ".ai-agents/skills/pre-flight/SKILL.md",
     ".ai-agents/skills/teach-me/SKILL.md",
     ".ai-agents/rules/session-management/SKILL.md",
-    ".ai-agents/rules/agent-meta-protocol/SKILL.md"
+    ".ai-agents/rules/agent-meta-protocol/SKILL.md",
+    ".ai-agents/rules/commit/SKILL.md"
   ],
+  "skills": {
+    "paths": ["~/code/skills-mattpocock/skills"]
+  },
   "plugin": [
     // "superpowers@git+https://github.com/obra/superpowers.git",
   ],

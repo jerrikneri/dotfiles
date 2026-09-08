@@ -1,6 +1,7 @@
 # Commit: Git History as the Record
 
-> Write commit messages that carry the detail you'd normally put in a spec, notes, or summary markdown file.
+> Always-on rule: apply to EVERY commit. No trigger needed.
+> Commit messages carry the detail you'd normally put in a spec, notes, or summary markdown file.
 > The commit body IS the record: what was done, why, the key decisions, and how it was verified.
 > Works with any AI coding agent. Portable: git is the only dependency.
 > Rationale: markdown artifacts rot, get lost, or live in gitignored workspace dirs. The commit log is durable, timestamped, ordered, and always one `git log` away.
@@ -9,7 +10,7 @@
 
 ## When to Use
 
-- Whenever an agent (or human) commits work that matters beyond the raw diff
+- Every commit where the change matters beyond the raw diff
 - Instead of creating a NEW markdown file just to record what a change did
 - Alongside existing artifacts (specs, ADRs, session notes): the commit message summarizes and stands alone; the artifact carries the rest
 
@@ -73,7 +74,7 @@ EOF
 
 ## The Log as Resume Context
 
-The flip side of this skill: when starting a session or resuming work, read the log before asking for or writing context files.
+The flip side of this rule: when starting a session or resuming work, read the log before asking for or writing context files.
 
 ```bash
 git log --oneline -15          # what happened recently
