@@ -14,6 +14,7 @@
     glow
     # intelli-shell
     herdr
+    jq
     # llama-cpp
     neovim
     nh # yet another nix helper
