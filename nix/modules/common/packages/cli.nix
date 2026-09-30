@@ -26,6 +26,7 @@
     nil # Nix Language Server
     nixd # Nix LSP
     pciutils # lspci
+    pi-coding-agent
     ripgrep # Grep alternative
     shellcheck # Linter for shell commands
     tmux
